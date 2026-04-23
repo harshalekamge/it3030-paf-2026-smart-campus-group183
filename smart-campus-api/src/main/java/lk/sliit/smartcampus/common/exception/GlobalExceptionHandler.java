@@ -26,6 +26,18 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.failure(exception.getMessage(), null));
     }
 
+    @ExceptionHandler(ResourceTypeNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleResourceTypeNotFound(ResourceTypeNotFoundException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ApiResponse.failure(exception.getMessage(), null));
+    }
+
+    @ExceptionHandler(DuplicateResourceTypeCodeException.class)
+    public ResponseEntity<ApiResponse<Void>> handleDuplicateResourceTypeCode(DuplicateResourceTypeCodeException exception) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(ApiResponse.failure(exception.getMessage(), null));
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Map<String, String>>> handleValidation(MethodArgumentNotValidException exception) {
         Map<String, String> errors = new HashMap<>();
