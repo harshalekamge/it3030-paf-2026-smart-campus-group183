@@ -42,8 +42,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto updateUserRole(Long userId, Role role, String actorEmail) {
         AppUser actor = getUserEntityByEmail(actorEmail);
-        if (actor.getRole() != Role.SUPER_ADMIN) {
-            throw new RoleAssignmentNotAllowedException("Only super admins can update user roles");
+        if (actor.getRole() != Role.ADMIN && actor.getRole() != Role.SUPER_ADMIN) {
+            throw new RoleAssignmentNotAllowedException("Only admins can update user roles");
         }
 
         AppUser user = userRepository.findById(userId)
