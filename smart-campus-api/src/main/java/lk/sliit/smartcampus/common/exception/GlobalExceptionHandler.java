@@ -3,9 +3,12 @@ package lk.sliit.smartcampus.common.exception;
 import java.util.HashMap;
 import java.util.Map;
 
+import lk.sliit.smartcampus.auth.exception.RoleAssignmentNotAllowedException;
+import lk.sliit.smartcampus.auth.exception.UserNotFoundException;
 import lk.sliit.smartcampus.common.response.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -36,6 +39,24 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Void>> handleDuplicateResourceTypeCode(DuplicateResourceTypeCodeException exception) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(ApiResponse.failure(exception.getMessage(), null));
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleUserNotFound(UserNotFoundException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ApiResponse.failure(exception.getMessage(), null));
+    }
+
+    @ExceptionHandler(RoleAssignmentNotAllowedException.class)
+    public ResponseEntity<ApiResponse<Void>> handleRoleAssignmentNotAllowed(RoleAssignmentNotAllowedException exception) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(ApiResponse.failure(exception.getMessage(), null));
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ApiResponse<Void>> handleAccessDenied(AccessDeniedException exception) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(ApiResponse.failure("Access denied", null));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
