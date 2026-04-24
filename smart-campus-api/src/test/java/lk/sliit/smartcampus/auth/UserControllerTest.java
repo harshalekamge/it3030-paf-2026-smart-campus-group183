@@ -83,7 +83,21 @@ class UserControllerTest {
 
     @Test
     @WithMockUser(username = "admin@sliit.lk", roles = "ADMIN")
-    void shouldBlockAdminFromUpdatingRoles() throws Exception {
+    void shouldAllowAdminToUpdateRoles() throws Exception {
+        when(userService.updateUserRole(eq(1L), eq(Role.LECTURER), eq("admin@sliit.lk")))
+                .thenReturn(new UserResponseDto(1L, "user@sliit.lk", "A", "B", "A B", null, Role.LECTURER, true));
+
+        mockMvc.perform(patch("/users/1/role")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"role\":\"LECTURER\"}"))
+                .andExpect(status().isOk());
+
+        verify(userService).updateUserRole(1L, Role.LECTURER, "admin@sliit.lk");
+    }
+
+    @Test
+    @WithMockUser(username = "staff@sliit.lk", roles = "STAFF")
+    void shouldBlockStaffFromUpdatingRoles() throws Exception {
         mockMvc.perform(patch("/users/1/role")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"role\":\"LECTURER\"}"))

@@ -10,13 +10,14 @@ import org.mockito.Mockito;
 
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 class UserServiceImplTest {
 
     @Test
-    void shouldRejectRoleUpdateFromNonSuperAdmin() {
+    void shouldAllowRoleUpdateFromAdmin() {
         UserRepository repository = Mockito.mock(UserRepository.class);
         UserServiceImpl service = new UserServiceImpl(repository);
 
@@ -24,9 +25,28 @@ class UserServiceImplTest {
         actor.setEmail("admin@sliit.lk");
         actor.setRole(Role.ADMIN);
 
+        AppUser target = new AppUser();
+        target.setRole(Role.STUDENT);
+
         when(repository.findByEmail("admin@sliit.lk")).thenReturn(Optional.of(actor));
+        when(repository.findById(10L)).thenReturn(Optional.of(target));
+        when(repository.save(target)).thenReturn(target);
+
+        assertDoesNotThrow(() -> service.updateUserRole(10L, Role.LECTURER, "admin@sliit.lk"));
+    }
+
+    @Test
+    void shouldRejectRoleUpdateFromStaff() {
+        UserRepository repository = Mockito.mock(UserRepository.class);
+        UserServiceImpl service = new UserServiceImpl(repository);
+
+        AppUser actor = new AppUser();
+        actor.setEmail("staff@sliit.lk");
+        actor.setRole(Role.STAFF);
+
+        when(repository.findByEmail("staff@sliit.lk")).thenReturn(Optional.of(actor));
 
         assertThrows(RoleAssignmentNotAllowedException.class,
-                () -> service.updateUserRole(10L, Role.LECTURER, "admin@sliit.lk"));
+                () -> service.updateUserRole(10L, Role.LECTURER, "staff@sliit.lk"));
     }
 }

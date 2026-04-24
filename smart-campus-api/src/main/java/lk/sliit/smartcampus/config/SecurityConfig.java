@@ -49,18 +49,28 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .exceptionHandling(exceptions ->
                         exceptions.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
-                .authorizeHttpRequests(auth -> auth
+                        .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
+                                "/hello",
+                                "/auth-demo.html",
                                 "/oauth2/**",
                                 "/login/**",
                                 "/auth/**",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**"
                         ).permitAll()
-                        .requestMatchers(HttpMethod.PATCH, "/users/*/role").hasRole("SUPER_ADMIN")
                         .requestMatchers("/users/me").authenticated()
-                        .requestMatchers("/users/**").hasAnyRole("ADMIN", "SUPER_ADMIN")
-                        .anyRequest().permitAll()
+                        .requestMatchers(HttpMethod.GET, "/users").hasAnyRole("ADMIN", "SUPER_ADMIN")
+                        .requestMatchers(HttpMethod.PATCH, "/users/*/role").hasAnyRole("ADMIN", "SUPER_ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/resource-types").hasAnyRole("ADMIN", "SUPER_ADMIN", "STAFF", "LECTURER")
+                        .requestMatchers(HttpMethod.GET, "/resource-types", "/resource-types/*").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/resource-types/*").hasAnyRole("ADMIN", "SUPER_ADMIN", "STAFF", "LECTURER")
+                        .requestMatchers(HttpMethod.DELETE, "/resource-types/*").hasAnyRole("ADMIN", "SUPER_ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/amenities").hasAnyRole("ADMIN", "SUPER_ADMIN", "STAFF", "LECTURER")
+                        .requestMatchers(HttpMethod.GET, "/amenities", "/amenities/*").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/amenities/*").hasAnyRole("ADMIN", "SUPER_ADMIN", "STAFF", "LECTURER")
+                        .requestMatchers(HttpMethod.DELETE, "/amenities/*").hasAnyRole("ADMIN", "SUPER_ADMIN")
+                        .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth -> oauth
                         .userInfoEndpoint(userInfo -> userInfo
