@@ -12,6 +12,7 @@ import Drawer from '@mui/material/Drawer';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import { Link as RouterLink } from 'react-router-dom';
+import { useColorScheme } from '@mui/material/styles';
 import ColorModeIconDropdown from '../../shared-theme/ColorModeIconDropdown';
 import Sitemark from './SitemarkIcon';
 
@@ -23,7 +24,9 @@ const navigationItems = [
   { label: 'FAQ', href: '#faq' },
 ];
 
-const StyledToolbar = styled(Toolbar)(({ theme }) => ({
+const StyledToolbar = styled(Toolbar, {
+  shouldForwardProp: (prop) => prop !== 'darkSurface',
+})(({ theme, darkSurface }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'space-between',
@@ -31,23 +34,68 @@ const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   borderRadius: `calc(${theme.shape.borderRadius}px + 8px)`,
   backdropFilter: 'blur(24px)',
   border: '1px solid',
-  borderColor: (theme.vars || theme).palette.divider,
-  backgroundColor: theme.vars
-    ? `rgba(${theme.vars.palette.background.defaultChannel} / 0.4)`
-    : alpha(theme.palette.background.default, 0.4),
-  boxShadow: (theme.vars || theme).shadows[1],
+  borderColor: darkSurface
+    ? 'hsla(220, 20%, 80%, 0.16)'
+    : (theme.vars || theme).palette.divider,
+  backgroundColor: darkSurface
+    ? 'rgba(15, 23, 34, 0.82)'
+    : theme.vars
+      ? `rgba(${theme.vars.palette.background.defaultChannel} / 0.4)`
+      : alpha(theme.palette.background.default, 0.4),
+  boxShadow: darkSurface
+    ? '0 16px 40px rgba(8, 15, 28, 0.28)'
+    : (theme.vars || theme).shadows[1],
   padding: '8px 12px',
 }));
 
 export default function AppAppBar() {
   const [open, setOpen] = React.useState(false);
+  const [isOverHighlights, setIsOverHighlights] = React.useState(false);
+  const appBarRef = React.useRef(null);
+  const { mode, systemMode } = useColorScheme();
+
+  const resolvedMode = mode === 'system' ? systemMode : mode;
+  const useDarkSurface = resolvedMode !== 'dark' && isOverHighlights;
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
   };
 
+  React.useEffect(() => {
+    const updateOverlap = () => {
+      const appBar = appBarRef.current;
+      const overlapTargets = ['highlights', 'pricing']
+        .map((id) => document.getElementById(id))
+        .filter(Boolean);
+
+      if (!appBar || overlapTargets.length === 0) {
+        setIsOverHighlights(false);
+        return;
+      }
+
+      const appBarRect = appBar.getBoundingClientRect();
+      const overlaps = overlapTargets.some((section) => {
+        const sectionRect = section.getBoundingClientRect();
+
+        return sectionRect.top < appBarRect.bottom && sectionRect.bottom > appBarRect.top;
+      });
+
+      setIsOverHighlights(overlaps);
+    };
+
+    updateOverlap();
+    window.addEventListener('scroll', updateOverlap, { passive: true });
+    window.addEventListener('resize', updateOverlap);
+
+    return () => {
+      window.removeEventListener('scroll', updateOverlap);
+      window.removeEventListener('resize', updateOverlap);
+    };
+  }, []);
+
   return (
     <AppBar
+      ref={appBarRef}
       position="fixed"
       enableColorOnDark
       sx={{
@@ -58,9 +106,15 @@ export default function AppAppBar() {
       }}
     >
       <Container maxWidth="lg">
-        <StyledToolbar variant="dense" disableGutters>
+        <StyledToolbar variant="dense" disableGutters darkSurface={useDarkSurface}>
           <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
-            <Sitemark />
+            <Box
+              sx={{
+                color: useDarkSurface ? 'common.white' : 'inherit',
+              }}
+            >
+              <Sitemark />
+            </Box>
             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
               {navigationItems.map((item) => (
                 <Button
@@ -70,7 +124,10 @@ export default function AppAppBar() {
                   size="small"
                   component="a"
                   href={item.href}
-                  sx={{ minWidth: 0 }}
+                  sx={{
+                    minWidth: 0,
+                    color: useDarkSurface ? 'grey.100' : undefined,
+                  }}
                 >
                   {item.label}
                 </Button>
@@ -90,6 +147,14 @@ export default function AppAppBar() {
               size="small"
               component={RouterLink}
               to="/dashboard"
+              sx={
+                useDarkSurface
+                  ? {
+                      color: 'common.white',
+                      borderColor: 'hsla(220, 20%, 80%, 0.28)',
+                    }
+                  : undefined
+              }
             >
               Dashboard
             </Button>
@@ -99,6 +164,7 @@ export default function AppAppBar() {
               size="small"
               component={RouterLink}
               to="/signin"
+              sx={useDarkSurface ? { color: 'grey.100' } : undefined}
             >
               Sign in
             </Button>
