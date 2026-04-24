@@ -13,7 +13,7 @@ import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import Stack from '@mui/material/Stack';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../auth/AuthContext';
-import ThemeSwitcher from './ThemeSwitcher';
+import ColorModeIconDropdown from '../../shared-theme/ColorModeIconDropdown';
 
 const AppBar = styled(MuiAppBar)(({ theme }) => ({
   borderWidth: 0,
@@ -116,7 +116,7 @@ function DashboardHeader({ logo, title, menuOpen, onToggleMenu }) {
               Logout
             </Button>
             <Stack direction="row" sx={{ alignItems: 'center' }}>
-              <ThemeSwitcher />
+              <ColorModeIconDropdown />
             </Stack>
           </Stack>
         </Stack>

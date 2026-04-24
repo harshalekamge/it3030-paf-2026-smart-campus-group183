@@ -4,6 +4,7 @@ import { brand, gray } from './themePrimitives'
 
 function getTheme(themeComponents = {}) {
   return extendTheme({
+    colorSchemeSelector: 'data',
     colorSchemes: {
       light: {
         palette: {
