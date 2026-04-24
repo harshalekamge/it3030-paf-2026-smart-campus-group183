@@ -34,7 +34,7 @@ public class OAuth2FailureHandler extends SimpleUrlAuthenticationFailureHandler 
                 authCookieService.buildClearCookie(request.isSecure()).toString());
 
         String message = URLEncoder.encode(exception.getMessage(), StandardCharsets.UTF_8);
-        String redirectUrl = frontendUrl + "/oauth-failure?error=" + message;
+        String redirectUrl = frontendUrl + "/auth-demo.html?oauth=failure&error=" + message;
         getRedirectStrategy().sendRedirect(request, response, redirectUrl);
     }
 }

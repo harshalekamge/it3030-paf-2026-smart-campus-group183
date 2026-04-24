@@ -1,6 +1,7 @@
 package lk.sliit.smartcampus.config;
 
 import lk.sliit.smartcampus.auth.service.OAuthUserService;
+import lk.sliit.smartcampus.auth.service.OidcUserService;
 import lk.sliit.smartcampus.auth.service.JwtService;
 import lk.sliit.smartcampus.auth.service.UserService;
 import org.springframework.context.annotation.Bean;
@@ -18,13 +19,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final OAuthUserService oAuthUserService;
+    private final OidcUserService oidcUserService;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final OAuth2FailureHandler oAuth2FailureHandler;
 
     public SecurityConfig(OAuthUserService oAuthUserService,
+                          OidcUserService oidcUserService,
                           OAuth2SuccessHandler oAuth2SuccessHandler,
                           OAuth2FailureHandler oAuth2FailureHandler) {
         this.oAuthUserService = oAuthUserService;
+        this.oidcUserService = oidcUserService;
         this.oAuth2SuccessHandler = oAuth2SuccessHandler;
         this.oAuth2FailureHandler = oAuth2FailureHandler;
     }
@@ -59,7 +63,9 @@ public class SecurityConfig {
                         .anyRequest().permitAll()
                 )
                 .oauth2Login(oauth -> oauth
-                        .userInfoEndpoint(userInfo -> userInfo.userService(oAuthUserService))
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(oAuthUserService)
+                                .oidcUserService(oidcUserService))
                         .successHandler(oAuth2SuccessHandler)
                         .failureHandler(oAuth2FailureHandler)
                 )

@@ -6,6 +6,7 @@ import lk.sliit.smartcampus.auth.dto.UserResponseDto;
 import lk.sliit.smartcampus.auth.enums.Role;
 import lk.sliit.smartcampus.auth.service.JwtService;
 import lk.sliit.smartcampus.auth.service.OAuthUserService;
+import lk.sliit.smartcampus.auth.service.OidcUserService;
 import lk.sliit.smartcampus.auth.service.UserService;
 import lk.sliit.smartcampus.config.AuthCookieService;
 import lk.sliit.smartcampus.config.OAuth2FailureHandler;
@@ -25,6 +26,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oauth2Login;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UserController.class)
@@ -47,6 +49,9 @@ class UserControllerTest {
     private OAuthUserService oAuthUserService;
 
     @MockitoBean
+    private OidcUserService oidcUserService;
+
+    @MockitoBean
     private OAuth2SuccessHandler oAuth2SuccessHandler;
 
     @MockitoBean
@@ -59,6 +64,21 @@ class UserControllerTest {
     void shouldRequireAuthenticationForCurrentUser() throws Exception {
         mockMvc.perform(get("/users/me"))
                 .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void shouldUseOauthEmailClaimForCurrentUser() throws Exception {
+        when(userService.getCurrentUser("student@sliit.lk"))
+                .thenReturn(new UserResponseDto(1L, "student@sliit.lk", "Smart", "Student", "Smart Student", null, Role.STUDENT, true));
+
+        mockMvc.perform(get("/users/me")
+                        .with(oauth2Login().attributes(attributes -> {
+                            attributes.put("email", "student@sliit.lk");
+                            attributes.put("sub", "102729476187587056982");
+                        })))
+                .andExpect(status().isOk());
+
+        verify(userService).getCurrentUser("student@sliit.lk");
     }
 
     @Test

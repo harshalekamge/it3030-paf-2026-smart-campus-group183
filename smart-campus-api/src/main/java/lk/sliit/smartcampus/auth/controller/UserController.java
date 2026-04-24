@@ -6,6 +6,7 @@ import lk.sliit.smartcampus.auth.dto.UserResponseDto;
 import lk.sliit.smartcampus.auth.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,7 +26,7 @@ public class UserController {
         if (authentication == null) {
             return ResponseEntity.status(401).build();
         }
-        return ResponseEntity.ok(userService.getCurrentUser(authentication.getName()));
+        return ResponseEntity.ok(userService.getCurrentUser(resolveUserEmail(authentication)));
     }
 
     @GetMapping
@@ -40,6 +41,18 @@ public class UserController {
         if (authentication == null) {
             return ResponseEntity.status(401).build();
         }
-        return ResponseEntity.ok(userService.updateUserRole(id, dto.getRole(), authentication.getName()));
+        return ResponseEntity.ok(userService.updateUserRole(id, dto.getRole(), resolveUserEmail(authentication)));
+    }
+
+    private String resolveUserEmail(Authentication authentication) {
+        Object principal = authentication.getPrincipal();
+        if (principal instanceof OAuth2AuthenticatedPrincipal oauthPrincipal) {
+            String email = oauthPrincipal.getAttribute("email");
+            if (email != null && !email.isBlank()) {
+                return email;
+            }
+        }
+
+        return authentication.getName();
     }
 }

@@ -47,7 +47,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         response.addHeader(HttpHeaders.SET_COOKIE,
                 authCookieService.buildTokenCookie(token, request.isSecure()).toString());
 
-        String redirectUrl = frontendUrl + "/oauth-success";
+        String redirectUrl = frontendUrl + "/auth-demo.html?oauth=success";
         getRedirectStrategy().sendRedirect(request, response, redirectUrl);
     }
 }
