@@ -1,0 +1,22 @@
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+#hero,
+#features,
+#testimonials,
+#highlights,
+#pricing,
+#faq {
+  scroll-margin-top: 104px;
+}
+
+body {
+  margin: 0;
+}
