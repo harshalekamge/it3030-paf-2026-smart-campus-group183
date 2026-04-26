@@ -30,6 +30,7 @@ import ResourceMediaCreate from '../pages/crud-dashboard/components/ResourceMedi
 import ResourceMediaEdit from '../pages/crud-dashboard/components/ResourceMediaEdit'
 import ResourceMediaList from '../pages/crud-dashboard/components/ResourceMediaList'
 import ResourceMediaShow from '../pages/crud-dashboard/components/ResourceMediaShow'
+import SummaryResourceView from '../pages/crud-dashboard/components/SummaryResourceView'
 import SignInSide from '../pages/sign-in-side/SignInSide'
 import SignUp from '../pages/sign-up/SignUp'
 import ProtectedRoute from './ProtectedRoute'
@@ -80,6 +81,7 @@ function AppRouter() {
             <Route path="resources" element={<ResourceList />} />
             <Route path="resources/new" element={<ResourceCreate />} />
             <Route path="resources/:resourceId" element={<ResourceShow />} />
+            <Route path="resources/:resourceId/srv" element={<SummaryResourceView />} />
             <Route path="resources/:resourceId/edit" element={<ResourceEdit />} />
             <Route path="resource-media" element={<ResourceMediaList />} />
             <Route path="resource-media/new" element={<ResourceMediaCreate />} />

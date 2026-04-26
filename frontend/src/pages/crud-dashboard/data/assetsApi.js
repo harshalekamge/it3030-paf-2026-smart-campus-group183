@@ -206,3 +206,7 @@ export async function deleteAmenity(amenityId) {
     method: 'DELETE',
   });
 }
+
+export async function getResourceAmenities() {
+  return request('/resource-amenities');
+}

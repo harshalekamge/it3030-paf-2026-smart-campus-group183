@@ -3,6 +3,7 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import Alert from '@mui/material/Alert';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -69,6 +70,13 @@ export default function ResourceList() {
     [navigate],
   );
 
+  const handleRowSrv = React.useCallback(
+    (resource) => () => {
+      navigate(`/dashboard/resources/${resource.id}/srv`);
+    },
+    [navigate],
+  );
+
   const handleRowDelete = React.useCallback(
     (resource) => async () => {
       const confirmed = await dialogs.confirm(
@@ -116,6 +124,27 @@ export default function ResourceList() {
       { field: 'status', headerName: 'Status', width: 130 },
       { field: 'isActive', headerName: 'Active', type: 'boolean', width: 100 },
       {
+        field: 'srv',
+        headerName: 'SRV',
+        width: 110,
+        sortable: false,
+        filterable: false,
+        disableColumnMenu: true,
+        renderCell: ({ row }) => (
+          <Button
+            size="small"
+            variant="outlined"
+            startIcon={<VisibilityIcon fontSize="small" />}
+            onClick={(event) => {
+              event.stopPropagation();
+              handleRowSrv(row)();
+            }}
+          >
+            SRV
+          </Button>
+        ),
+      },
+      {
         field: 'actions',
         type: 'actions',
         width: 110,
@@ -135,7 +164,7 @@ export default function ResourceList() {
         ],
       },
     ],
-    [handleRowDelete, handleRowEdit],
+    [handleRowDelete, handleRowEdit, handleRowSrv],
   );
 
   return (
