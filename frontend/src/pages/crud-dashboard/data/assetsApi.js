@@ -123,6 +123,34 @@ export async function deleteAvailabilityWindow(availabilityWindowId) {
   });
 }
 
+export async function getMaintenanceLogs() {
+  return request('/maintenance-logs');
+}
+
+export async function getMaintenanceLog(maintenanceLogId) {
+  return request(`/maintenance-logs/${maintenanceLogId}`);
+}
+
+export async function createMaintenanceLog(maintenanceLog) {
+  return request('/maintenance-logs', {
+    method: 'POST',
+    body: JSON.stringify(maintenanceLog),
+  });
+}
+
+export async function updateMaintenanceLog(maintenanceLogId, maintenanceLog) {
+  return request(`/maintenance-logs/${maintenanceLogId}`, {
+    method: 'PUT',
+    body: JSON.stringify(maintenanceLog),
+  });
+}
+
+export async function deleteMaintenanceLog(maintenanceLogId) {
+  return request(`/maintenance-logs/${maintenanceLogId}`, {
+    method: 'DELETE',
+  });
+}
+
 export async function getAmenities() {
   return request('/amenities');
 }

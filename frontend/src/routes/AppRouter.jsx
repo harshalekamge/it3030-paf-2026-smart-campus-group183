@@ -13,6 +13,10 @@ import EmployeeCreate from '../pages/crud-dashboard/components/EmployeeCreate'
 import EmployeeEdit from '../pages/crud-dashboard/components/EmployeeEdit'
 import EmployeeList from '../pages/crud-dashboard/components/EmployeeList'
 import EmployeeShow from '../pages/crud-dashboard/components/EmployeeShow'
+import MaintenanceLogCreate from '../pages/crud-dashboard/components/MaintenanceLogCreate'
+import MaintenanceLogEdit from '../pages/crud-dashboard/components/MaintenanceLogEdit'
+import MaintenanceLogList from '../pages/crud-dashboard/components/MaintenanceLogList'
+import MaintenanceLogShow from '../pages/crud-dashboard/components/MaintenanceLogShow'
 import MarketingPage from '../pages/marketing-page/MarketingPage'
 import ResourceTypeCreate from '../pages/crud-dashboard/components/ResourceTypeCreate'
 import ResourceTypeEdit from '../pages/crud-dashboard/components/ResourceTypeEdit'
@@ -85,6 +89,13 @@ function AppRouter() {
             <Route
               path="availability-windows/:availabilityWindowId/edit"
               element={<AvailabilityWindowEdit />}
+            />
+            <Route path="maintenance-logs" element={<MaintenanceLogList />} />
+            <Route path="maintenance-logs/new" element={<MaintenanceLogCreate />} />
+            <Route path="maintenance-logs/:maintenanceLogId" element={<MaintenanceLogShow />} />
+            <Route
+              path="maintenance-logs/:maintenanceLogId/edit"
+              element={<MaintenanceLogEdit />}
             />
             <Route path="amenities" element={<AmenityList />} />
             <Route path="amenities/new" element={<AmenityCreate />} />
