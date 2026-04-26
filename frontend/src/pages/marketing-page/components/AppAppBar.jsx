@@ -2,19 +2,23 @@ import * as React from 'react';
 import { styled, alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import AppBar from '@mui/material/AppBar';
+import Avatar from '@mui/material/Avatar';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
+import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Drawer from '@mui/material/Drawer';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import { Link as RouterLink } from 'react-router-dom';
 import { useColorScheme } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import ColorModeIconDropdown from '../../shared-theme/ColorModeIconDropdown';
+import { useAuth } from '../../../auth/AuthContext';
 import Sitemark from './SitemarkIcon';
 
 const navigationItems = [
@@ -51,14 +55,34 @@ const StyledToolbar = styled(Toolbar, {
 export default function AppAppBar() {
   const [open, setOpen] = React.useState(false);
   const [isOverHighlights, setIsOverHighlights] = React.useState(false);
+  const [profileMenuAnchor, setProfileMenuAnchor] = React.useState(null);
   const appBarRef = React.useRef(null);
   const { mode, systemMode } = useColorScheme();
+  const { isAuthenticated, isLoading, logout, user } = useAuth();
 
   const resolvedMode = mode === 'system' ? systemMode : mode;
   const useDarkSurface = resolvedMode !== 'dark' && isOverHighlights;
+  const userDisplayName =
+    user?.fullName ||
+    [user?.firstName, user?.lastName].filter(Boolean).join(' ') ||
+    user?.email ||
+    'Campus user';
 
   const toggleDrawer = (newOpen) => () => {
     setOpen(newOpen);
+  };
+
+  const handleOpenProfileMenu = (event) => {
+    setProfileMenuAnchor(event.currentTarget);
+  };
+
+  const handleCloseProfileMenu = () => {
+    setProfileMenuAnchor(null);
+  };
+
+  const handleLogout = async () => {
+    handleCloseProfileMenu();
+    await logout();
   };
 
   React.useEffect(() => {
@@ -171,42 +195,61 @@ export default function AppAppBar() {
               alignItems: 'center',
             }}
           >
-            <Button
-              color="primary"
-              variant="outlined"
-              size="small"
-              component={RouterLink}
-              to="/dashboard"
-              sx={
-                useDarkSurface
-                  ? {
-                      color: 'common.white',
-                      borderColor: 'hsla(220, 20%, 80%, 0.28)',
-                    }
-                  : undefined
-              }
+            {!isLoading && !isAuthenticated ? (
+              <React.Fragment>
+                <Button
+                  color="primary"
+                  variant="text"
+                  size="small"
+                  component={RouterLink}
+                  to="/signin"
+                  sx={useDarkSurface ? { color: 'grey.100' } : undefined}
+                >
+                  Sign in
+                </Button>
+                <Button
+                  color="primary"
+                  variant="contained"
+                  size="small"
+                  component={RouterLink}
+                  to="/signup"
+                >
+                  Sign up
+                </Button>
+              </React.Fragment>
+            ) : null}
+            {!isLoading && isAuthenticated ? (
+              <IconButton
+                onClick={handleOpenProfileMenu}
+                aria-label="Open profile"
+                sx={{
+                  p: 0,
+                  border: '1px solid',
+                  borderColor: useDarkSurface ? 'hsla(220, 20%, 80%, 0.28)' : 'divider',
+                  borderRadius: '50%',
+                }}
+              >
+                <Avatar
+                  src={user?.profilePictureUrl ?? undefined}
+                  alt={userDisplayName}
+                  sx={{ width: 36, height: 36, bgcolor: 'primary.main' }}
+                >
+                  {userDisplayName.charAt(0).toUpperCase()}
+                </Avatar>
+              </IconButton>
+            ) : null}
+            <Menu
+              anchorEl={profileMenuAnchor}
+              open={Boolean(profileMenuAnchor)}
+              onClose={handleCloseProfileMenu}
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+              transformOrigin={{ vertical: 'top', horizontal: 'right' }}
             >
-              Dashboard
-            </Button>
-            <Button
-              color="primary"
-              variant="text"
-              size="small"
-              component={RouterLink}
-              to="/signin"
-              sx={useDarkSurface ? { color: 'grey.100' } : undefined}
-            >
-              Sign in
-            </Button>
-            <Button
-              color="primary"
-              variant="contained"
-              size="small"
-              component={RouterLink}
-              to="/signup"
-            >
-              Sign up
-            </Button>
+              <MenuItem onClick={handleLogout}>
+                <LogoutRoundedIcon fontSize="small" sx={{ mr: 1 }} />
+                Logout
+              </MenuItem>
+            </Menu>
             <ColorModeIconDropdown />
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' }, gap: 1 }}>
@@ -249,39 +292,45 @@ export default function AppAppBar() {
                   </MenuItem>
                 ))}
                 <Divider sx={{ my: 3 }} />
-                <MenuItem>
-                  <Button
-                    color="primary"
-                    variant="outlined"
-                    fullWidth
-                    component={RouterLink}
-                    to="/dashboard"
-                  >
-                    Dashboard
-                  </Button>
-                </MenuItem>
-                <MenuItem>
-                  <Button
-                    color="primary"
-                    variant="contained"
-                    fullWidth
-                    component={RouterLink}
-                    to="/signup"
-                  >
-                    Sign up
-                  </Button>
-                </MenuItem>
-                <MenuItem>
-                  <Button
-                    color="primary"
-                    variant="outlined"
-                    fullWidth
-                    component={RouterLink}
-                    to="/signin"
-                  >
-                    Sign in
-                  </Button>
-                </MenuItem>
+                {!isLoading && isAuthenticated ? (
+                  <MenuItem>
+                    <Button
+                      color="primary"
+                      variant="outlined"
+                      fullWidth
+                      component={RouterLink}
+                      to="/dashboard"
+                    >
+                      Profile
+                    </Button>
+                  </MenuItem>
+                ) : null}
+                {!isLoading && !isAuthenticated ? (
+                  <React.Fragment>
+                    <MenuItem>
+                      <Button
+                        color="primary"
+                        variant="contained"
+                        fullWidth
+                        component={RouterLink}
+                        to="/signup"
+                      >
+                        Sign up
+                      </Button>
+                    </MenuItem>
+                    <MenuItem>
+                      <Button
+                        color="primary"
+                        variant="outlined"
+                        fullWidth
+                        component={RouterLink}
+                        to="/signin"
+                      >
+                        Sign in
+                      </Button>
+                    </MenuItem>
+                  </React.Fragment>
+                ) : null}
               </Box>
             </Drawer>
           </Box>

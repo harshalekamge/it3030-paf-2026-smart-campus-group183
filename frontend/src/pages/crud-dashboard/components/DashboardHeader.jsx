@@ -7,12 +7,10 @@ import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import Stack from '@mui/material/Stack';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../../auth/AuthContext';
+import { Link } from 'react-router-dom';
 import ColorModeIconDropdown from '../../shared-theme/ColorModeIconDropdown';
 
 const AppBar = styled(MuiAppBar)(({ theme }) => ({
@@ -36,17 +34,10 @@ const LogoContainer = styled('div')({
 
 function DashboardHeader({ logo, title, menuOpen, onToggleMenu }) {
   const theme = useTheme();
-  const navigate = useNavigate();
-  const { logout } = useAuth();
 
   const handleMenuOpen = React.useCallback(() => {
     onToggleMenu(!menuOpen);
   }, [menuOpen, onToggleMenu]);
-
-  const handleLogout = React.useCallback(async () => {
-    await logout();
-    navigate('/signin');
-  }, [logout, navigate]);
 
   const getMenuIcon = React.useCallback(
     (isExpanded) => {
@@ -112,9 +103,6 @@ function DashboardHeader({ logo, title, menuOpen, onToggleMenu }) {
             spacing={1}
             sx={{ alignItems: 'center', marginLeft: 'auto' }}
           >
-            <Button variant="outlined" size="small" onClick={handleLogout}>
-              Logout
-            </Button>
             <Stack direction="row" sx={{ alignItems: 'center' }}>
               <ColorModeIconDropdown />
             </Stack>

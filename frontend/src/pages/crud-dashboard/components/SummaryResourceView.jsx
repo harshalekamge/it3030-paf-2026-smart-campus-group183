@@ -790,7 +790,7 @@ export default function SummaryResourceView() {
                       </Stack>
                       <Box
                         sx={{
-                          minHeight: 220,
+                          height: { xs: 560, sm: 680, lg: 547 },
                           borderRadius: 4,
                           border: '1px solid rgba(148, 163, 184, 0.18)',
                           bgcolor: 'rgba(148, 163, 184, 0.12)',
@@ -805,7 +805,7 @@ export default function SummaryResourceView() {
                             component="img"
                             src={primaryMedia.url}
                             alt={primaryMedia.caption || resource.name}
-                            sx={{ width: '100%', objectFit: 'cover' }}
+                            sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                           />
                         ) : (
                           <Stack

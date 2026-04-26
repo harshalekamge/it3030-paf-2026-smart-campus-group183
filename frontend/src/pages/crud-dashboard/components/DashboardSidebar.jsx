@@ -6,10 +6,15 @@ import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Chip from '@mui/material/Chip';
 import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import Toolbar from '@mui/material/Toolbar';
 
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import CategoryIcon from '@mui/icons-material/Category';
 import ChairAltIcon from '@mui/icons-material/ChairAlt';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
@@ -17,7 +22,7 @@ import BuildIcon from '@mui/icons-material/Build';
 import PermMediaIcon from '@mui/icons-material/PermMedia';
 import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-import { matchPath, useLocation } from 'react-router-dom';
+import { matchPath, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../auth/AuthContext';
 import DashboardSidebarContext from '../context/DashboardSidebarContext';
 import { DRAWER_WIDTH, MINI_DRAWER_WIDTH } from '../constants';
@@ -35,11 +40,13 @@ function DashboardSidebar({
   container,
 }) {
   const theme = useTheme();
-  const { isAdmin, user } = useAuth();
+  const navigate = useNavigate();
+  const { isAdmin, logout, user } = useAuth();
 
   const { pathname } = useLocation();
 
   const [expandedItemIds, setExpandedItemIds] = React.useState([]);
+  const [profileMenuAnchor, setProfileMenuAnchor] = React.useState(null);
 
   const isOverSmViewport = useMediaQuery(theme.breakpoints.up('sm'));
   const isOverMdViewport = useMediaQuery(theme.breakpoints.up('md'));
@@ -124,6 +131,20 @@ function DashboardSidebar({
 
     return String(user.role).replace(/_/g, ' ');
   }, [user]);
+
+  const handleLogout = React.useCallback(async () => {
+    setProfileMenuAnchor(null);
+    await logout();
+    navigate('/signin');
+  }, [logout, navigate]);
+
+  const handleOpenProfileMenu = React.useCallback((event) => {
+    setProfileMenuAnchor(event.currentTarget);
+  }, []);
+
+  const handleCloseProfileMenu = React.useCallback(() => {
+    setProfileMenuAnchor(null);
+  }, []);
 
   const getDrawerContent = React.useCallback(
     (viewport) => (
@@ -231,18 +252,49 @@ function DashboardSidebar({
                 boxShadow: '0 8px 24px rgba(15, 23, 42, 0.06)',
               }}
             >
-              <Avatar
-                src={user?.profilePictureUrl ?? undefined}
-                alt={userDisplayName}
+              <Tooltip title="Profile options" placement={mini ? 'right' : 'top'}>
+                <IconButton
+                  onClick={handleOpenProfileMenu}
+                  aria-label="Open profile menu"
+                  sx={{
+                    p: 0,
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    borderRadius: '50%',
+                    flexShrink: 0,
+                  }}
+                >
+                  <Avatar
+                    src={user?.profilePictureUrl ?? undefined}
+                    alt={userDisplayName}
+                    sx={{
+                      width: mini ? 36 : 42,
+                      height: mini ? 36 : 42,
+                      bgcolor: 'primary.main',
+                      flexShrink: 0,
+                    }}
+                  >
+                    {userDisplayName.charAt(0).toUpperCase()}
+                  </Avatar>
+                </IconButton>
+              </Tooltip>
+              <Menu
+                anchorEl={profileMenuAnchor}
+                open={Boolean(profileMenuAnchor)}
+                onClose={handleCloseProfileMenu}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                transformOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                 sx={{
-                  width: mini ? 36 : 42,
-                  height: mini ? 36 : 42,
-                  bgcolor: 'primary.main',
-                  flexShrink: 0,
+                  '& .MuiPaper-root': {
+                    minWidth: 140,
+                  },
                 }}
               >
-                {userDisplayName.charAt(0).toUpperCase()}
-              </Avatar>
+                <MenuItem onClick={handleLogout}>
+                  <LogoutRoundedIcon fontSize="small" sx={{ mr: 1 }} />
+                  Logout
+                </MenuItem>
+              </Menu>
               {!mini ? (
                 <Box sx={{ minWidth: 0, flex: 1 }}>
                   <Typography
@@ -290,9 +342,13 @@ function DashboardSidebar({
       expandedItemIds,
       pathname,
       isAdmin,
+      handleLogout,
+      handleCloseProfileMenu,
+      handleOpenProfileMenu,
       user,
       userDisplayName,
       userRoleLabel,
+      profileMenuAnchor,
     ],
   );
 
