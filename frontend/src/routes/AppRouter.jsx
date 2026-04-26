@@ -18,6 +18,10 @@ import MaintenanceLogEdit from '../pages/crud-dashboard/components/MaintenanceLo
 import MaintenanceLogList from '../pages/crud-dashboard/components/MaintenanceLogList'
 import MaintenanceLogShow from '../pages/crud-dashboard/components/MaintenanceLogShow'
 import MarketingPage from '../pages/marketing-page/MarketingPage'
+import ResourceCreate from '../pages/crud-dashboard/components/ResourceCreate'
+import ResourceEdit from '../pages/crud-dashboard/components/ResourceEdit'
+import ResourceList from '../pages/crud-dashboard/components/ResourceList'
+import ResourceShow from '../pages/crud-dashboard/components/ResourceShow'
 import ResourceTypeCreate from '../pages/crud-dashboard/components/ResourceTypeCreate'
 import ResourceTypeEdit from '../pages/crud-dashboard/components/ResourceTypeEdit'
 import ResourceTypeList from '../pages/crud-dashboard/components/ResourceTypeList'
@@ -73,6 +77,10 @@ function AppRouter() {
               path="resource-types/:resourceTypeId/edit"
               element={<ResourceTypeEdit />}
             />
+            <Route path="resources" element={<ResourceList />} />
+            <Route path="resources/new" element={<ResourceCreate />} />
+            <Route path="resources/:resourceId" element={<ResourceShow />} />
+            <Route path="resources/:resourceId/edit" element={<ResourceEdit />} />
             <Route path="resource-media" element={<ResourceMediaList />} />
             <Route path="resource-media/new" element={<ResourceMediaCreate />} />
             <Route path="resource-media/:resourceMediaId" element={<ResourceMediaShow />} />

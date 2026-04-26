@@ -16,6 +16,7 @@ import ChairAltIcon from '@mui/icons-material/ChairAlt';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import BuildIcon from '@mui/icons-material/Build';
 import PermMediaIcon from '@mui/icons-material/PermMedia';
+import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 import { matchPath, useLocation } from 'react-router-dom';
 import DashboardSidebarContext from '../context/DashboardSidebarContext';
 import { DRAWER_WIDTH, MINI_DRAWER_WIDTH } from '../constants';
@@ -148,6 +149,13 @@ function DashboardSidebar({
               icon={<CategoryIcon />}
               href="/dashboard/resource-types"
               selected={!!matchPath('/dashboard/resource-types/*', pathname)}
+            />
+            <DashboardSidebarPageItem
+              id="resources"
+              title="Resources"
+              icon={<MeetingRoomIcon />}
+              href="/dashboard/resources"
+              selected={!!matchPath('/dashboard/resources/*', pathname)}
             />
             <DashboardSidebarPageItem
               id="amenities"
