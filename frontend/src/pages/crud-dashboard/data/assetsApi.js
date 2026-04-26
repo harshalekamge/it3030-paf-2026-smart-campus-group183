@@ -95,6 +95,34 @@ export async function deleteResourceMedia(resourceMediaId) {
   });
 }
 
+export async function getAvailabilityWindows() {
+  return request('/availability-windows');
+}
+
+export async function getAvailabilityWindow(availabilityWindowId) {
+  return request(`/availability-windows/${availabilityWindowId}`);
+}
+
+export async function createAvailabilityWindow(availabilityWindow) {
+  return request('/availability-windows', {
+    method: 'POST',
+    body: JSON.stringify(availabilityWindow),
+  });
+}
+
+export async function updateAvailabilityWindow(availabilityWindowId, availabilityWindow) {
+  return request(`/availability-windows/${availabilityWindowId}`, {
+    method: 'PUT',
+    body: JSON.stringify(availabilityWindow),
+  });
+}
+
+export async function deleteAvailabilityWindow(availabilityWindowId) {
+  return request(`/availability-windows/${availabilityWindowId}`, {
+    method: 'DELETE',
+  });
+}
+
 export async function getAmenities() {
   return request('/amenities');
 }

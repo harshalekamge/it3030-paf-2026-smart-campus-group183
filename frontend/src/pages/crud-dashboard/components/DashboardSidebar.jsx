@@ -13,6 +13,7 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import LayersIcon from '@mui/icons-material/Layers';
 import CategoryIcon from '@mui/icons-material/Category';
 import ChairAltIcon from '@mui/icons-material/ChairAlt';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import PermMediaIcon from '@mui/icons-material/PermMedia';
 import { matchPath, useLocation } from 'react-router-dom';
 import DashboardSidebarContext from '../context/DashboardSidebarContext';
@@ -160,6 +161,13 @@ function DashboardSidebar({
               icon={<PermMediaIcon />}
               href="/dashboard/resource-media"
               selected={!!matchPath('/dashboard/resource-media/*', pathname)}
+            />
+            <DashboardSidebarPageItem
+              id="availability-windows"
+              title="Availability Windows"
+              icon={<AccessTimeIcon />}
+              href="/dashboard/availability-windows"
+              selected={!!matchPath('/dashboard/availability-windows/*', pathname)}
             />
             <DashboardSidebarDividerItem />
             <DashboardSidebarHeaderItem>Example items</DashboardSidebarHeaderItem>

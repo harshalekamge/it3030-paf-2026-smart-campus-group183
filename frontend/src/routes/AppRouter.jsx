@@ -5,6 +5,10 @@ import AmenityCreate from '../pages/crud-dashboard/components/AmenityCreate'
 import AmenityEdit from '../pages/crud-dashboard/components/AmenityEdit'
 import AmenityList from '../pages/crud-dashboard/components/AmenityList'
 import AmenityShow from '../pages/crud-dashboard/components/AmenityShow'
+import AvailabilityWindowCreate from '../pages/crud-dashboard/components/AvailabilityWindowCreate'
+import AvailabilityWindowEdit from '../pages/crud-dashboard/components/AvailabilityWindowEdit'
+import AvailabilityWindowList from '../pages/crud-dashboard/components/AvailabilityWindowList'
+import AvailabilityWindowShow from '../pages/crud-dashboard/components/AvailabilityWindowShow'
 import EmployeeCreate from '../pages/crud-dashboard/components/EmployeeCreate'
 import EmployeeEdit from '../pages/crud-dashboard/components/EmployeeEdit'
 import EmployeeList from '../pages/crud-dashboard/components/EmployeeList'
@@ -71,6 +75,16 @@ function AppRouter() {
             <Route
               path="resource-media/:resourceMediaId/edit"
               element={<ResourceMediaEdit />}
+            />
+            <Route path="availability-windows" element={<AvailabilityWindowList />} />
+            <Route path="availability-windows/new" element={<AvailabilityWindowCreate />} />
+            <Route
+              path="availability-windows/:availabilityWindowId"
+              element={<AvailabilityWindowShow />}
+            />
+            <Route
+              path="availability-windows/:availabilityWindowId/edit"
+              element={<AvailabilityWindowEdit />}
             />
             <Route path="amenities" element={<AmenityList />} />
             <Route path="amenities/new" element={<AmenityCreate />} />
