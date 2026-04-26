@@ -67,6 +67,90 @@ export async function deleteResourceType(resourceTypeId) {
   });
 }
 
+export async function getResourceMedia() {
+  return request('/resource-media');
+}
+
+export async function getResourceMediaById(resourceMediaId) {
+  return request(`/resource-media/${resourceMediaId}`);
+}
+
+export async function createResourceMedia(resourceMedia) {
+  return request('/resource-media', {
+    method: 'POST',
+    body: JSON.stringify(resourceMedia),
+  });
+}
+
+export async function updateResourceMedia(resourceMediaId, resourceMedia) {
+  return request(`/resource-media/${resourceMediaId}`, {
+    method: 'PUT',
+    body: JSON.stringify(resourceMedia),
+  });
+}
+
+export async function deleteResourceMedia(resourceMediaId) {
+  return request(`/resource-media/${resourceMediaId}`, {
+    method: 'DELETE',
+  });
+}
+
+export async function getAvailabilityWindows() {
+  return request('/availability-windows');
+}
+
+export async function getAvailabilityWindow(availabilityWindowId) {
+  return request(`/availability-windows/${availabilityWindowId}`);
+}
+
+export async function createAvailabilityWindow(availabilityWindow) {
+  return request('/availability-windows', {
+    method: 'POST',
+    body: JSON.stringify(availabilityWindow),
+  });
+}
+
+export async function updateAvailabilityWindow(availabilityWindowId, availabilityWindow) {
+  return request(`/availability-windows/${availabilityWindowId}`, {
+    method: 'PUT',
+    body: JSON.stringify(availabilityWindow),
+  });
+}
+
+export async function deleteAvailabilityWindow(availabilityWindowId) {
+  return request(`/availability-windows/${availabilityWindowId}`, {
+    method: 'DELETE',
+  });
+}
+
+export async function getMaintenanceLogs() {
+  return request('/maintenance-logs');
+}
+
+export async function getMaintenanceLog(maintenanceLogId) {
+  return request(`/maintenance-logs/${maintenanceLogId}`);
+}
+
+export async function createMaintenanceLog(maintenanceLog) {
+  return request('/maintenance-logs', {
+    method: 'POST',
+    body: JSON.stringify(maintenanceLog),
+  });
+}
+
+export async function updateMaintenanceLog(maintenanceLogId, maintenanceLog) {
+  return request(`/maintenance-logs/${maintenanceLogId}`, {
+    method: 'PUT',
+    body: JSON.stringify(maintenanceLog),
+  });
+}
+
+export async function deleteMaintenanceLog(maintenanceLogId) {
+  return request(`/maintenance-logs/${maintenanceLogId}`, {
+    method: 'DELETE',
+  });
+}
+
 export async function getAmenities() {
   return request('/amenities');
 }

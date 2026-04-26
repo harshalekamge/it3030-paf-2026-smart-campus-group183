@@ -74,8 +74,6 @@ function DashboardSidebarPageItem({
     ? href.startsWith('http://') || href.startsWith('https://')
     : false;
 
-  const LinkComponent = hasExternalHref ? 'a' : Link;
-
   const miniNestedNavigationSidebarContextValue = React.useMemo(() => {
     return {
       onPageItemClick: onPageItemClick ?? (() => {}),
@@ -120,15 +118,18 @@ function DashboardSidebarPageItem({
             : {})}
           {...(!nestedNavigation
             ? {
-                LinkComponent,
+                onClick: handleClick,
                 ...(hasExternalHref
                   ? {
+                      component: 'a',
+                      href,
                       target: '_blank',
                       rel: 'noopener noreferrer',
                     }
-                  : {}),
-                to: href,
-                onClick: handleClick,
+                  : {
+                      component: Link,
+                      to: href,
+                    }),
               }
             : {})}
         >
