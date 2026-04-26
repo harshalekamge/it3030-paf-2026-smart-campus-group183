@@ -1,0 +1,96 @@
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080/api';
+
+async function parseResponse(response) {
+  if (response.status === 204) {
+    return null;
+  }
+
+  const contentType = response.headers.get('content-type') ?? '';
+  if (contentType.includes('application/json')) {
+    return response.json();
+  }
+
+  return response.text();
+}
+
+async function request(path, options = {}) {
+  const response = await fetch(`${API_BASE_URL}${path}`, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(options.headers ?? {}),
+    },
+    ...options,
+  });
+
+  const payload = await parseResponse(response);
+
+  if (!response.ok) {
+    const errorMessage =
+      payload?.message ||
+      payload?.error ||
+      (typeof payload === 'string' && payload) ||
+      `Request failed with status ${response.status}`;
+
+    throw new Error(errorMessage);
+  }
+
+  return payload?.data ?? payload;
+}
+
+export async function getResourceTypes() {
+  return request('/resource-types');
+}
+
+export async function getResourceType(resourceTypeId) {
+  return request(`/resource-types/${resourceTypeId}`);
+}
+
+export async function createResourceType(resourceType) {
+  return request('/resource-types', {
+    method: 'POST',
+    body: JSON.stringify(resourceType),
+  });
+}
+
+export async function updateResourceType(resourceTypeId, resourceType) {
+  return request(`/resource-types/${resourceTypeId}`, {
+    method: 'PUT',
+    body: JSON.stringify(resourceType),
+  });
+}
+
+export async function deleteResourceType(resourceTypeId) {
+  return request(`/resource-types/${resourceTypeId}`, {
+    method: 'DELETE',
+  });
+}
+
+export async function getAmenities() {
+  return request('/amenities');
+}
+
+export async function getAmenity(amenityId) {
+  return request(`/amenities/${amenityId}`);
+}
+
+export async function createAmenity(amenity) {
+  return request('/amenities', {
+    method: 'POST',
+    body: JSON.stringify(amenity),
+  });
+}
+
+export async function updateAmenity(amenityId, amenity) {
+  return request(`/amenities/${amenityId}`, {
+    method: 'PUT',
+    body: JSON.stringify(amenity),
+  });
+}
+
+export async function deleteAmenity(amenityId) {
+  return request(`/amenities/${amenityId}`, {
+    method: 'DELETE',
+  });
+}
