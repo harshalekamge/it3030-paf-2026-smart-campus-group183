@@ -28,6 +28,9 @@ import {
 import PageContainer from './PageContainer';
 
 const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const API_PUBLIC_BASE_URL = (
+  import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080/api'
+).replace(/\/api\/?$/, '');
 
 function formatDate(value) {
   return value ? dayjs(value).format('MMM D, YYYY') : 'Not set';
@@ -56,6 +59,18 @@ function formatMoney(value) {
     currency: 'USD',
     maximumFractionDigits: 2,
   }).format(numericValue);
+}
+
+function resolveMediaUrl(value) {
+  if (!value) {
+    return '';
+  }
+
+  if (/^(https?:|data:|blob:)/i.test(value)) {
+    return value;
+  }
+
+  return `${API_PUBLIC_BASE_URL}${value.startsWith('/') ? value : `/${value}`}`;
 }
 
 function getStatusTone(resource) {
@@ -164,14 +179,15 @@ function AvailabilityRow({ item }) {
     <Paper
       elevation={0}
       sx={{
-        p: 1.75,
+        p: 2,
+        height: '100%',
         borderRadius: 3,
         border: '1px solid',
         borderColor: 'divider',
         bgcolor: 'rgba(255,255,255,0.9)',
       }}
     >
-      <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
+      <Stack spacing={1.5} sx={{ height: '100%' }}>
         <Box
           sx={{
             width: 38,
@@ -199,6 +215,7 @@ function AvailabilityRow({ item }) {
           label={schedule}
           size="small"
           sx={{
+            alignSelf: 'flex-start',
             borderRadius: 2,
             fontWeight: 600,
             bgcolor: item.isClosed ? 'rgba(239, 68, 68, 0.1)' : 'rgba(15, 23, 42, 0.06)',
@@ -305,6 +322,10 @@ export default function SummaryResourceView() {
         ? { url: resource.primaryImageUrl, caption: resource.name, mediaType: 'image' }
         : filteredMedia[0]),
     [filteredMedia, resource],
+  );
+  const primaryMediaUrl = React.useMemo(
+    () => resolveMediaUrl(primaryMedia?.url),
+    [primaryMedia?.url],
   );
   const filteredWindows = React.useMemo(
     () =>
@@ -439,6 +460,26 @@ export default function SummaryResourceView() {
                 </Stack>
               </Stack>
             </Paper>
+
+            <SectionCard
+              title="Availability Snapshot"
+              subtitle="Weekly rhythm and dated overrides for this resource"
+            >
+              {filteredWindows.length ? (
+                <Grid container spacing={1.5}>
+                  {filteredWindows.slice(0, 7).map((item) => (
+                    <Grid
+                      key={item.id ?? `${item.resourceId}-${item.dayOfWeek}-${item.specificDate}`}
+                      size={{ xs: 12, sm: 6, md: 4, lg: Math.min(filteredWindows.length, 7) > 4 ? 3 : 4 }}
+                    >
+                      <AvailabilityRow item={item} />
+                    </Grid>
+                  ))}
+                </Grid>
+              ) : (
+                <EmptyState message="No availability windows are configured yet." />
+              )}
+            </SectionCard>
 
             <Grid container spacing={2.5}>
               <Grid size={{ xs: 12, lg: 7 }}>
@@ -592,7 +633,7 @@ export default function SummaryResourceView() {
                             label="Primary Image URL"
                             value={
                               primaryMedia?.url ? (
-                                <Link href={primaryMedia.url} target="_blank" rel="noreferrer">
+                                <Link href={primaryMediaUrl} target="_blank" rel="noreferrer">
                                   Open media
                                 </Link>
                               ) : (
@@ -741,12 +782,12 @@ export default function SummaryResourceView() {
                           justifyContent: 'center',
                         }}
                       >
-                        {primaryMedia?.url ? (
+                        {primaryMediaUrl ? (
                           <Box
                             component="img"
-                            src={primaryMedia.url}
+                            src={primaryMediaUrl}
                             alt={primaryMedia.caption || resource.name}
-                            sx={{ width: '100%', objectFit: 'cover' }}
+                            sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
                           />
                         ) : (
                           <Stack
@@ -881,27 +922,6 @@ export default function SummaryResourceView() {
                       </Stack>
                     ) : (
                       <EmptyState message="No amenities are assigned to this resource yet." />
-                    )}
-                  </SectionCard>
-
-                  <SectionCard
-                    title="Availability Snapshot"
-                    subtitle="Weekly rhythm and dated overrides for this resource"
-                  >
-                    {filteredWindows.length ? (
-                      <Stack spacing={1.2}>
-                        {filteredWindows.slice(0, 7).map((item) => (
-                          <AvailabilityRow
-                            key={
-                              item.id ??
-                              `${item.resourceId}-${item.dayOfWeek}-${item.specificDate}`
-                            }
-                            item={item}
-                          />
-                        ))}
-                      </Stack>
-                    ) : (
-                      <EmptyState message="No availability windows are configured yet." />
                     )}
                   </SectionCard>
                 </Stack>
