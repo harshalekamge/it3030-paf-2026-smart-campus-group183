@@ -71,6 +71,24 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.failure(exception.getMessage(), null));
     }
 
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleUserNotFound(UserNotFoundException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ApiResponse.failure(exception.getMessage(), null));
+    }
+
+    @ExceptionHandler(RoleAssignmentNotAllowedException.class)
+    public ResponseEntity<ApiResponse<Void>> handleRoleAssignmentNotAllowed(RoleAssignmentNotAllowedException exception) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(ApiResponse.failure(exception.getMessage(), null));
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ApiResponse<Void>> handleAccessDenied(AccessDeniedException exception) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(ApiResponse.failure("Access denied", null));
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Map<String, String>>> handleValidation(MethodArgumentNotValidException exception) {
         Map<String, String> errors = new HashMap<>();
