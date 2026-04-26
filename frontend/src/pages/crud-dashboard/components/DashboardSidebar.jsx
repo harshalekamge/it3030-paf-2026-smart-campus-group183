@@ -11,6 +11,8 @@ import PersonIcon from '@mui/icons-material/Person';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import DescriptionIcon from '@mui/icons-material/Description';
 import LayersIcon from '@mui/icons-material/Layers';
+import CategoryIcon from '@mui/icons-material/Category';
+import ChairAltIcon from '@mui/icons-material/ChairAlt';
 import { matchPath, useLocation } from 'react-router-dom';
 import DashboardSidebarContext from '../context/DashboardSidebarContext';
 import { DRAWER_WIDTH, MINI_DRAWER_WIDTH } from '../constants';
@@ -136,6 +138,20 @@ function DashboardSidebar({
                 !!matchPath('/dashboard/employees/*', pathname) ||
                 pathname === '/dashboard'
               }
+            />
+            <DashboardSidebarPageItem
+              id="resource-types"
+              title="Resource Types"
+              icon={<CategoryIcon />}
+              href="/dashboard/resource-types"
+              selected={!!matchPath('/dashboard/resource-types/*', pathname)}
+            />
+            <DashboardSidebarPageItem
+              id="amenities"
+              title="Amenities"
+              icon={<ChairAltIcon />}
+              href="/dashboard/amenities"
+              selected={!!matchPath('/dashboard/amenities/*', pathname)}
             />
             <DashboardSidebarDividerItem />
             <DashboardSidebarHeaderItem>Example items</DashboardSidebarHeaderItem>
