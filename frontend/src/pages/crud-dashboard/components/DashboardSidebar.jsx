@@ -17,7 +17,9 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import BuildIcon from '@mui/icons-material/Build';
 import PermMediaIcon from '@mui/icons-material/PermMedia';
 import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import { matchPath, useLocation } from 'react-router-dom';
+import { useAuth } from '../../../auth/AuthContext';
 import DashboardSidebarContext from '../context/DashboardSidebarContext';
 import { DRAWER_WIDTH, MINI_DRAWER_WIDTH } from '../constants';
 import DashboardSidebarPageItem from './DashboardSidebarPageItem';
@@ -35,6 +37,7 @@ function DashboardSidebar({
   container,
 }) {
   const theme = useTheme();
+  const { isAdmin } = useAuth();
 
   const { pathname } = useLocation();
 
@@ -143,6 +146,15 @@ function DashboardSidebar({
                 pathname === '/dashboard'
               }
             />
+            {isAdmin ? (
+              <DashboardSidebarPageItem
+                id="users"
+                title="User Management"
+                icon={<AdminPanelSettingsIcon />}
+                href="/dashboard/users"
+                selected={!!matchPath('/dashboard/users/*', pathname)}
+              />
+            ) : null}
             <DashboardSidebarPageItem
               id="resource-types"
               title="Resource Types"

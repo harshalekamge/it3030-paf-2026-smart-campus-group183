@@ -1,5 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AuthProvider } from '../auth/AuthContext'
+import AdminOnlyRoute from './AdminOnlyRoute'
 import CrudDashboard from '../pages/crud-dashboard/CrudDashboard'
 import AmenityCreate from '../pages/crud-dashboard/components/AmenityCreate'
 import AmenityEdit from '../pages/crud-dashboard/components/AmenityEdit'
@@ -31,6 +32,10 @@ import ResourceMediaEdit from '../pages/crud-dashboard/components/ResourceMediaE
 import ResourceMediaList from '../pages/crud-dashboard/components/ResourceMediaList'
 import ResourceMediaShow from '../pages/crud-dashboard/components/ResourceMediaShow'
 import SummaryResourceView from '../pages/crud-dashboard/components/SummaryResourceView'
+import UserCreate from '../pages/crud-dashboard/components/UserCreate'
+import UserEdit from '../pages/crud-dashboard/components/UserEdit'
+import UserList from '../pages/crud-dashboard/components/UserList'
+import UserShow from '../pages/crud-dashboard/components/UserShow'
 import SignInSide from '../pages/sign-in-side/SignInSide'
 import SignUp from '../pages/sign-up/SignUp'
 import ProtectedRoute from './ProtectedRoute'
@@ -71,6 +76,38 @@ function AppRouter() {
             <Route path="employees/new" element={<EmployeeCreate />} />
             <Route path="employees/:employeeId" element={<EmployeeShow />} />
             <Route path="employees/:employeeId/edit" element={<EmployeeEdit />} />
+            <Route
+              path="users"
+              element={
+                <AdminOnlyRoute>
+                  <UserList />
+                </AdminOnlyRoute>
+              }
+            />
+            <Route
+              path="users/new"
+              element={
+                <AdminOnlyRoute>
+                  <UserCreate />
+                </AdminOnlyRoute>
+              }
+            />
+            <Route
+              path="users/:userId"
+              element={
+                <AdminOnlyRoute>
+                  <UserShow />
+                </AdminOnlyRoute>
+              }
+            />
+            <Route
+              path="users/:userId/edit"
+              element={
+                <AdminOnlyRoute>
+                  <UserEdit />
+                </AdminOnlyRoute>
+              }
+            />
             <Route path="resource-types" element={<ResourceTypeList />} />
             <Route path="resource-types/new" element={<ResourceTypeCreate />} />
             <Route path="resource-types/:resourceTypeId" element={<ResourceTypeShow />} />

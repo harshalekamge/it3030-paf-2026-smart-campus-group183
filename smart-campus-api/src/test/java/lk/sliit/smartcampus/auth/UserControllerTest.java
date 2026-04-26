@@ -2,6 +2,7 @@ package lk.sliit.smartcampus.auth;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lk.sliit.smartcampus.auth.controller.UserController;
+import lk.sliit.smartcampus.auth.dto.UserRequestDto;
 import lk.sliit.smartcampus.auth.dto.UserResponseDto;
 import lk.sliit.smartcampus.auth.enums.Role;
 import lk.sliit.smartcampus.auth.service.JwtService;
@@ -23,9 +24,11 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.oauth2Login;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -73,7 +76,7 @@ class UserControllerTest {
     @Test
     void shouldUseOauthEmailClaimForCurrentUser() throws Exception {
         when(userService.getCurrentUser("student@sliit.lk"))
-                .thenReturn(new UserResponseDto(1L, "student@sliit.lk", "Smart", "Student", "Smart Student", null, Role.STUDENT, true));
+                .thenReturn(new UserResponseDto(1L, null, "student@sliit.lk", "Smart", "Student", "Smart Student", null, Role.STUDENT, true, "GOOGLE", null, null, null));
 
         mockMvc.perform(get("/users/me")
                         .with(oauth2Login().attributes(attributes -> {
@@ -89,7 +92,7 @@ class UserControllerTest {
     @WithMockUser(username = "admin@sliit.lk", roles = "ADMIN")
     void shouldAllowAdminToUpdateRoles() throws Exception {
         when(userService.updateUserRole(eq(1L), eq(Role.LECTURER), eq("admin@sliit.lk")))
-                .thenReturn(new UserResponseDto(1L, "user@sliit.lk", "A", "B", "A B", null, Role.LECTURER, true));
+                .thenReturn(new UserResponseDto(1L, null, "user@sliit.lk", "A", "B", "A B", null, Role.LECTURER, true, "GOOGLE", null, null, null));
 
         mockMvc.perform(patch("/users/1/role")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -112,7 +115,7 @@ class UserControllerTest {
     @WithMockUser(username = "super@sliit.lk", roles = "SUPER_ADMIN")
     void shouldAllowSuperAdminToUpdateRoles() throws Exception {
         when(userService.updateUserRole(eq(1L), eq(Role.LECTURER), eq("super@sliit.lk")))
-                .thenReturn(new UserResponseDto(1L, "user@sliit.lk", "A", "B", "A B", null, Role.LECTURER, true));
+                .thenReturn(new UserResponseDto(1L, null, "user@sliit.lk", "A", "B", "A B", null, Role.LECTURER, true, "GOOGLE", null, null, null));
 
         mockMvc.perform(patch("/users/1/role")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -120,5 +123,30 @@ class UserControllerTest {
                 .andExpect(status().isOk());
 
         verify(userService).updateUserRole(1L, Role.LECTURER, "super@sliit.lk");
+    }
+
+    @Test
+    @WithMockUser(username = "admin@sliit.lk", roles = "ADMIN")
+    void shouldAllowAdminToCreateUser() throws Exception {
+        UserRequestDto requestDto = new UserRequestDto();
+        requestDto.setEmail("new.user@sliit.lk");
+        requestDto.setRole(Role.STUDENT);
+        requestDto.setIsActive(true);
+        requestDto.setProvider("GOOGLE");
+
+        when(userService.createUser(any(UserRequestDto.class), eq("admin@sliit.lk")))
+                .thenReturn(new UserResponseDto(2L, null, "new.user@sliit.lk", null, null, null, null, Role.STUDENT, true, "GOOGLE", null, null, null));
+
+        mockMvc.perform(post("/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(requestDto)))
+                .andExpect(status().isCreated());
+    }
+
+    @Test
+    @WithMockUser(username = "staff@sliit.lk", roles = "STAFF")
+    void shouldBlockStaffFromViewingUsers() throws Exception {
+        mockMvc.perform(get("/users"))
+                .andExpect(status().isForbidden());
     }
 }

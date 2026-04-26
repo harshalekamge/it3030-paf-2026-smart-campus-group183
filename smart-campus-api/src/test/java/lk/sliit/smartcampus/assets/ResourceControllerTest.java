@@ -8,16 +8,19 @@ import lk.sliit.smartcampus.assets.dto.ResourceDto;
 import lk.sliit.smartcampus.assets.dto.ResourceRequestDto;
 import lk.sliit.smartcampus.assets.service.ResourceService;
 import lk.sliit.smartcampus.common.exception.GlobalExceptionHandler;
+import lk.sliit.smartcampus.common.web.WebCacheService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.CacheControl;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -38,8 +41,15 @@ class ResourceControllerTest {
     @MockBean
     private ResourceService resourceService;
 
+    @MockBean
+    private WebCacheService webCacheService;
+
     @Test
     void getAllResourcesShouldReturnWrappedResponse() throws Exception {
+        when(webCacheService.buildEtag(any())).thenReturn("\"resources-etag\"");
+        when(webCacheService.isNotModified(any(), any())).thenReturn(false);
+        when(webCacheService.privateCachePolicy(anyLong())).thenReturn(CacheControl.noCache());
+
         when(resourceService.getAllResources()).thenReturn(List.of(
                 new ResourceDto(
                         1, 2, null, "Main Hall", "HALL-01", null, List.of("event"),
