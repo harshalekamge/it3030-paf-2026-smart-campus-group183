@@ -164,57 +164,98 @@ function AvailabilityRow({ item }) {
     <Paper
       elevation={0}
       sx={{
-        p: 1.75,
+        p: 1.5,
         height: '100%',
         borderRadius: 3,
         border: '1px solid',
-        borderColor: 'divider',
-        bgcolor: 'rgba(255,255,255,0.9)',
-        boxShadow: '0 10px 24px rgba(15, 23, 42, 0.04)',
+        borderColor: item.isClosed ? 'rgba(248, 113, 113, 0.3)' : 'rgba(96, 165, 250, 0.28)',
+        background: item.isClosed
+          ? 'linear-gradient(180deg, rgba(255, 250, 250, 0.98) 0%, rgba(254, 242, 242, 0.96) 100%)'
+          : 'linear-gradient(180deg, rgba(248, 252, 255, 0.98) 0%, rgba(239, 246, 255, 0.96) 100%)',
+        boxShadow: '0 12px 26px rgba(15, 23, 42, 0.05)',
       }}
     >
       <Stack spacing={1.25} sx={{ height: '100%', justifyContent: 'space-between' }}>
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{ alignItems: 'flex-start', justifyContent: 'space-between', minWidth: 0 }}
+        >
+          <Stack direction="row" spacing={1.25} sx={{ alignItems: 'center', minWidth: 0, flex: 1 }}>
+            <Box
+              sx={{
+                width: 38,
+                height: 38,
+                borderRadius: '50%',
+                display: 'grid',
+                placeItems: 'center',
+                bgcolor: item.isClosed ? 'rgba(239, 68, 68, 0.1)' : 'rgba(37, 99, 235, 0.1)',
+                color: item.isClosed ? '#b91c1c' : 'primary.main',
+                fontWeight: 700,
+                fontSize: 13,
+                flexShrink: 0,
+              }}
+            >
+              {String(label).slice(0, 3)}
+            </Box>
+            <Box sx={{ flex: 1, minWidth: 0 }}>
+              <Typography variant="body2" sx={{ fontWeight: 700 }}>
+                {label}
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                {item.specificDate ? 'Date override' : 'Weekly schedule'}
+              </Typography>
+            </Box>
+          </Stack>
+          <Chip
+            label={item.isClosed ? 'Closed' : 'Open'}
+            size="small"
+            sx={{
+              height: 24,
+              borderRadius: 999,
+              bgcolor: item.isClosed ? 'rgba(239, 68, 68, 0.12)' : 'rgba(34, 197, 94, 0.12)',
+              color: item.isClosed ? '#b91c1c' : '#15803d',
+              fontWeight: 700,
+              flexShrink: 0,
+            }}
+          />
+        </Stack>
+        <Box
+          sx={{
+            px: 1.25,
+            py: 1,
+            borderRadius: 2.5,
+            bgcolor: 'rgba(255,255,255,0.72)',
+            border: '1px solid rgba(148, 163, 184, 0.18)',
+          }}
+        >
+          <Typography variant="caption" sx={{ display: 'block', color: 'text.secondary', mb: 0.25 }}>
+            Hours
+          </Typography>
+          <Typography variant="body2" sx={{ fontWeight: 700 }}>
+            {schedule}
+          </Typography>
+        </Box>
         <Stack direction="row" spacing={1.25} sx={{ alignItems: 'center', minWidth: 0 }}>
           <Box
             sx={{
-              width: 40,
-              height: 40,
+              width: 8,
+              height: 8,
               borderRadius: '50%',
-              display: 'grid',
-              placeItems: 'center',
-              bgcolor: 'rgba(37, 99, 235, 0.08)',
-              color: 'primary.main',
-              fontWeight: 700,
-              fontSize: 13,
+              bgcolor: item.isClosed ? '#ef4444' : '#22c55e',
               flexShrink: 0,
             }}
-          >
-            {String(label).slice(0, 3)}
-          </Box>
+          />
           <Box sx={{ flex: 1, minWidth: 0 }}>
-            <Typography variant="body2" sx={{ fontWeight: 700 }}>
-              {label}
-            </Typography>
             <Typography
-              variant="body2"
+              variant="caption"
               color="text.secondary"
-              sx={{ lineHeight: 1.3, overflowWrap: 'anywhere' }}
+              sx={{ display: 'block', lineHeight: 1.4, overflowWrap: 'anywhere' }}
             >
               {note}
             </Typography>
           </Box>
         </Stack>
-        <Chip
-          label={schedule}
-          size="small"
-          sx={{
-            alignSelf: 'flex-start',
-            borderRadius: 2,
-            fontWeight: 600,
-            bgcolor: item.isClosed ? 'rgba(239, 68, 68, 0.1)' : 'rgba(15, 23, 42, 0.06)',
-            color: item.isClosed ? '#b91c1c' : 'text.primary',
-          }}
-        />
       </Stack>
     </Paper>
   );
@@ -355,6 +396,14 @@ export default function SummaryResourceView() {
         .map((item) => amenityLookup.get(item.amenityId))
         .filter(Boolean),
     [amenityLookup, resourceId, state.resourceAmenities],
+  );
+  const openWindowCount = React.useMemo(
+    () => filteredWindows.filter((item) => !item.isClosed).length,
+    [filteredWindows],
+  );
+  const closedWindowCount = React.useMemo(
+    () => filteredWindows.filter((item) => item.isClosed).length,
+    [filteredWindows],
   );
 
   return (
@@ -550,16 +599,54 @@ export default function SummaryResourceView() {
                   <Grid container spacing={2.5}>
                     <Grid size={{ xs: 12, md: 6 }}>
                       <SectionCard
-                        title="Accessibility"
-                        subtitle="Access notes and operational support details"
-                        sx={{ height: '100%' }}
+                        title="Maintenance Pulse"
+                        subtitle="Latest service activity linked to this resource"
+                        sx={{ minHeight: { xs: 'auto', lg: 220 }, height: '100%' }}
                       >
-                        <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                          Notes
-                        </Typography>
-                        <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap' }}>
-                          {resource.accessibilityNotes || 'No accessibility notes.'}
-                        </Typography>
+                        {filteredMaintenance.length ? (
+                          <Stack spacing={1.5}>
+                            {filteredMaintenance.slice(0, 3).map((item) => (
+                              <Paper
+                                key={item.id}
+                                elevation={0}
+                                sx={{
+                                  p: 2,
+                                  borderRadius: 3,
+                                  border: '1px solid',
+                                  borderColor: 'divider',
+                                }}
+                              >
+                                <Stack spacing={0.5}>
+                                  <Stack
+                                    direction="row"
+                                    spacing={1}
+                                    sx={{ justifyContent: 'space-between', alignItems: 'center' }}
+                                  >
+                                    <Typography variant="body1" sx={{ fontWeight: 700 }}>
+                                      {item.category || 'Maintenance'}
+                                    </Typography>
+                                    <Chip
+                                      label={item.newStatus || 'No status'}
+                                      size="small"
+                                      variant="outlined"
+                                    />
+                                  </Stack>
+                                  <Typography variant="body2" color="text.secondary">
+                                    {item.description || 'No maintenance description provided.'}
+                                  </Typography>
+                                  <Typography variant="caption" color="text.secondary">
+                                    Started {formatDateTime(item.startedAt)}
+                                    {item.resolvedAt
+                                      ? ` - Resolved ${formatDateTime(item.resolvedAt)}`
+                                      : ''}
+                                  </Typography>
+                                </Stack>
+                              </Paper>
+                            ))}
+                          </Stack>
+                        ) : (
+                          <EmptyState message="No maintenance logs are linked to this resource." />
+                        )}
                       </SectionCard>
                     </Grid>
                     <Grid size={{ xs: 12, md: 6 }}>
@@ -627,54 +714,16 @@ export default function SummaryResourceView() {
                     </Grid>
                     <Grid size={{ xs: 12, md: 6 }}>
                       <SectionCard
-                        title="Maintenance Pulse"
-                        subtitle="Latest service activity linked to this resource"
-                        sx={{ minHeight: { xs: 'auto', lg: 220 }, height: '100%' }}
+                        title="Accessibility"
+                        subtitle="Access notes and operational support details"
+                        sx={{ height: '100%' }}
                       >
-                        {filteredMaintenance.length ? (
-                          <Stack spacing={1.5}>
-                            {filteredMaintenance.slice(0, 3).map((item) => (
-                              <Paper
-                                key={item.id}
-                                elevation={0}
-                                sx={{
-                                  p: 2,
-                                  borderRadius: 3,
-                                  border: '1px solid',
-                                  borderColor: 'divider',
-                                }}
-                              >
-                                <Stack spacing={0.5}>
-                                  <Stack
-                                    direction="row"
-                                    spacing={1}
-                                    sx={{ justifyContent: 'space-between', alignItems: 'center' }}
-                                  >
-                                    <Typography variant="body1" sx={{ fontWeight: 700 }}>
-                                      {item.category || 'Maintenance'}
-                                    </Typography>
-                                    <Chip
-                                      label={item.newStatus || 'No status'}
-                                      size="small"
-                                      variant="outlined"
-                                    />
-                                  </Stack>
-                                  <Typography variant="body2" color="text.secondary">
-                                    {item.description || 'No maintenance description provided.'}
-                                  </Typography>
-                                  <Typography variant="caption" color="text.secondary">
-                                    Started {formatDateTime(item.startedAt)}
-                                    {item.resolvedAt
-                                      ? ` - Resolved ${formatDateTime(item.resolvedAt)}`
-                                      : ''}
-                                  </Typography>
-                                </Stack>
-                              </Paper>
-                            ))}
-                          </Stack>
-                        ) : (
-                          <EmptyState message="No maintenance logs are linked to this resource." />
-                        )}
+                        <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                          Notes
+                        </Typography>
+                        <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap' }}>
+                          {resource.accessibilityNotes || 'No accessibility notes.'}
+                        </Typography>
                       </SectionCard>
                     </Grid>
                   </Grid>
@@ -905,52 +954,67 @@ export default function SummaryResourceView() {
             >
               {filteredWindows.length ? (
                 <Stack spacing={1.75}>
-                  <Stack
-                    direction={{ xs: 'column', md: 'row' }}
-                    spacing={1}
-                    sx={{ justifyContent: 'space-between', alignItems: { md: 'center' } }}
+                  <Box
+                    sx={{
+                      p: 1.75,
+                      borderRadius: 3,
+                      background:
+                        'linear-gradient(135deg, rgba(239,246,255,0.95) 0%, rgba(248,250,252,0.96) 100%)',
+                      border: '1px solid rgba(147, 197, 253, 0.25)',
+                    }}
                   >
-                    <Typography variant="body2" color="text.secondary">
-                      {filteredWindows.length} configured window
-                      {filteredWindows.length === 1 ? '' : 's'} across the weekly schedule.
-                    </Typography>
-                    <Stack direction="row" spacing={1} useFlexGap sx={{ flexWrap: 'wrap' }}>
-                      <Chip
-                        label={`${filteredWindows.filter((item) => !item.isClosed).length} Open`}
-                        size="small"
-                        sx={{
-                          borderRadius: 999,
-                          bgcolor: 'rgba(34, 197, 94, 0.12)',
-                          color: '#15803d',
-                          fontWeight: 700,
-                        }}
-                      />
-                      <Chip
-                        label={`${filteredWindows.filter((item) => item.isClosed).length} Closed`}
-                        size="small"
-                        sx={{
-                          borderRadius: 999,
-                          bgcolor: 'rgba(239, 68, 68, 0.1)',
-                          color: '#b91c1c',
-                          fontWeight: 700,
-                        }}
-                      />
+                    <Stack
+                      direction={{ xs: 'column', sm: 'row' }}
+                      spacing={1.25}
+                      sx={{ justifyContent: 'space-between', alignItems: { sm: 'center' } }}
+                    >
+                      <Box>
+                        <Typography variant="body2" sx={{ fontWeight: 700 }}>
+                          {filteredWindows.length} configured window
+                          {filteredWindows.length === 1 ? '' : 's'}
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary">
+                          Showing the first {Math.min(filteredWindows.length, 6)} entries in this snapshot.
+                        </Typography>
+                      </Box>
+                      <Stack direction="row" spacing={1} useFlexGap sx={{ flexWrap: 'wrap' }}>
+                        <Chip
+                          label={`${openWindowCount} Open`}
+                          size="small"
+                          sx={{
+                            borderRadius: 999,
+                            bgcolor: 'rgba(34, 197, 94, 0.12)',
+                            color: '#15803d',
+                            fontWeight: 700,
+                          }}
+                        />
+                        <Chip
+                          label={`${closedWindowCount} Closed`}
+                          size="small"
+                          sx={{
+                            borderRadius: 999,
+                            bgcolor: 'rgba(239, 68, 68, 0.1)',
+                            color: '#b91c1c',
+                            fontWeight: 700,
+                          }}
+                        />
+                      </Stack>
                     </Stack>
-                  </Stack>
+                  </Box>
                   <Box
                     sx={{
                       display: 'grid',
-                      gap: 1.5,
+                      gap: 1.25,
                       gridTemplateColumns: {
                         xs: '1fr',
                         sm: 'repeat(2, minmax(0, 1fr))',
                         md: 'repeat(3, minmax(0, 1fr))',
-                        lg: 'repeat(7, minmax(0, 1fr))',
+                        lg: 'repeat(6, minmax(0, 1fr))',
                       },
                       alignItems: 'stretch',
                     }}
                   >
-                    {filteredWindows.slice(0, 7).map((item) => (
+                    {filteredWindows.slice(0, 6).map((item) => (
                       <Box
                         key={item.id ?? `${item.resourceId}-${item.dayOfWeek}-${item.specificDate}`}
                       >
