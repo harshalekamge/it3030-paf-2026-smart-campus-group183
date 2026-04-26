@@ -9,6 +9,7 @@ import lk.sliit.smartcampus.auth.service.OAuthUserService;
 import lk.sliit.smartcampus.auth.service.OidcUserService;
 import lk.sliit.smartcampus.auth.service.UserService;
 import lk.sliit.smartcampus.config.AuthCookieService;
+import lk.sliit.smartcampus.config.HttpCookieOAuth2AuthorizationRequestRepository;
 import lk.sliit.smartcampus.config.OAuth2FailureHandler;
 import lk.sliit.smartcampus.config.OAuth2SuccessHandler;
 import lk.sliit.smartcampus.config.SecurityConfig;
@@ -59,6 +60,9 @@ class UserControllerTest {
 
     @MockitoBean
     private AuthCookieService authCookieService;
+
+    @MockitoBean
+    private HttpCookieOAuth2AuthorizationRequestRepository authorizationRequestRepository;
 
     @Test
     void shouldRequireAuthenticationForCurrentUser() throws Exception {

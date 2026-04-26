@@ -22,15 +22,18 @@ public class SecurityConfig {
     private final OidcUserService oidcUserService;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
     private final OAuth2FailureHandler oAuth2FailureHandler;
+    private final HttpCookieOAuth2AuthorizationRequestRepository authorizationRequestRepository;
 
     public SecurityConfig(OAuthUserService oAuthUserService,
                           OidcUserService oidcUserService,
                           OAuth2SuccessHandler oAuth2SuccessHandler,
-                          OAuth2FailureHandler oAuth2FailureHandler) {
+                          OAuth2FailureHandler oAuth2FailureHandler,
+                          HttpCookieOAuth2AuthorizationRequestRepository authorizationRequestRepository) {
         this.oAuthUserService = oAuthUserService;
         this.oidcUserService = oidcUserService;
         this.oAuth2SuccessHandler = oAuth2SuccessHandler;
         this.oAuth2FailureHandler = oAuth2FailureHandler;
+        this.authorizationRequestRepository = authorizationRequestRepository;
     }
 
     @Bean
@@ -46,13 +49,14 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(exceptions ->
                         exceptions.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                         .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/hello",
                                 "/auth-demo.html",
+                                "/client-scripts/**",
                                 "/oauth2/**",
                                 "/login/**",
                                 "/auth/**",
@@ -73,6 +77,8 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth -> oauth
+                        .authorizationEndpoint(authorization -> authorization
+                                .authorizationRequestRepository(authorizationRequestRepository))
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(oAuthUserService)
                                 .oidcUserService(oidcUserService))

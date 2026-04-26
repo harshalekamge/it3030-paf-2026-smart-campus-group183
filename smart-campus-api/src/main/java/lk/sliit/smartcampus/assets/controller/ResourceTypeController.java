@@ -8,10 +8,12 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lk.sliit.smartcampus.assets.dto.ResourceTypeDto;
 import lk.sliit.smartcampus.assets.dto.ResourceTypeRequestDto;
 import lk.sliit.smartcampus.assets.service.ResourceTypeService;
 import jakarta.validation.Valid;
+import lk.sliit.smartcampus.common.web.WebCacheService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,10 +30,14 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Resource Types", description = "CRUD APIs for assets resource type management")
 public class ResourceTypeController {
 
-    private final ResourceTypeService resourceTypeService;
+    private static final long CACHE_MAX_AGE_SECONDS = 300;
 
-    public ResourceTypeController(ResourceTypeService resourceTypeService) {
+    private final ResourceTypeService resourceTypeService;
+    private final WebCacheService webCacheService;
+
+    public ResourceTypeController(ResourceTypeService resourceTypeService, WebCacheService webCacheService) {
         this.resourceTypeService = resourceTypeService;
+        this.webCacheService = webCacheService;
     }
 
     @PostMapping
@@ -54,13 +60,28 @@ public class ResourceTypeController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Resource types retrieved successfully")
     })
-    public ResponseEntity<lk.sliit.smartcampus.common.response.ApiResponse<List<ResourceTypeDto>>> getAllResourceTypes() {
-        return ResponseEntity.ok(
-                lk.sliit.smartcampus.common.response.ApiResponse.success(
-                        "Resource types retrieved successfully",
-                        resourceTypeService.getAllResourceTypes()
-                )
-        );
+    public ResponseEntity<lk.sliit.smartcampus.common.response.ApiResponse<List<ResourceTypeDto>>> getAllResourceTypes(
+            HttpServletRequest request
+    ) {
+        List<ResourceTypeDto> resourceTypes = resourceTypeService.getAllResourceTypes();
+        String etag = webCacheService.buildEtag(resourceTypes);
+
+        if (webCacheService.isNotModified(request, etag)) {
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED)
+                    .cacheControl(webCacheService.privateCachePolicy(CACHE_MAX_AGE_SECONDS))
+                    .eTag(etag)
+                    .build();
+        }
+
+        return ResponseEntity.ok()
+                .cacheControl(webCacheService.privateCachePolicy(CACHE_MAX_AGE_SECONDS))
+                .eTag(etag)
+                .body(
+                        lk.sliit.smartcampus.common.response.ApiResponse.success(
+                                "Resource types retrieved successfully",
+                                resourceTypes
+                        )
+                );
     }
 
     @GetMapping("/{id}")
@@ -71,14 +92,28 @@ public class ResourceTypeController {
     })
     public ResponseEntity<lk.sliit.smartcampus.common.response.ApiResponse<ResourceTypeDto>> getResourceTypeById(
             @Parameter(description = "Resource type id", example = "1")
-            @PathVariable Integer id
+            @PathVariable Integer id,
+            HttpServletRequest request
     ) {
-        return ResponseEntity.ok(
-                lk.sliit.smartcampus.common.response.ApiResponse.success(
-                        "Resource type retrieved successfully",
-                        resourceTypeService.getResourceTypeById(id)
-                )
-        );
+        ResourceTypeDto resourceType = resourceTypeService.getResourceTypeById(id);
+        String etag = webCacheService.buildEtag(resourceType);
+
+        if (webCacheService.isNotModified(request, etag)) {
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED)
+                    .cacheControl(webCacheService.privateCachePolicy(CACHE_MAX_AGE_SECONDS))
+                    .eTag(etag)
+                    .build();
+        }
+
+        return ResponseEntity.ok()
+                .cacheControl(webCacheService.privateCachePolicy(CACHE_MAX_AGE_SECONDS))
+                .eTag(etag)
+                .body(
+                        lk.sliit.smartcampus.common.response.ApiResponse.success(
+                                "Resource type retrieved successfully",
+                                resourceType
+                        )
+                );
     }
 
     @PutMapping("/{id}")

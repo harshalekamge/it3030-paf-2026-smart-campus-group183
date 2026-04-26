@@ -21,16 +21,19 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     private final JwtService jwtService;
     private final UserService userService;
     private final AuthCookieService authCookieService;
+    private final HttpCookieOAuth2AuthorizationRequestRepository authorizationRequestRepository;
 
     @Value("${app.frontend.url}")
     private String frontendUrl;
 
     public OAuth2SuccessHandler(JwtService jwtService,
                                 UserService userService,
-                                AuthCookieService authCookieService) {
+                                AuthCookieService authCookieService,
+                                HttpCookieOAuth2AuthorizationRequestRepository authorizationRequestRepository) {
         this.jwtService = jwtService;
         this.userService = userService;
         this.authCookieService = authCookieService;
+        this.authorizationRequestRepository = authorizationRequestRepository;
     }
 
     @Override
@@ -46,6 +49,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         response.addHeader(HttpHeaders.SET_COOKIE,
                 authCookieService.buildTokenCookie(token, request.isSecure()).toString());
+        authorizationRequestRepository.clearAuthorizationRequestCookies(request, response);
 
         String redirectUrl = frontendUrl + "/auth-demo.html?oauth=success";
         getRedirectStrategy().sendRedirect(request, response, redirectUrl);
