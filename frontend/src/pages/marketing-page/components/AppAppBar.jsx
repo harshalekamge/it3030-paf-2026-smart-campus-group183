@@ -13,6 +13,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import { Link as RouterLink } from 'react-router-dom';
 import { useColorScheme } from '@mui/material/styles';
+import Typography from '@mui/material/Typography';
 import ColorModeIconDropdown from '../../shared-theme/ColorModeIconDropdown';
 import Sitemark from './SitemarkIcon';
 
@@ -20,7 +21,6 @@ const navigationItems = [
   { label: 'Features', href: '#features' },
   { label: 'Testimonials', href: '#testimonials' },
   { label: 'Highlights', href: '#highlights' },
-  { label: 'Pricing', href: '#pricing' },
   { label: 'FAQ', href: '#faq' },
 ];
 
@@ -64,7 +64,7 @@ export default function AppAppBar() {
   React.useEffect(() => {
     const updateOverlap = () => {
       const appBar = appBarRef.current;
-      const overlapTargets = ['highlights', 'pricing']
+      const overlapTargets = ['highlights']
         .map((id) => document.getElementById(id))
         .filter(Boolean);
 
@@ -109,13 +109,38 @@ export default function AppAppBar() {
         <StyledToolbar variant="dense" disableGutters darkSurface={useDarkSurface}>
           <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
             <Box
+              component="a"
+              href="http://localhost:5173/"
               sx={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 1.5,
+                flexShrink: 0,
+                textDecoration: 'none',
                 color: useDarkSurface ? 'common.white' : 'inherit',
               }}
             >
-              <Sitemark />
+              <Sitemark iconOnly />
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: 700,
+                  letterSpacing: '-0.02em',
+                  lineHeight: 1,
+                  color: useDarkSurface ? 'common.white' : 'primary.main',
+                }}
+              >
+                UniFlow
+              </Typography>
             </Box>
-            <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+            <Box
+              sx={{
+                display: { xs: 'none', md: 'flex' },
+                alignItems: 'center',
+                gap: 0.5,
+                pl: 3,
+              }}
+            >
               {navigationItems.map((item) => (
                 <Button
                   key={item.href}
@@ -126,6 +151,11 @@ export default function AppAppBar() {
                   href={item.href}
                   sx={{
                     minWidth: 0,
+                    px: 1.5,
+                    py: 0.75,
+                    lineHeight: 1,
+                    fontWeight: 700,
+                    letterSpacing: '-0.01em',
                     color: useDarkSurface ? 'grey.100' : undefined,
                   }}
                 >

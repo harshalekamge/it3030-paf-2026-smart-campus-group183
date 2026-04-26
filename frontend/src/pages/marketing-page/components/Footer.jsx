@@ -22,7 +22,7 @@ function Copyright() {
           color: 'text.secondary',
         }}
       >
-        Sitemark
+        UniFlow
       </Link>
       {new Date().getFullYear()}
     </Typography>

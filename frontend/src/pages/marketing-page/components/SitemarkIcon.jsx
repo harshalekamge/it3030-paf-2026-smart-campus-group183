@@ -1,12 +1,13 @@
 import SvgIcon from '@mui/material/SvgIcon';
+import PropTypes from 'prop-types';
 
-export default function SitemarkIcon() {
+export default function SitemarkIcon({ iconOnly = false }) {
   return (
-    <SvgIcon sx={{ height: 21, width: 100, mr: 2 }}>
+    <SvgIcon sx={{ height: 21, width: iconOnly ? 20 : 100, display: 'block', flexShrink: 0 }}>
       <svg
-        width={86}
+        width={iconOnly ? 20 : 86}
         height={19}
-        viewBox="0 0 86 19"
+        viewBox={iconOnly ? '0 0 20 19' : '0 0 86 19'}
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
@@ -50,3 +51,7 @@ export default function SitemarkIcon() {
     </SvgIcon>
   );
 }
+
+SitemarkIcon.propTypes = {
+  iconOnly: PropTypes.bool,
+};

@@ -10,43 +10,44 @@ import QueryStatsRoundedIcon from '@mui/icons-material/QueryStatsRounded';
 import SettingsSuggestRoundedIcon from '@mui/icons-material/SettingsSuggestRounded';
 import SupportAgentRoundedIcon from '@mui/icons-material/SupportAgentRounded';
 import ThumbUpAltRoundedIcon from '@mui/icons-material/ThumbUpAltRounded';
+import highlightsBackground from '../../../assets/highlights-background.png';
 
 const items = [
   {
     icon: <SettingsSuggestRoundedIcon />,
-    title: 'Adaptable performance',
+    title: 'Adaptable workflows',
     description:
-      'Our product effortlessly adjusts to your needs, boosting efficiency and simplifying your tasks.',
+      'Our system easily adapts to different campus needs, improving efficiency while simplifying booking and maintenance processes.',
   },
   {
     icon: <ConstructionRoundedIcon />,
-    title: 'Built to last',
+    title: 'Built for reliability',
     description:
-      'Experience unmatched durability that goes above and beyond with lasting investment.',
+      'Designed to handle daily campus operations with stability and consistency, ensuring smooth performance across all system modules.',
   },
   {
     icon: <ThumbUpAltRoundedIcon />,
-    title: 'Great user experience',
+    title: 'User-friendly experience',
     description:
-      'Integrate our product into your routine with an intuitive and easy-to-use interface.',
+      'Navigate the platform effortlessly with a clean interface that supports quick actions and clear system interactions.',
   },
   {
     icon: <AutoFixHighRoundedIcon />,
-    title: 'Innovative functionality',
+    title: 'Smart functionality',
     description:
-      'Stay ahead with features that set new standards, addressing your evolving needs better than the rest.',
+      'Access powerful features for managing resources, bookings, and maintenance tasks in one integrated environment.',
   },
   {
     icon: <SupportAgentRoundedIcon />,
-    title: 'Reliable support',
+    title: 'Real-time notifications',
     description:
-      'Count on our responsive customer support, offering assistance that goes beyond the purchase.',
+      'Stay updated with instant alerts for booking approvals, ticket updates, and important system activities.',
   },
   {
     icon: <QueryStatsRoundedIcon />,
-    title: 'Precision in every detail',
+    title: 'Attention to detail',
     description:
-      'Enjoy a meticulously crafted product where small touches make a significant impact on your overall experience.',
+      'Carefully designed workflows ensure accuracy, consistency, and better control over campus operations.',
   },
 ];
 
@@ -55,15 +56,22 @@ export default function Highlights() {
     <Box
       id="highlights"
       sx={{
+        position: 'relative',
+        overflow: 'hidden',
         pt: { xs: 4, sm: 12 },
         pb: { xs: 8, sm: 16 },
         color: 'white',
         bgcolor: 'grey.900',
+        backgroundImage: `linear-gradient(rgba(8, 14, 26, 0.76), rgba(8, 14, 26, 0.84)), url(${highlightsBackground})`,
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'cover',
       }}
     >
       <Container
         sx={{
           position: 'relative',
+          zIndex: 1,
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
@@ -80,9 +88,10 @@ export default function Highlights() {
             Highlights
           </Typography>
           <Typography variant="body1" sx={{ color: 'grey.400' }}>
-            Explore why our product stands out: adaptability, durability,
-            user-friendly design, and innovation. Enjoy reliable customer support and
-            precision in every detail.
+            Explore what makes our Smart Campus system effective: efficient
+            workflows, reliable operations, user-friendly design, and seamless
+            integration. Experience structured management and accuracy across all
+            campus activities.
           </Typography>
         </Box>
         <Grid container spacing={2}>
@@ -98,7 +107,8 @@ export default function Highlights() {
                   p: 3,
                   height: '100%',
                   borderColor: 'hsla(220, 25%, 25%, 0.3)',
-                  backgroundColor: 'grey.800',
+                  backgroundColor: 'rgba(17, 25, 39, 0.72)',
+                  backdropFilter: 'blur(6px)',
                 }}
               >
                 <Box sx={{ opacity: '50%' }}>{item.icon}</Box>
