@@ -29,6 +29,18 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.failure(exception.getMessage(), null));
     }
 
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleResourceNotFound(ResourceNotFoundException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ApiResponse.failure(exception.getMessage(), null));
+    }
+
+    @ExceptionHandler(DuplicateResourceCodeException.class)
+    public ResponseEntity<ApiResponse<Void>> handleDuplicateResourceCode(DuplicateResourceCodeException exception) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(ApiResponse.failure(exception.getMessage(), null));
+    }
+
     @ExceptionHandler(ResourceTypeNotFoundException.class)
     public ResponseEntity<ApiResponse<Void>> handleResourceTypeNotFound(ResourceTypeNotFoundException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
