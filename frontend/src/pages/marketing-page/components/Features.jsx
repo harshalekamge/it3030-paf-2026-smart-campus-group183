@@ -10,35 +10,45 @@ import { styled } from '@mui/material/styles';
 
 import DevicesRoundedIcon from '@mui/icons-material/DevicesRounded';
 import EdgesensorHighRoundedIcon from '@mui/icons-material/EdgesensorHighRounded';
+import NotificationsActiveRoundedIcon from '@mui/icons-material/NotificationsActiveRounded';
 import ViewQuiltRoundedIcon from '@mui/icons-material/ViewQuiltRounded';
-
-const templateAssetBaseUrl =
-  import.meta.env.VITE_TEMPLATE_IMAGE_URL ?? 'https://mui.com';
+import dashboardInsightsImage from '../../../assets/platform-features/dashboard-insights.png';
+import bookingManagementImage from '../../../assets/platform-features/booking-management.jpg';
+import featureImage3 from '../../../assets/platform-features/feature-3.png';
+import notificationsImage from '../../../assets/platform-features/notifications-alerts.png';
 
 const items = [
   {
     icon: <ViewQuiltRoundedIcon />,
-    title: 'Dashboard',
+    title: 'Dashboard & Insights',
     description:
-      'This item could provide a snapshot of the most important metrics or data points related to the product.',
-    imageLight: `url("${templateAssetBaseUrl}/static/images/templates/templates-images/dash-light.png")`,
-    imageDark: `url("${templateAssetBaseUrl}/static/images/templates/templates-images/dash-dark.png")`,
+      'Get a real-time overview of campus operations, including active bookings, resource availability, and maintenance requests. Quickly monitor key activities and system updates from one place.',
+    imageLight: `url("${dashboardInsightsImage}")`,
+    imageDark: `url("${dashboardInsightsImage}")`,
   },
   {
     icon: <EdgesensorHighRoundedIcon />,
-    title: 'Mobile integration',
+    title: 'Booking Management',
     description:
-      'This item could provide information about the mobile app version of the product.',
-    imageLight: `url("${templateAssetBaseUrl}/static/images/templates/templates-images/mobile-light.png")`,
-    imageDark: `url("${templateAssetBaseUrl}/static/images/templates/templates-images/mobile-dark.png")`,
+      'Easily request and manage bookings for lecture halls, labs, and equipment. The system supports approval workflows, prevents scheduling conflicts, and allows users to track their booking status.',
+    imageLight: `url("${bookingManagementImage}")`,
+    imageDark: `url("${bookingManagementImage}")`,
   },
   {
     icon: <DevicesRoundedIcon />,
-    title: 'Available on all platforms',
+    title: 'Maintenance & Incident Tracking',
     description:
-      'This item could let users know the product is available on all platforms, such as web, mobile, and desktop.',
-    imageLight: `url("${templateAssetBaseUrl}/static/images/templates/templates-images/devices-light.png")`,
-    imageDark: `url("${templateAssetBaseUrl}/static/images/templates/templates-images/devices-dark.png")`,
+      'Report issues related to campus facilities and track their progress. Assign technicians, update statuses, and manage resolutions through a structured ticketing system.',
+    imageLight: `url("${featureImage3}")`,
+    imageDark: `url("${featureImage3}")`,
+  },
+  {
+    icon: <NotificationsActiveRoundedIcon />,
+    title: 'Notifications & Alerts',
+    description:
+      'Receive instant updates on booking approvals, ticket status changes, and new comments through an integrated notification system.',
+    imageLight: `url("${notificationsImage}")`,
+    imageDark: `url("${notificationsImage}")`,
   },
 ];
 
@@ -90,8 +100,13 @@ function MobileLayout({ selectedItemIndex, handleItemClick, selectedFeature }) {
         <Box
           sx={(theme) => ({
             mb: 2,
+            aspectRatio: '4 / 5',
+            width: '100%',
+            overflow: 'hidden',
+            backgroundRepeat: 'no-repeat',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
+            backgroundColor: 'background.paper',
             minHeight: 280,
             backgroundImage: 'var(--items-imageLight)',
             ...theme.applyStyles('dark', {
@@ -155,15 +170,14 @@ export default function Features() {
           gutterBottom
           sx={{ color: 'text.primary' }}
         >
-          Product features
+          Platform Features
         </Typography>
         <Typography
           variant="body1"
           sx={{ color: 'text.secondary', mb: { xs: 2, sm: 4 } }}
         >
-          Provide a brief overview of the key features of the product. For example,
-          you could list the number of features, their types or benefits, and
-          add-ons.
+          Manage campus resources, bookings, and maintenance through a unified and
+          efficient system.
         </Typography>
       </Box>
       <Box
@@ -236,24 +250,28 @@ export default function Features() {
           sx={{
             display: { xs: 'none', sm: 'flex' },
             width: { xs: '100%', md: '70%' },
-            height: 'var(--items-image-height)',
+            alignItems: 'stretch',
           }}
         >
           <Card
             variant="outlined"
             sx={{
-              height: '100%',
+              aspectRatio: '4 / 5',
               width: '100%',
               display: { xs: 'none', sm: 'flex' },
+              alignItems: 'center',
+              justifyContent: 'center',
+              overflow: 'hidden',
               pointerEvents: 'none',
             }}
           >
             <Box
               sx={(theme) => ({
-                m: 'auto',
-                width: 420,
-                height: 500,
-                backgroundSize: 'contain',
+                width: '100%',
+                height: '100%',
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
                 backgroundImage: 'var(--items-imageLight)',
                 ...theme.applyStyles('dark', {
                   backgroundImage: 'var(--items-imageDark)',
