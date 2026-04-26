@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Campus Auth Demo</title>
+    <style>
+        :root {
+            --bg: #f5f1e8;
+            --panel: #fffaf2;
+            --ink: #1f2933;
+            --muted: #6b7280;
+            --line: #dccfb7;
+            --accent: #0f766e;
+            --accent-strong: #115e59;
+            --warm: #d97706;
+            --danger: #b91c1c;
+            --shadow: 0 18px 45px rgba(31, 41, 51, 0.12);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--ink);
+            background:
+                radial-gradient(circle at top left, rgba(217, 119, 6, 0.14), transparent 28%),
+                radial-gradient(circle at top right, rgba(15, 118, 110, 0.14), transparent 32%),
+                linear-gradient(180deg, #f8f4eb 0%, var(--bg) 100%);
+            min-height: 100vh;
+        }
+
+        .shell {
+            width: min(980px, calc(100% - 32px));
+            margin: 32px auto;
+        }
+
+        .hero,
+        .panel {
+            background: rgba(255, 250, 242, 0.92);
+            border: 1px solid rgba(220, 207, 183, 0.9);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
+        }
+
+        .hero {
+            padding: 28px;
+            margin-bottom: 20px;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            margin-bottom: 10px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(15, 118, 110, 0.12);
+            color: var(--accent-strong);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            margin: 0 0 12px;
+            font-size: clamp(28px, 4vw, 48px);
+            line-height: 1;
+        }
+
+        .lead {
+            margin: 0;
+            max-width: 680px;
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 20px;
+        }
+
+        .panel {
+            padding: 24px;
+        }
+
+        .panel h2 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            font-size: 22px;
+        }
+
+        .subtle {
+            color: var(--muted);
+            margin: 0 0 18px;
+            line-height: 1.5;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        button,
+        a.button-link {
+            appearance: none;
+            border: 0;
+            border-radius: 14px;
+            padding: 12px 16px;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        button:hover,
+        a.button-link:hover {
+            transform: translateY(-1px);
+        }
+
+        .primary {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 10px 20px rgba(15, 118, 110, 0.2);
+        }
+
+        .primary:hover {
+            background: var(--accent-strong);
+        }
+
+        .secondary {
+            background: #efe5d4;
+            color: var(--ink);
+        }
+
+        .secondary:hover {
+            background: #e6d9c4;
+        }
+
+        .danger {
+            background: #fee2e2;
+            color: var(--danger);
+        }
+
+        .danger:hover {
+            background: #fecaca;
+        }
+
+        .status {
+            border-radius: 16px;
+            padding: 14px 16px;
+            margin-bottom: 18px;
+            border: 1px solid var(--line);
+            background: #fff;
+        }
+
+        .status strong {
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .status.success {
+            border-color: rgba(15, 118, 110, 0.25);
+            background: rgba(15, 118, 110, 0.08);
+        }
+
+        .status.warning {
+            border-color: rgba(217, 119, 6, 0.3);
+            background: rgba(245, 158, 11, 0.1);
+        }
+
+        .status.error {
+            border-color: rgba(185, 28, 28, 0.28);
+            background: rgba(239, 68, 68, 0.09);
+        }
+
+        .meta-list,
+        .note-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            display: grid;
+            gap: 10px;
+        }
+
+        .meta-item,
+        .note-item {
+            padding: 12px 14px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid var(--line);
+        }
+
+        .meta-item span {
+            display: block;
+            color: var(--muted);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 6px;
+        }
+
+        pre {
+            margin: 0;
+            padding: 16px;
+            border-radius: 16px;
+            background: #1f2933;
+            color: #e5e7eb;
+            font-size: 13px;
+            overflow: auto;
+            min-height: 240px;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        code {
+            font-family: Consolas, "Courier New", monospace;
+        }
+
+        .footnote {
+            margin-top: 18px;
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 860px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+<main class="shell">
+    <section class="hero">
+        <div class="eyebrow">OAuth Demo</div>
+        <h1>Smart Campus Auth Playground</h1>
+        <p class="lead">
+            This page lets you test the backend authentication flow end to end:
+            start Google login, verify the cookie-backed session, fetch the current user,
+            and clear auth with logout.
+        </p>
+    </section>
+
+    <section class="grid">
+        <div class="panel">
+            <h2>Flow Controls</h2>
+            <p class="subtle">Use these buttons to exercise the auth flow from the browser.</p>
+
+            <div id="statusBox" class="status warning">
+                <strong>Waiting to check authentication</strong>
+                <span id="statusText">Loading current user state...</span>
+            </div>
+
+            <div class="actions">
+                <a class="button-link primary" href="/api/oauth2/authorization/google">Sign in with Google</a>
+                <button id="checkUserBtn" class="secondary" type="button">Check Current User</button>
+                <button id="logoutBtn" class="danger" type="button">Logout</button>
+            </div>
+
+            <ul class="meta-list">
+                <li class="meta-item">
+                    <span>Current API</span>
+                    <code>/api/users/me</code>
+                </li>
+                <li class="meta-item">
+                    <span>OAuth Entry</span>
+                    <code>/api/oauth2/authorization/google</code>
+                </li>
+                <li class="meta-item">
+                    <span>Logout</span>
+                    <code>POST /api/auth/logout</code>
+                </li>
+            </ul>
+
+            <p class="footnote">
+                This demo relies on the backend’s HttpOnly auth cookie, so it intentionally
+                does not read any token from the URL or local storage.
+            </p>
+        </div>
+
+        <div class="panel">
+            <h2>Live Response</h2>
+            <p class="subtle">The latest response from the backend appears here.</p>
+            <pre id="output">{ "message": "No request made yet" }</pre>
+
+            <div class="footnote">
+                <strong>Before Google login works:</strong>
+                set real values for <code>GOOGLE_CLIENT_ID</code> and <code>GOOGLE_CLIENT_SECRET</code>.
+            </div>
+        </div>
+    </section>
+</main>
+
+<script>
+    const output = document.getElementById("output");
+    const statusBox = document.getElementById("statusBox");
+    const statusText = document.getElementById("statusText");
+    const checkUserBtn = document.getElementById("checkUserBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    function setStatus(type, title, text) {
+        statusBox.className = "status " + type;
+        statusBox.querySelector("strong").textContent = title;
+        statusText.textContent = text;
+    }
+
+    function render(data) {
+        output.textContent = typeof data === "string" ? data : JSON.stringify(data, null, 2);
+    }
+
+    async function checkCurrentUser() {
+        render({ message: "Checking current user..." });
+
+        try {
+            const response = await fetch("/api/users/me", {
+                method: "GET",
+                credentials: "include"
+            });
+
+            if (response.status === 401) {
+                setStatus("warning", "Not authenticated", "No valid auth cookie is currently attached.");
+                render({
+                    status: 401,
+                    message: "You are not logged in yet. Start the Google OAuth flow first."
+                });
+                return;
+            }
+
+            const data = await response.json();
+            if (!response.ok) {
+                setStatus("error", "Authentication check failed", "The backend returned an error while reading the current user.");
+                render(data);
+                return;
+            }
+
+            setStatus("success", "Authenticated", "The backend recognized the auth cookie and returned the current user.");
+            render(data);
+        } catch (error) {
+            setStatus("error", "Request failed", "The browser could not reach the backend.");
+            render({
+                error: error.message
+            });
+        }
+    }
+
+    async function logout() {
+        render({ message: "Logging out..." });
+
+        try {
+            const response = await fetch("/api/auth/logout", {
+                method: "POST",
+                credentials: "include"
+            });
+
+            setStatus("warning", "Logged out", "The auth cookie was cleared from the browser.");
+            render({
+                status: response.status,
+                message: "Logout completed"
+            });
+        } catch (error) {
+            setStatus("error", "Logout failed", "The browser could not clear the auth session.");
+            render({
+                error: error.message
+            });
+        }
+    }
+
+    function readOAuthResult() {
+        const params = new URLSearchParams(window.location.search);
+        const state = params.get("oauth");
+        const error = params.get("error");
+
+        if (state === "success") {
+            setStatus("warning", "OAuth redirect completed", "Sign-in returned to the demo page. Verifying the current user now.");
+        } else if (state === "failure") {
+            setStatus("error", "OAuth redirect failed", error ? decodeURIComponent(error) : "The OAuth login flow failed.");
+        }
+    }
+
+    checkUserBtn.addEventListener("click", checkCurrentUser);
+    logoutBtn.addEventListener("click", logout);
+
+    readOAuthResult();
+    checkCurrentUser();
+</script>
+</body>
+</html>
