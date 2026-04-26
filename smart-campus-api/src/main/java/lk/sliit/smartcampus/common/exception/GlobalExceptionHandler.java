@@ -29,6 +29,18 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.failure(exception.getMessage(), null));
     }
 
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleResourceNotFound(ResourceNotFoundException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ApiResponse.failure(exception.getMessage(), null));
+    }
+
+    @ExceptionHandler(DuplicateResourceCodeException.class)
+    public ResponseEntity<ApiResponse<Void>> handleDuplicateResourceCode(DuplicateResourceCodeException exception) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(ApiResponse.failure(exception.getMessage(), null));
+    }
+
     @ExceptionHandler(ResourceTypeNotFoundException.class)
     public ResponseEntity<ApiResponse<Void>> handleResourceTypeNotFound(ResourceTypeNotFoundException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -38,6 +50,36 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DuplicateResourceTypeCodeException.class)
     public ResponseEntity<ApiResponse<Void>> handleDuplicateResourceTypeCode(DuplicateResourceTypeCodeException exception) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(ApiResponse.failure(exception.getMessage(), null));
+    }
+
+    @ExceptionHandler(ResourceAmenityNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleResourceAmenityNotFound(ResourceAmenityNotFoundException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ApiResponse.failure(exception.getMessage(), null));
+    }
+
+    @ExceptionHandler(DuplicateResourceAmenityException.class)
+    public ResponseEntity<ApiResponse<Void>> handleDuplicateResourceAmenity(DuplicateResourceAmenityException exception) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(ApiResponse.failure(exception.getMessage(), null));
+    }
+
+    @ExceptionHandler(ResourceMediaNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleResourceMediaNotFound(ResourceMediaNotFoundException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ApiResponse.failure(exception.getMessage(), null));
+    }
+
+    @ExceptionHandler(AvailabilityWindowNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleAvailabilityWindowNotFound(AvailabilityWindowNotFoundException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ApiResponse.failure(exception.getMessage(), null));
+    }
+
+    @ExceptionHandler(MaintenanceLogNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleMaintenanceLogNotFound(MaintenanceLogNotFoundException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(ApiResponse.failure(exception.getMessage(), null));
     }
 

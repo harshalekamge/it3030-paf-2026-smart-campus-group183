@@ -41,8 +41,8 @@ function PageContainer(props) {
   const { children, breadcrumbs, title, actions = null } = props;
 
   return (
-    <Container sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-      <Stack sx={{ flex: 1, my: 2 }} spacing={2}>
+    <Container sx={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
+      <Stack sx={{ flex: 1, my: 2, minHeight: 0 }} spacing={2}>
         <Stack>
           <PageHeaderBreadcrumbs
             aria-label="breadcrumb"
@@ -76,7 +76,7 @@ function PageContainer(props) {
             <PageHeaderToolbar>{actions}</PageHeaderToolbar>
           </PageContentHeader>
         </Stack>
-        <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: 0 }}>
           {children}
         </Box>
       </Stack>

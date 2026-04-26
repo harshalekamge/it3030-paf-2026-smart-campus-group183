@@ -53,7 +53,8 @@ export default function DashboardLayout() {
         position: 'relative',
         display: 'flex',
         overflow: 'hidden',
-        height: '100%',
+        height: '100dvh',
+        maxHeight: '100dvh',
         width: '100%',
       }}
     >
@@ -74,6 +75,7 @@ export default function DashboardLayout() {
           flexDirection: 'column',
           flex: 1,
           minWidth: 0,
+          minHeight: 0,
         }}
       >
         <Toolbar sx={{ displayPrint: 'none' }} />
@@ -84,6 +86,7 @@ export default function DashboardLayout() {
             flexDirection: 'column',
             flex: 1,
             overflow: 'auto',
+            minHeight: 0,
           }}
         >
           <Outlet />

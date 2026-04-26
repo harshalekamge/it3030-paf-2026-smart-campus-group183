@@ -1,17 +1,12 @@
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
-import InputLabel from '@mui/material/InputLabel';
-import Link from '@mui/material/Link';
+import NotificationsActiveRoundedIcon from '@mui/icons-material/NotificationsActiveRounded';
 import Stack from '@mui/material/Stack';
-import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import visuallyHidden from '@mui/utils/visuallyHidden';
 import { styled } from '@mui/material/styles';
 import { Link as RouterLink } from 'react-router-dom';
-
-const templateAssetBaseUrl =
-  import.meta.env.VITE_TEMPLATE_IMAGE_URL ?? 'https://mui.com';
+import heroCampusImage from '../../../assets/hero-campus.jpg';
 
 const StyledBox = styled('div')(({ theme }) => ({
   alignSelf: 'center',
@@ -24,15 +19,16 @@ const StyledBox = styled('div')(({ theme }) => ({
   border: '1px solid',
   borderColor: (theme.vars || theme).palette.grey[200],
   boxShadow: '0 0 12px 8px hsla(220, 25%, 80%, 0.2)',
-  backgroundImage: `url(${templateAssetBaseUrl}/static/screenshots/material-ui/getting-started/templates/dashboard.jpg)`,
+  backgroundImage: `url(${heroCampusImage})`,
   backgroundSize: 'cover',
+  backgroundPosition: 'center',
   [theme.breakpoints.up('sm')]: {
     marginTop: theme.spacing(10),
     height: 700,
   },
   ...theme.applyStyles('dark', {
     boxShadow: '0 0 24px 12px hsla(210, 100%, 25%, 0.2)',
-    backgroundImage: `url(${templateAssetBaseUrl}/static/screenshots/material-ui/getting-started/templates/dashboard-dark.jpg)`,
+    backgroundImage: `url(${heroCampusImage})`,
     outlineColor: 'hsla(220, 20%, 42%, 0.1)',
     borderColor: (theme.vars || theme).palette.grey[700],
   }),
@@ -65,88 +61,82 @@ export default function Hero() {
         <Stack
           spacing={2}
           useFlexGap
-          sx={{ alignItems: 'center', width: { xs: '100%', sm: '70%' } }}
+          sx={{ alignItems: 'center', width: { xs: '100%', sm: '78%' } }}
         >
           <Typography
             variant="h1"
             sx={{
-              display: 'flex',
-              flexDirection: { xs: 'column', sm: 'row' },
-              alignItems: 'center',
-              fontSize: 'clamp(3rem, 10vw, 3.5rem)',
+              textAlign: 'center',
+              fontSize: 'clamp(2.8rem, 10vw, 4.4rem)',
+              fontWeight: 800,
+              letterSpacing: '-0.04em',
             }}
           >
-            Our&nbsp;latest&nbsp;
-            <Typography
-              component="span"
-              variant="h1"
-              sx={(theme) => ({
-                fontSize: 'inherit',
-                color: 'primary.main',
-                ...theme.applyStyles('dark', {
-                  color: 'primary.light',
-                }),
-              })}
-            >
-              products
-            </Typography>
+            UniFlow Campus System
           </Typography>
           <Typography
             sx={{
               textAlign: 'center',
               color: 'text.secondary',
-              width: { sm: '100%', md: '80%' },
+              width: { sm: '100%', md: '82%' },
+              fontSize: 'clamp(1rem, 2.6vw, 1.3rem)',
             }}
           >
-            Explore our cutting-edge dashboard, delivering high-quality solutions
-            tailored to your needs. Elevate your experience with top-tier features
-            and services.
+            Streamlining campus operations in one place.
           </Typography>
           <Stack
             direction={{ xs: 'column', sm: 'row' }}
-            spacing={1}
+            spacing={1.5}
             useFlexGap
-            sx={{ pt: 2, width: { xs: '100%', sm: '350px' } }}
+            sx={{
+              pt: 2,
+              width: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+            }}
           >
-            <InputLabel htmlFor="email-hero" sx={visuallyHidden}>
-              Email
-            </InputLabel>
-            <TextField
-              id="email-hero"
-              hiddenLabel
-              size="small"
-              variant="outlined"
-              aria-label="Enter your email address"
-              placeholder="Your email address"
-              fullWidth
-              slotProps={{
-                htmlInput: {
-                  autoComplete: 'off',
-                  'aria-label': 'Enter your email address',
-                },
-              }}
-            />
             <Button
               variant="contained"
               color="primary"
-              size="small"
-              sx={{ minWidth: 'fit-content' }}
+              size="large"
               component={RouterLink}
-              to="/signin"
+              to="/dashboard/resources"
+              sx={{ minWidth: 190 }}
             >
-              Start now
+              Browse Resources
+            </Button>
+            <Button
+              variant="outlined"
+              color="primary"
+              size="large"
+              component={RouterLink}
+              to="/dashboard/resources"
+              sx={{ minWidth: 190 }}
+            >
+              Book a Resource
+            </Button>
+            <Button
+              variant="outlined"
+              color="primary"
+              size="large"
+              component={RouterLink}
+              to="/dashboard/maintenance-logs/new"
+              sx={{ minWidth: 190 }}
+            >
+              Report Issue
             </Button>
           </Stack>
-          <Typography
-            variant="caption"
-            sx={{ color: 'text.secondary', textAlign: 'center' }}
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{ alignItems: 'center', color: 'text.secondary', pt: 0.5 }}
           >
-            By clicking &quot;Start now&quot; you agree to our&nbsp;
-            <Link href="#" color="primary">
-              Terms & Conditions
-            </Link>
-            .
-          </Typography>
+            <NotificationsActiveRoundedIcon color="primary" sx={{ fontSize: 20 }} />
+            <Typography variant="body2" sx={{ textAlign: 'center' }}>
+              Stay updated with real-time notifications
+            </Typography>
+          </Stack>
         </Stack>
         <StyledBox id="image" />
       </Container>
