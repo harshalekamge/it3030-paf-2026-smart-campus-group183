@@ -14,6 +14,10 @@ import ResourceTypeCreate from '../pages/crud-dashboard/components/ResourceTypeC
 import ResourceTypeEdit from '../pages/crud-dashboard/components/ResourceTypeEdit'
 import ResourceTypeList from '../pages/crud-dashboard/components/ResourceTypeList'
 import ResourceTypeShow from '../pages/crud-dashboard/components/ResourceTypeShow'
+import ResourceMediaCreate from '../pages/crud-dashboard/components/ResourceMediaCreate'
+import ResourceMediaEdit from '../pages/crud-dashboard/components/ResourceMediaEdit'
+import ResourceMediaList from '../pages/crud-dashboard/components/ResourceMediaList'
+import ResourceMediaShow from '../pages/crud-dashboard/components/ResourceMediaShow'
 import SignInSide from '../pages/sign-in-side/SignInSide'
 import SignUp from '../pages/sign-up/SignUp'
 import ProtectedRoute from './ProtectedRoute'
@@ -60,6 +64,13 @@ function AppRouter() {
             <Route
               path="resource-types/:resourceTypeId/edit"
               element={<ResourceTypeEdit />}
+            />
+            <Route path="resource-media" element={<ResourceMediaList />} />
+            <Route path="resource-media/new" element={<ResourceMediaCreate />} />
+            <Route path="resource-media/:resourceMediaId" element={<ResourceMediaShow />} />
+            <Route
+              path="resource-media/:resourceMediaId/edit"
+              element={<ResourceMediaEdit />}
             />
             <Route path="amenities" element={<AmenityList />} />
             <Route path="amenities/new" element={<AmenityCreate />} />

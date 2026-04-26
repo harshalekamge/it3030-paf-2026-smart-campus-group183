@@ -13,6 +13,7 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import LayersIcon from '@mui/icons-material/Layers';
 import CategoryIcon from '@mui/icons-material/Category';
 import ChairAltIcon from '@mui/icons-material/ChairAlt';
+import PermMediaIcon from '@mui/icons-material/PermMedia';
 import { matchPath, useLocation } from 'react-router-dom';
 import DashboardSidebarContext from '../context/DashboardSidebarContext';
 import { DRAWER_WIDTH, MINI_DRAWER_WIDTH } from '../constants';
@@ -152,6 +153,13 @@ function DashboardSidebar({
               icon={<ChairAltIcon />}
               href="/dashboard/amenities"
               selected={!!matchPath('/dashboard/amenities/*', pathname)}
+            />
+            <DashboardSidebarPageItem
+              id="resource-media"
+              title="Resource Media"
+              icon={<PermMediaIcon />}
+              href="/dashboard/resource-media"
+              selected={!!matchPath('/dashboard/resource-media/*', pathname)}
             />
             <DashboardSidebarDividerItem />
             <DashboardSidebarHeaderItem>Example items</DashboardSidebarHeaderItem>

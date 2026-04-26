@@ -67,6 +67,34 @@ export async function deleteResourceType(resourceTypeId) {
   });
 }
 
+export async function getResourceMedia() {
+  return request('/resource-media');
+}
+
+export async function getResourceMediaById(resourceMediaId) {
+  return request(`/resource-media/${resourceMediaId}`);
+}
+
+export async function createResourceMedia(resourceMedia) {
+  return request('/resource-media', {
+    method: 'POST',
+    body: JSON.stringify(resourceMedia),
+  });
+}
+
+export async function updateResourceMedia(resourceMediaId, resourceMedia) {
+  return request(`/resource-media/${resourceMediaId}`, {
+    method: 'PUT',
+    body: JSON.stringify(resourceMedia),
+  });
+}
+
+export async function deleteResourceMedia(resourceMediaId) {
+  return request(`/resource-media/${resourceMediaId}`, {
+    method: 'DELETE',
+  });
+}
+
 export async function getAmenities() {
   return request('/amenities');
 }
