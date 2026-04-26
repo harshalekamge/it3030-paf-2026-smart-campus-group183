@@ -41,22 +41,34 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.failure(exception.getMessage(), null));
     }
 
-    @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ApiResponse<Void>> handleUserNotFound(UserNotFoundException exception) {
+    @ExceptionHandler(ResourceAmenityNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleResourceAmenityNotFound(ResourceAmenityNotFoundException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(ApiResponse.failure(exception.getMessage(), null));
     }
 
-    @ExceptionHandler(RoleAssignmentNotAllowedException.class)
-    public ResponseEntity<ApiResponse<Void>> handleRoleAssignmentNotAllowed(RoleAssignmentNotAllowedException exception) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(DuplicateResourceAmenityException.class)
+    public ResponseEntity<ApiResponse<Void>> handleDuplicateResourceAmenity(DuplicateResourceAmenityException exception) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(ApiResponse.failure(exception.getMessage(), null));
     }
 
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<ApiResponse<Void>> handleAccessDenied(AccessDeniedException exception) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(ApiResponse.failure("Access denied", null));
+    @ExceptionHandler(ResourceMediaNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleResourceMediaNotFound(ResourceMediaNotFoundException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ApiResponse.failure(exception.getMessage(), null));
+    }
+
+    @ExceptionHandler(AvailabilityWindowNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleAvailabilityWindowNotFound(AvailabilityWindowNotFoundException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ApiResponse.failure(exception.getMessage(), null));
+    }
+
+    @ExceptionHandler(MaintenanceLogNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleMaintenanceLogNotFound(MaintenanceLogNotFoundException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ApiResponse.failure(exception.getMessage(), null));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
