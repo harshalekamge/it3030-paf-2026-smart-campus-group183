@@ -81,6 +81,6 @@ class OAuth2SuccessHandlerTest {
         assertTrue(setCookie.contains("SC_AUTH_TOKEN=jwt-token"));
         assertTrue(setCookie.contains("HttpOnly"));
         assertFalse(response.getRedirectedUrl().contains("token="));
-        assertTrue("http://localhost:5175/auth-demo.html?oauth=success".equals(response.getRedirectedUrl()));
+        assertTrue("http://localhost:5175/dashboard/resources".equals(response.getRedirectedUrl()));
     }
 }

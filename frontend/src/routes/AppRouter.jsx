@@ -10,10 +10,6 @@ import AvailabilityWindowCreate from '../pages/crud-dashboard/components/Availab
 import AvailabilityWindowEdit from '../pages/crud-dashboard/components/AvailabilityWindowEdit'
 import AvailabilityWindowList from '../pages/crud-dashboard/components/AvailabilityWindowList'
 import AvailabilityWindowShow from '../pages/crud-dashboard/components/AvailabilityWindowShow'
-import EmployeeCreate from '../pages/crud-dashboard/components/EmployeeCreate'
-import EmployeeEdit from '../pages/crud-dashboard/components/EmployeeEdit'
-import EmployeeList from '../pages/crud-dashboard/components/EmployeeList'
-import EmployeeShow from '../pages/crud-dashboard/components/EmployeeShow'
 import MaintenanceLogCreate from '../pages/crud-dashboard/components/MaintenanceLogCreate'
 import MaintenanceLogEdit from '../pages/crud-dashboard/components/MaintenanceLogEdit'
 import MaintenanceLogList from '../pages/crud-dashboard/components/MaintenanceLogList'
@@ -71,11 +67,7 @@ function AppRouter() {
               </ProtectedRoute>
             }
           >
-            <Route index element={<Navigate to="employees" replace />} />
-            <Route path="employees" element={<EmployeeList />} />
-            <Route path="employees/new" element={<EmployeeCreate />} />
-            <Route path="employees/:employeeId" element={<EmployeeShow />} />
-            <Route path="employees/:employeeId/edit" element={<EmployeeEdit />} />
+            <Route index element={<Navigate to="resources" replace />} />
             <Route
               path="users"
               element={
@@ -148,10 +140,6 @@ function AppRouter() {
             <Route path="amenities/new" element={<AmenityCreate />} />
             <Route path="amenities/:amenityId" element={<AmenityShow />} />
             <Route path="amenities/:amenityId/edit" element={<AmenityEdit />} />
-            <Route path="reports" element={<EmployeeList />} />
-            <Route path="reports/sales" element={<EmployeeList />} />
-            <Route path="reports/traffic" element={<EmployeeList />} />
-            <Route path="integrations" element={<EmployeeList />} />
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

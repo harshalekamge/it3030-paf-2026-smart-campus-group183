@@ -51,7 +51,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
                 authCookieService.buildTokenCookie(token, request.isSecure()).toString());
         authorizationRequestRepository.clearAuthorizationRequestCookies(request, response);
 
-        String redirectUrl = frontendUrl + "/auth-demo.html?oauth=success";
+        String redirectUrl = frontendUrl + "/dashboard/resources";
         getRedirectStrategy().sendRedirect(request, response, redirectUrl);
     }
 }
