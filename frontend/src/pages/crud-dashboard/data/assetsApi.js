@@ -43,6 +43,34 @@ export async function getResourceTypes() {
   return request('/resource-types');
 }
 
+export async function getResources() {
+  return request('/resources');
+}
+
+export async function getResource(resourceId) {
+  return request(`/resources/${resourceId}`);
+}
+
+export async function createResource(resource) {
+  return request('/resources', {
+    method: 'POST',
+    body: JSON.stringify(resource),
+  });
+}
+
+export async function updateResource(resourceId, resource) {
+  return request(`/resources/${resourceId}`, {
+    method: 'PUT',
+    body: JSON.stringify(resource),
+  });
+}
+
+export async function deleteResource(resourceId) {
+  return request(`/resources/${resourceId}`, {
+    method: 'DELETE',
+  });
+}
+
 export async function getResourceType(resourceTypeId) {
   return request(`/resource-types/${resourceTypeId}`);
 }
