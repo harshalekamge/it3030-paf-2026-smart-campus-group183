@@ -61,6 +61,27 @@ function formatMoney(value) {
   }).format(numericValue);
 }
 
+async function loadCodeOnDemandModule() {
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8080/api';
+  const response = await fetch(`${apiBaseUrl}/client-scripts/resource-summary.js`, {
+    credentials: 'include',
+  });
+
+  if (!response.ok) {
+    throw new Error(`Dynamic script request failed with status ${response.status}`);
+  }
+
+  const source = await response.text();
+  const blob = new Blob([source], { type: 'text/javascript' });
+  const moduleUrl = URL.createObjectURL(blob);
+
+  try {
+    return await import(/* @vite-ignore */ moduleUrl);
+  } finally {
+    URL.revokeObjectURL(moduleUrl);
+  }
+}
+
 function resolveMediaUrl(value) {
   if (!value) {
     return '';
@@ -242,6 +263,9 @@ export default function SummaryResourceView() {
     resourceType: null,
     amenities: [],
   });
+  const [remoteInsight, setRemoteInsight] = React.useState(null);
+  const [remoteInsightError, setRemoteInsightError] = React.useState(null);
+  const [isInsightLoading, setIsInsightLoading] = React.useState(false);
 
   const loadData = React.useCallback(async () => {
     setState((currentState) => ({
@@ -367,6 +391,55 @@ export default function SummaryResourceView() {
         .filter(Boolean),
     [amenityLookup, resourceId, state.resourceAmenities],
   );
+
+  React.useEffect(() => {
+    if (!resource) {
+      setRemoteInsight(null);
+      setRemoteInsightError(null);
+      setIsInsightLoading(false);
+      return undefined;
+    }
+
+    let isActive = true;
+
+    const buildInsight = async () => {
+      setIsInsightLoading(true);
+      setRemoteInsightError(null);
+
+      try {
+        const module = await loadCodeOnDemandModule();
+        if (!isActive) {
+          return;
+        }
+
+        setRemoteInsight(
+          module.buildResourceInsight({
+            assignedAmenities,
+            availabilityWindows: filteredWindows,
+            maintenanceLogs: filteredMaintenance,
+            mediaItems: filteredMedia,
+            resource,
+            resourceType: state.resourceType,
+          }),
+        );
+      } catch (error) {
+        if (isActive) {
+          setRemoteInsight(null);
+          setRemoteInsightError(error.message);
+        }
+      } finally {
+        if (isActive) {
+          setIsInsightLoading(false);
+        }
+      }
+    };
+
+    void buildInsight();
+
+    return () => {
+      isActive = false;
+    };
+  }, [assignedAmenities, filteredMaintenance, filteredMedia, filteredWindows, resource, state.resourceType]);
 
   return (
     <PageContainer
@@ -903,6 +976,45 @@ export default function SummaryResourceView() {
                         <StatTile label="Media" value={filteredMedia.length} />
                       </Grid>
                     </Grid>
+                  </SectionCard>
+
+                  <SectionCard
+                    title="Remote Insight Engine"
+                    subtitle="Code-on-demand demo loaded from the backend at runtime"
+                  >
+                    {isInsightLoading ? (
+                      <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
+                        <CircularProgress size={20} />
+                        <Typography variant="body2" color="text.secondary">
+                          Loading executable JavaScript from the API...
+                        </Typography>
+                      </Stack>
+                    ) : remoteInsightError ? (
+                      <Alert severity="warning">{remoteInsightError}</Alert>
+                    ) : remoteInsight ? (
+                      <Stack spacing={1.5}>
+                        <Typography variant="body1" sx={{ fontWeight: 700 }}>
+                          {remoteInsight.headline}
+                        </Typography>
+                        <Grid container spacing={1.5}>
+                          <Grid size={{ xs: 6 }}>
+                            <StatTile label="Readiness" value={`${remoteInsight.readinessScore}/100`} />
+                          </Grid>
+                          <Grid size={{ xs: 6 }}>
+                            <StatTile label="Booking Mode" value={remoteInsight.bookingMode} />
+                          </Grid>
+                        </Grid>
+                        <Stack spacing={0.75}>
+                          {remoteInsight.highlights.map((item) => (
+                            <Typography key={item} variant="body2" color="text.secondary">
+                              {item}
+                            </Typography>
+                          ))}
+                        </Stack>
+                      </Stack>
+                    ) : (
+                      <EmptyState message="Remote insight engine is waiting for resource data." />
+                    )}
                   </SectionCard>
 
                   <SectionCard
