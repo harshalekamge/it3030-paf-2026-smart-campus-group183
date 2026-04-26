@@ -3,6 +3,8 @@ package lk.sliit.smartcampus.common.exception;
 import java.util.HashMap;
 import java.util.Map;
 
+import lk.sliit.smartcampus.auth.exception.DuplicateGoogleIdException;
+import lk.sliit.smartcampus.auth.exception.DuplicateUserEmailException;
 import lk.sliit.smartcampus.auth.exception.RoleAssignmentNotAllowedException;
 import lk.sliit.smartcampus.auth.exception.UserNotFoundException;
 import lk.sliit.smartcampus.common.response.ApiResponse;
@@ -86,6 +88,18 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ApiResponse<Void>> handleUserNotFound(UserNotFoundException exception) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ApiResponse.failure(exception.getMessage(), null));
+    }
+
+    @ExceptionHandler(DuplicateUserEmailException.class)
+    public ResponseEntity<ApiResponse<Void>> handleDuplicateUserEmail(DuplicateUserEmailException exception) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(ApiResponse.failure(exception.getMessage(), null));
+    }
+
+    @ExceptionHandler(DuplicateGoogleIdException.class)
+    public ResponseEntity<ApiResponse<Void>> handleDuplicateGoogleId(DuplicateGoogleIdException exception) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(ApiResponse.failure(exception.getMessage(), null));
     }
 

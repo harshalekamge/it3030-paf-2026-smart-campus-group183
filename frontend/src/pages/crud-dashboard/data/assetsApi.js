@@ -210,3 +210,31 @@ export async function deleteAmenity(amenityId) {
 export async function getResourceAmenities() {
   return request('/resource-amenities');
 }
+
+export async function getUsers() {
+  return request('/users');
+}
+
+export async function getUser(userId) {
+  return request(`/users/${userId}`);
+}
+
+export async function createUser(user) {
+  return request('/users', {
+    method: 'POST',
+    body: JSON.stringify(user),
+  });
+}
+
+export async function updateUser(userId, user) {
+  return request(`/users/${userId}`, {
+    method: 'PUT',
+    body: JSON.stringify(user),
+  });
+}
+
+export async function deleteUser(userId) {
+  return request(`/users/${userId}`, {
+    method: 'DELETE',
+  });
+}

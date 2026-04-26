@@ -2,8 +2,11 @@ package lk.sliit.smartcampus.auth.controller;
 
 import jakarta.validation.Valid;
 import lk.sliit.smartcampus.auth.dto.RoleUpdateDto;
+import lk.sliit.smartcampus.auth.dto.UserRequestDto;
 import lk.sliit.smartcampus.auth.dto.UserResponseDto;
 import lk.sliit.smartcampus.auth.service.UserService;
+import lk.sliit.smartcampus.common.response.ApiResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.OAuth2AuthenticatedPrincipal;
@@ -30,18 +33,64 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserResponseDto>> getAllUsers() {
-        return ResponseEntity.ok(userService.getAllUsers());
+    public ResponseEntity<ApiResponse<List<UserResponseDto>>> getAllUsers() {
+        return ResponseEntity.ok(ApiResponse.success("Users retrieved successfully", userService.getAllUsers()));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<UserResponseDto>> getUserById(@PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.success("User retrieved successfully", userService.getUserById(id)));
+    }
+
+    @PostMapping
+    public ResponseEntity<ApiResponse<UserResponseDto>> createUser(@Valid @RequestBody UserRequestDto requestDto,
+                                                                   Authentication authentication) {
+        if (authentication == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        UserResponseDto user = userService.createUser(requestDto, resolveUserEmail(authentication));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.success("User created successfully", user));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<UserResponseDto>> updateUser(@PathVariable Long id,
+                                                                   @Valid @RequestBody UserRequestDto requestDto,
+                                                                   Authentication authentication) {
+        if (authentication == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        "User updated successfully",
+                        userService.updateUser(id, requestDto, resolveUserEmail(authentication))
+                )
+        );
     }
 
     @PatchMapping("/{id}/role")
-    public ResponseEntity<UserResponseDto> updateRole(@PathVariable Long id,
-                                                      @Valid @RequestBody RoleUpdateDto dto,
-                                                      Authentication authentication) {
+    public ResponseEntity<ApiResponse<UserResponseDto>> updateRole(@PathVariable Long id,
+                                                                   @Valid @RequestBody RoleUpdateDto dto,
+                                                                   Authentication authentication) {
         if (authentication == null) {
             return ResponseEntity.status(401).build();
         }
-        return ResponseEntity.ok(userService.updateUserRole(id, dto.getRole(), resolveUserEmail(authentication)));
+        return ResponseEntity.ok(
+                ApiResponse.success(
+                        "User role updated successfully",
+                        userService.updateUserRole(id, dto.getRole(), resolveUserEmail(authentication))
+                )
+        );
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id, Authentication authentication) {
+        if (authentication == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        userService.deleteUser(id, resolveUserEmail(authentication));
+        return ResponseEntity.noContent().build();
     }
 
     private String resolveUserEmail(Authentication authentication) {

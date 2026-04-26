@@ -51,6 +51,7 @@ export function AuthProvider({ children }) {
   const value = useMemo(
     () => ({
       apiBaseUrl: API_BASE_URL,
+      isAdmin: user?.role === 'ADMIN',
       isAuthenticated: Boolean(user),
       isLoading,
       logout,
