@@ -38,6 +38,36 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.failure(exception.getMessage(), null));
     }
 
+    @ExceptionHandler(ResourceAmenityNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleResourceAmenityNotFound(ResourceAmenityNotFoundException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ApiResponse.failure(exception.getMessage(), null));
+    }
+
+    @ExceptionHandler(DuplicateResourceAmenityException.class)
+    public ResponseEntity<ApiResponse<Void>> handleDuplicateResourceAmenity(DuplicateResourceAmenityException exception) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(ApiResponse.failure(exception.getMessage(), null));
+    }
+
+    @ExceptionHandler(ResourceMediaNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleResourceMediaNotFound(ResourceMediaNotFoundException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ApiResponse.failure(exception.getMessage(), null));
+    }
+
+    @ExceptionHandler(AvailabilityWindowNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleAvailabilityWindowNotFound(AvailabilityWindowNotFoundException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ApiResponse.failure(exception.getMessage(), null));
+    }
+
+    @ExceptionHandler(MaintenanceLogNotFoundException.class)
+    public ResponseEntity<ApiResponse<Void>> handleMaintenanceLogNotFound(MaintenanceLogNotFoundException exception) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(ApiResponse.failure(exception.getMessage(), null));
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiResponse<Map<String, String>>> handleValidation(MethodArgumentNotValidException exception) {
         Map<String, String> errors = new HashMap<>();
