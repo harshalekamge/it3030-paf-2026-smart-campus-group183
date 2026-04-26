@@ -2,15 +2,14 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
+import Typography from '@mui/material/Typography';
 import Toolbar from '@mui/material/Toolbar';
 
-import PersonIcon from '@mui/icons-material/Person';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import DescriptionIcon from '@mui/icons-material/Description';
-import LayersIcon from '@mui/icons-material/Layers';
 import CategoryIcon from '@mui/icons-material/Category';
 import ChairAltIcon from '@mui/icons-material/ChairAlt';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
@@ -24,7 +23,6 @@ import DashboardSidebarContext from '../context/DashboardSidebarContext';
 import { DRAWER_WIDTH, MINI_DRAWER_WIDTH } from '../constants';
 import DashboardSidebarPageItem from './DashboardSidebarPageItem';
 import DashboardSidebarHeaderItem from './DashboardSidebarHeaderItem';
-import DashboardSidebarDividerItem from './DashboardSidebarDividerItem';
 import {
   getDrawerSxTransitionMixin,
   getDrawerWidthTransitionMixin,
@@ -37,7 +35,7 @@ function DashboardSidebar({
   container,
 }) {
   const theme = useTheme();
-  const { isAdmin } = useAuth();
+  const { isAdmin, user } = useAuth();
 
   const { pathname } = useLocation();
 
@@ -106,6 +104,27 @@ function DashboardSidebar({
   const hasDrawerTransitions =
     isOverSmViewport && (!disableCollapsibleSidebar || isOverMdViewport);
 
+  const userDisplayName = React.useMemo(() => {
+    if (!user) {
+      return 'Guest user';
+    }
+
+    return (
+      user.fullName ||
+      [user.firstName, user.lastName].filter(Boolean).join(' ') ||
+      user.email ||
+      'Campus user'
+    );
+  }, [user]);
+
+  const userRoleLabel = React.useMemo(() => {
+    if (!user?.role) {
+      return 'Signed in';
+    }
+
+    return String(user.role).replace(/_/g, ' ');
+  }, [user]);
+
   const getDrawerContent = React.useCallback(
     (viewport) => (
       <React.Fragment>
@@ -131,43 +150,23 @@ function DashboardSidebar({
             dense
             sx={{
               padding: mini ? 0 : 0.5,
-              mb: 4,
               width: mini ? MINI_DRAWER_WIDTH : 'auto',
             }}
           >
             <DashboardSidebarHeaderItem>Main items</DashboardSidebarHeaderItem>
-            <DashboardSidebarPageItem
-              id="employees"
-              title="Employees"
-              icon={<PersonIcon />}
-              href="/dashboard/employees"
-              selected={
-                !!matchPath('/dashboard/employees/*', pathname) ||
-                pathname === '/dashboard'
-              }
-            />
-            {isAdmin ? (
-              <DashboardSidebarPageItem
-                id="users"
-                title="User Management"
-                icon={<AdminPanelSettingsIcon />}
-                href="/dashboard/users"
-                selected={!!matchPath('/dashboard/users/*', pathname)}
-              />
-            ) : null}
-            <DashboardSidebarPageItem
-              id="resource-types"
-              title="Resource Types"
-              icon={<CategoryIcon />}
-              href="/dashboard/resource-types"
-              selected={!!matchPath('/dashboard/resource-types/*', pathname)}
-            />
             <DashboardSidebarPageItem
               id="resources"
               title="Resources"
               icon={<MeetingRoomIcon />}
               href="/dashboard/resources"
               selected={!!matchPath('/dashboard/resources/*', pathname)}
+            />
+            <DashboardSidebarPageItem
+              id="resource-types"
+              title="Resource Types"
+              icon={<CategoryIcon />}
+              href="/dashboard/resource-types"
+              selected={!!matchPath('/dashboard/resource-types/*', pathname)}
             />
             <DashboardSidebarPageItem
               id="amenities"
@@ -177,18 +176,18 @@ function DashboardSidebar({
               selected={!!matchPath('/dashboard/amenities/*', pathname)}
             />
             <DashboardSidebarPageItem
-              id="resource-media"
-              title="Resource Media"
-              icon={<PermMediaIcon />}
-              href="/dashboard/resource-media"
-              selected={!!matchPath('/dashboard/resource-media/*', pathname)}
-            />
-            <DashboardSidebarPageItem
               id="availability-windows"
               title="Availability Windows"
               icon={<AccessTimeIcon />}
               href="/dashboard/availability-windows"
               selected={!!matchPath('/dashboard/availability-windows/*', pathname)}
+            />
+            <DashboardSidebarPageItem
+              id="resource-media"
+              title="Resource Media"
+              icon={<PermMediaIcon />}
+              href="/dashboard/resource-media"
+              selected={!!matchPath('/dashboard/resource-media/*', pathname)}
             />
             <DashboardSidebarPageItem
               id="maintenance-logs"
@@ -197,55 +196,104 @@ function DashboardSidebar({
               href="/dashboard/maintenance-logs"
               selected={!!matchPath('/dashboard/maintenance-logs/*', pathname)}
             />
-            <DashboardSidebarDividerItem />
-            <DashboardSidebarHeaderItem>Example items</DashboardSidebarHeaderItem>
-            <DashboardSidebarPageItem
-              id="reports"
-              title="Reports"
-              icon={<BarChartIcon />}
-              href="/dashboard/reports"
-              selected={!!matchPath('/dashboard/reports', pathname)}
-              defaultExpanded={!!matchPath('/dashboard/reports', pathname)}
-              expanded={expandedItemIds.includes('reports')}
-              nestedNavigation={
-                <List
-                  dense
-                  sx={{
-                    padding: 0,
-                    my: 1,
-                    pl: mini ? 0 : 1,
-                    minWidth: 240,
-                  }}
-                >
-                  <DashboardSidebarPageItem
-                    id="sales"
-                    title="Sales"
-                    icon={<DescriptionIcon />}
-                    href="/dashboard/reports/sales"
-                    selected={!!matchPath('/dashboard/reports/sales', pathname)}
-                  />
-                  <DashboardSidebarPageItem
-                    id="traffic"
-                    title="Traffic"
-                    icon={<DescriptionIcon />}
-                    href="/dashboard/reports/traffic"
-                    selected={!!matchPath('/dashboard/reports/traffic', pathname)}
-                  />
-                </List>
-              }
-            />
-            <DashboardSidebarPageItem
-              id="integrations"
-              title="Integrations"
-              icon={<LayersIcon />}
-              href="/dashboard/integrations"
-              selected={!!matchPath('/dashboard/integrations', pathname)}
-            />
+            {isAdmin ? (
+              <React.Fragment>
+                <DashboardSidebarHeaderItem>Admin only</DashboardSidebarHeaderItem>
+                <DashboardSidebarPageItem
+                  id="users"
+                  title="User Management"
+                  icon={<AdminPanelSettingsIcon />}
+                  href="/dashboard/users"
+                  selected={!!matchPath('/dashboard/users/*', pathname)}
+                />
+              </React.Fragment>
+            ) : null}
           </List>
+          <Box
+            sx={{
+              px: mini ? 0.75 : 1.25,
+              pb: 1.25,
+              pt: 1,
+            }}
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: mini ? 0 : 1.25,
+                justifyContent: mini ? 'center' : 'flex-start',
+                px: mini ? 0.5 : 1,
+                py: 1,
+                border: '1px solid',
+                borderColor: 'divider',
+                borderRadius: 2.5,
+                backgroundColor: 'background.paper',
+                boxShadow: '0 8px 24px rgba(15, 23, 42, 0.06)',
+              }}
+            >
+              <Avatar
+                src={user?.profilePictureUrl ?? undefined}
+                alt={userDisplayName}
+                sx={{
+                  width: mini ? 36 : 42,
+                  height: mini ? 36 : 42,
+                  bgcolor: 'primary.main',
+                  flexShrink: 0,
+                }}
+              >
+                {userDisplayName.charAt(0).toUpperCase()}
+              </Avatar>
+              {!mini ? (
+                <Box sx={{ minWidth: 0, flex: 1 }}>
+                  <Typography
+                    variant="subtitle2"
+                    sx={{
+                      fontWeight: 700,
+                      lineHeight: 1.2,
+                    }}
+                    noWrap
+                  >
+                    {userDisplayName}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{
+                      lineHeight: 1.25,
+                      mt: 0.25,
+                      fontSize: '0.8rem',
+                      whiteSpace: 'normal',
+                      overflowWrap: 'anywhere',
+                      wordBreak: 'break-word',
+                    }}
+                  >
+                    {user?.email ?? 'No email available'}
+                  </Typography>
+                  <Chip
+                    label={userRoleLabel}
+                    color="primary"
+                    size="small"
+                    variant="outlined"
+                    sx={{ mt: 1, textTransform: 'capitalize' }}
+                  />
+                </Box>
+              ) : null}
+            </Box>
+          </Box>
         </Box>
       </React.Fragment>
     ),
-    [mini, hasDrawerTransitions, isFullyExpanded, expandedItemIds, pathname],
+    [
+      mini,
+      hasDrawerTransitions,
+      isFullyExpanded,
+      expandedItemIds,
+      pathname,
+      isAdmin,
+      user,
+      userDisplayName,
+      userRoleLabel,
+    ],
   );
 
   const getDrawerSharedSx = React.useCallback(
