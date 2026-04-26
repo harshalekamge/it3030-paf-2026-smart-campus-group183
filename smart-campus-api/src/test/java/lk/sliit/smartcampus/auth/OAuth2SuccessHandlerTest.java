@@ -5,6 +5,7 @@ import lk.sliit.smartcampus.auth.enums.Role;
 import lk.sliit.smartcampus.auth.service.JwtService;
 import lk.sliit.smartcampus.auth.service.UserService;
 import lk.sliit.smartcampus.config.AuthCookieService;
+import lk.sliit.smartcampus.config.HttpCookieOAuth2AuthorizationRequestRepository;
 import lk.sliit.smartcampus.config.OAuth2SuccessHandler;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,8 +41,15 @@ class OAuth2SuccessHandlerTest {
                 "Lax",
                 3600000L
         );
+        HttpCookieOAuth2AuthorizationRequestRepository authorizationRequestRepository =
+                new HttpCookieOAuth2AuthorizationRequestRepository("/api", false, "Lax");
 
-        successHandler = new OAuth2SuccessHandler(jwtService, userService, authCookieService);
+        successHandler = new OAuth2SuccessHandler(
+                jwtService,
+                userService,
+                authCookieService,
+                authorizationRequestRepository
+        );
         ReflectionTestUtils.setField(successHandler, "frontendUrl", "http://localhost:5175");
     }
 

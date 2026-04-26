@@ -17,12 +17,15 @@ import java.nio.charset.StandardCharsets;
 public class OAuth2FailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
     private final AuthCookieService authCookieService;
+    private final HttpCookieOAuth2AuthorizationRequestRepository authorizationRequestRepository;
 
     @Value("${app.frontend.url}")
     private String frontendUrl;
 
-    public OAuth2FailureHandler(AuthCookieService authCookieService) {
+    public OAuth2FailureHandler(AuthCookieService authCookieService,
+                                HttpCookieOAuth2AuthorizationRequestRepository authorizationRequestRepository) {
         this.authCookieService = authCookieService;
+        this.authorizationRequestRepository = authorizationRequestRepository;
     }
 
     @Override
@@ -32,6 +35,7 @@ public class OAuth2FailureHandler extends SimpleUrlAuthenticationFailureHandler 
 
         response.addHeader(HttpHeaders.SET_COOKIE,
                 authCookieService.buildClearCookie(request.isSecure()).toString());
+        authorizationRequestRepository.clearAuthorizationRequestCookies(request, response);
 
         String message = URLEncoder.encode(exception.getMessage(), StandardCharsets.UTF_8);
         String redirectUrl = frontendUrl + "/auth-demo.html?oauth=failure&error=" + message;

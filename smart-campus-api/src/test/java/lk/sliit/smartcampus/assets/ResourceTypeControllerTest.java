@@ -9,6 +9,7 @@ import lk.sliit.smartcampus.assets.dto.ResourceTypeDto;
 import lk.sliit.smartcampus.assets.dto.ResourceTypeRequestDto;
 import lk.sliit.smartcampus.assets.service.ResourceTypeService;
 import lk.sliit.smartcampus.common.exception.GlobalExceptionHandler;
+import lk.sliit.smartcampus.common.web.WebCacheService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -22,6 +23,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -39,14 +41,24 @@ class ResourceTypeControllerTest {
     @MockBean
     private ResourceTypeService resourceTypeService;
 
+    @MockBean
+    private WebCacheService webCacheService;
+
     @Test
     void getAllResourceTypesShouldReturnWrappedResponse() throws Exception {
         when(resourceTypeService.getAllResourceTypes()).thenReturn(List.of(
                 new ResourceTypeDto(1, "ROOM", "Room", "Indoor room", true, true, false, "door", OffsetDateTime.now())
         ));
+        when(webCacheService.buildEtag(org.mockito.ArgumentMatchers.any())).thenReturn("\"resource-types-v1\"");
+        when(webCacheService.isNotModified(org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.eq("\"resource-types-v1\"")))
+                .thenReturn(false);
+        when(webCacheService.privateCachePolicy(org.mockito.ArgumentMatchers.anyLong()))
+                .thenCallRealMethod();
 
         mockMvc.perform(get("/resource-types"))
                 .andExpect(status().isOk())
+                .andExpect(header().string("ETag", "\"resource-types-v1\""))
+                .andExpect(header().string("Cache-Control", "max-age=300, must-revalidate, private"))
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data[0].typeCode").value("ROOM"));
     }

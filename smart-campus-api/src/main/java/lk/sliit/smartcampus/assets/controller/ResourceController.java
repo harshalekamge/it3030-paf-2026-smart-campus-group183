@@ -8,10 +8,12 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lk.sliit.smartcampus.assets.dto.ResourceDto;
 import lk.sliit.smartcampus.assets.dto.ResourceRequestDto;
 import lk.sliit.smartcampus.assets.service.ResourceService;
+import lk.sliit.smartcampus.common.web.WebCacheService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,10 +30,14 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "Resources", description = "CRUD APIs for assets resource management")
 public class ResourceController {
 
-    private final ResourceService resourceService;
+    private static final long CACHE_MAX_AGE_SECONDS = 120;
 
-    public ResourceController(ResourceService resourceService) {
+    private final ResourceService resourceService;
+    private final WebCacheService webCacheService;
+
+    public ResourceController(ResourceService resourceService, WebCacheService webCacheService) {
         this.resourceService = resourceService;
+        this.webCacheService = webCacheService;
     }
 
     @PostMapping
@@ -54,13 +60,28 @@ public class ResourceController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Resources retrieved successfully")
     })
-    public ResponseEntity<lk.sliit.smartcampus.common.response.ApiResponse<List<ResourceDto>>> getAllResources() {
-        return ResponseEntity.ok(
-                lk.sliit.smartcampus.common.response.ApiResponse.success(
-                        "Resources retrieved successfully",
-                        resourceService.getAllResources()
-                )
-        );
+    public ResponseEntity<lk.sliit.smartcampus.common.response.ApiResponse<List<ResourceDto>>> getAllResources(
+            HttpServletRequest request
+    ) {
+        List<ResourceDto> resources = resourceService.getAllResources();
+        String etag = webCacheService.buildEtag(resources);
+
+        if (webCacheService.isNotModified(request, etag)) {
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED)
+                    .cacheControl(webCacheService.privateCachePolicy(CACHE_MAX_AGE_SECONDS))
+                    .eTag(etag)
+                    .build();
+        }
+
+        return ResponseEntity.ok()
+                .cacheControl(webCacheService.privateCachePolicy(CACHE_MAX_AGE_SECONDS))
+                .eTag(etag)
+                .body(
+                        lk.sliit.smartcampus.common.response.ApiResponse.success(
+                                "Resources retrieved successfully",
+                                resources
+                        )
+                );
     }
 
     @GetMapping("/{id}")
@@ -71,14 +92,28 @@ public class ResourceController {
     })
     public ResponseEntity<lk.sliit.smartcampus.common.response.ApiResponse<ResourceDto>> getResourceById(
             @Parameter(description = "Resource id", example = "1")
-            @PathVariable Integer id
+            @PathVariable Integer id,
+            HttpServletRequest request
     ) {
-        return ResponseEntity.ok(
-                lk.sliit.smartcampus.common.response.ApiResponse.success(
-                        "Resource retrieved successfully",
-                        resourceService.getResourceById(id)
-                )
-        );
+        ResourceDto resource = resourceService.getResourceById(id);
+        String etag = webCacheService.buildEtag(resource);
+
+        if (webCacheService.isNotModified(request, etag)) {
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED)
+                    .cacheControl(webCacheService.privateCachePolicy(CACHE_MAX_AGE_SECONDS))
+                    .eTag(etag)
+                    .build();
+        }
+
+        return ResponseEntity.ok()
+                .cacheControl(webCacheService.privateCachePolicy(CACHE_MAX_AGE_SECONDS))
+                .eTag(etag)
+                .body(
+                        lk.sliit.smartcampus.common.response.ApiResponse.success(
+                                "Resource retrieved successfully",
+                                resource
+                        )
+                );
     }
 
     @PutMapping("/{id}")

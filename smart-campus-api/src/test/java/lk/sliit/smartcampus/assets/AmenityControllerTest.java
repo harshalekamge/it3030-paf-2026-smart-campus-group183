@@ -8,6 +8,7 @@ import lk.sliit.smartcampus.assets.dto.AmenityDto;
 import lk.sliit.smartcampus.assets.dto.AmenityRequestDto;
 import lk.sliit.smartcampus.assets.service.AmenityService;
 import lk.sliit.smartcampus.common.exception.GlobalExceptionHandler;
+import lk.sliit.smartcampus.common.web.WebCacheService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -21,6 +22,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -38,14 +40,39 @@ class AmenityControllerTest {
     @MockBean
     private AmenityService amenityService;
 
+    @MockBean
+    private WebCacheService webCacheService;
+
     @Test
     void getAllAmenitiesShouldReturnWrappedResponse() throws Exception {
         when(amenityService.getAllAmenities()).thenReturn(List.of(new AmenityDto(1, "WIFI", "Wi-Fi", "wifi")));
+        when(webCacheService.buildEtag(org.mockito.ArgumentMatchers.any())).thenReturn("\"amenities-v1\"");
+        when(webCacheService.isNotModified(org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.eq("\"amenities-v1\"")))
+                .thenReturn(false);
+        when(webCacheService.privateCachePolicy(org.mockito.ArgumentMatchers.anyLong()))
+                .thenCallRealMethod();
 
         mockMvc.perform(get("/amenities"))
                 .andExpect(status().isOk())
+                .andExpect(header().string("ETag", "\"amenities-v1\""))
+                .andExpect(header().string("Cache-Control", "max-age=300, must-revalidate, private"))
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.data[0].code").value("WIFI"));
+    }
+
+    @Test
+    void getAllAmenitiesShouldReturnNotModifiedWhenEtagMatches() throws Exception {
+        when(amenityService.getAllAmenities()).thenReturn(List.of(new AmenityDto(1, "WIFI", "Wi-Fi", "wifi")));
+        when(webCacheService.buildEtag(org.mockito.ArgumentMatchers.any())).thenReturn("\"amenities-v1\"");
+        when(webCacheService.isNotModified(org.mockito.ArgumentMatchers.any(), org.mockito.ArgumentMatchers.eq("\"amenities-v1\"")))
+                .thenReturn(true);
+        when(webCacheService.privateCachePolicy(org.mockito.ArgumentMatchers.anyLong()))
+                .thenCallRealMethod();
+
+        mockMvc.perform(get("/amenities").header("If-None-Match", "\"amenities-v1\""))
+                .andExpect(status().isNotModified())
+                .andExpect(header().string("ETag", "\"amenities-v1\""))
+                .andExpect(header().string("Cache-Control", "max-age=300, must-revalidate, private"));
     }
 
     @Test

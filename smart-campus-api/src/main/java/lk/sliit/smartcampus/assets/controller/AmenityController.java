@@ -2,10 +2,12 @@ package lk.sliit.smartcampus.assets.controller;
 
 import java.util.List;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lk.sliit.smartcampus.assets.dto.AmenityDto;
 import lk.sliit.smartcampus.assets.dto.AmenityRequestDto;
 import lk.sliit.smartcampus.assets.service.AmenityService;
 import lk.sliit.smartcampus.common.response.ApiResponse;
+import lk.sliit.smartcampus.common.web.WebCacheService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,10 +24,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/amenities")
 public class AmenityController {
 
-    private final AmenityService amenityService;
+    private static final long CACHE_MAX_AGE_SECONDS = 300;
 
-    public AmenityController(AmenityService amenityService) {
+    private final AmenityService amenityService;
+    private final WebCacheService webCacheService;
+
+    public AmenityController(AmenityService amenityService, WebCacheService webCacheService) {
         this.amenityService = amenityService;
+        this.webCacheService = webCacheService;
     }
 
     @PostMapping
@@ -36,13 +42,39 @@ public class AmenityController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<AmenityDto>>> getAllAmenities() {
-        return ResponseEntity.ok(ApiResponse.success("Amenities retrieved successfully", amenityService.getAllAmenities()));
+    public ResponseEntity<ApiResponse<List<AmenityDto>>> getAllAmenities(HttpServletRequest request) {
+        List<AmenityDto> amenities = amenityService.getAllAmenities();
+        String etag = webCacheService.buildEtag(amenities);
+
+        if (webCacheService.isNotModified(request, etag)) {
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED)
+                    .cacheControl(webCacheService.privateCachePolicy(CACHE_MAX_AGE_SECONDS))
+                    .eTag(etag)
+                    .build();
+        }
+
+        return ResponseEntity.ok()
+                .cacheControl(webCacheService.privateCachePolicy(CACHE_MAX_AGE_SECONDS))
+                .eTag(etag)
+                .body(ApiResponse.success("Amenities retrieved successfully", amenities));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<AmenityDto>> getAmenityById(@PathVariable Integer id) {
-        return ResponseEntity.ok(ApiResponse.success("Amenity retrieved successfully", amenityService.getAmenityById(id)));
+    public ResponseEntity<ApiResponse<AmenityDto>> getAmenityById(@PathVariable Integer id, HttpServletRequest request) {
+        AmenityDto amenity = amenityService.getAmenityById(id);
+        String etag = webCacheService.buildEtag(amenity);
+
+        if (webCacheService.isNotModified(request, etag)) {
+            return ResponseEntity.status(HttpStatus.NOT_MODIFIED)
+                    .cacheControl(webCacheService.privateCachePolicy(CACHE_MAX_AGE_SECONDS))
+                    .eTag(etag)
+                    .build();
+        }
+
+        return ResponseEntity.ok()
+                .cacheControl(webCacheService.privateCachePolicy(CACHE_MAX_AGE_SECONDS))
+                .eTag(etag)
+                .body(ApiResponse.success("Amenity retrieved successfully", amenity));
     }
 
     @PutMapping("/{id}")
