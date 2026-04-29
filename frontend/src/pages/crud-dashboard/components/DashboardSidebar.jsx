@@ -267,6 +267,7 @@ function DashboardSidebar({
                   <Avatar
                     src={user?.profilePictureUrl ?? undefined}
                     alt={userDisplayName}
+                    imgProps={{ referrerPolicy: 'no-referrer' }}
                     sx={{
                       width: mini ? 36 : 42,
                       height: mini ? 36 : 42,

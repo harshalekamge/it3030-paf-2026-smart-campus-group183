@@ -232,6 +232,7 @@ export default function AppAppBar() {
                 <Avatar
                   src={user?.profilePictureUrl ?? undefined}
                   alt={userDisplayName}
+                  imgProps={{ referrerPolicy: 'no-referrer' }}
                   sx={{ width: 36, height: 36, bgcolor: 'primary.main' }}
                 >
                   {userDisplayName.charAt(0).toUpperCase()}

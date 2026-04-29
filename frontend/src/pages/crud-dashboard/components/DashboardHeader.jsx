@@ -7,6 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
 import MenuIcon from '@mui/icons-material/Menu';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import Stack from '@mui/material/Stack';
@@ -97,6 +98,17 @@ function DashboardHeader({ logo, title, menuOpen, onToggleMenu }) {
                 ) : null}
               </Stack>
             </Link>
+            <Tooltip title="Go to home" enterDelay={1000}>
+              <IconButton
+                component={Link}
+                to="/"
+                size="small"
+                aria-label="Go to home page"
+                sx={{ ml: 0.75 }}
+              >
+                <HomeRoundedIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
           </Stack>
           <Stack
             direction="row"
