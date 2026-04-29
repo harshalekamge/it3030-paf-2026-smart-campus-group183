@@ -164,47 +164,98 @@ function AvailabilityRow({ item }) {
     <Paper
       elevation={0}
       sx={{
-        p: 1.75,
+        p: 1.5,
+        height: '100%',
         borderRadius: 3,
         border: '1px solid',
-        borderColor: 'divider',
-        bgcolor: 'rgba(255,255,255,0.9)',
+        borderColor: item.isClosed ? 'rgba(248, 113, 113, 0.3)' : 'rgba(96, 165, 250, 0.28)',
+        background: item.isClosed
+          ? 'linear-gradient(180deg, rgba(255, 250, 250, 0.98) 0%, rgba(254, 242, 242, 0.96) 100%)'
+          : 'linear-gradient(180deg, rgba(248, 252, 255, 0.98) 0%, rgba(239, 246, 255, 0.96) 100%)',
+        boxShadow: '0 12px 26px rgba(15, 23, 42, 0.05)',
       }}
     >
-      <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center' }}>
+      <Stack spacing={1.25} sx={{ height: '100%', justifyContent: 'space-between' }}>
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{ alignItems: 'flex-start', justifyContent: 'space-between', minWidth: 0 }}
+        >
+          <Stack direction="row" spacing={1.25} sx={{ alignItems: 'center', minWidth: 0, flex: 1 }}>
+            <Box
+              sx={{
+                width: 38,
+                height: 38,
+                borderRadius: '50%',
+                display: 'grid',
+                placeItems: 'center',
+                bgcolor: item.isClosed ? 'rgba(239, 68, 68, 0.1)' : 'rgba(37, 99, 235, 0.1)',
+                color: item.isClosed ? '#b91c1c' : 'primary.main',
+                fontWeight: 700,
+                fontSize: 13,
+                flexShrink: 0,
+              }}
+            >
+              {String(label).slice(0, 3)}
+            </Box>
+            <Box sx={{ flex: 1, minWidth: 0 }}>
+              <Typography variant="body2" sx={{ fontWeight: 700 }}>
+                {label}
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                {item.specificDate ? 'Date override' : 'Weekly schedule'}
+              </Typography>
+            </Box>
+          </Stack>
+          <Chip
+            label={item.isClosed ? 'Closed' : 'Open'}
+            size="small"
+            sx={{
+              height: 24,
+              borderRadius: 999,
+              bgcolor: item.isClosed ? 'rgba(239, 68, 68, 0.12)' : 'rgba(34, 197, 94, 0.12)',
+              color: item.isClosed ? '#b91c1c' : '#15803d',
+              fontWeight: 700,
+              flexShrink: 0,
+            }}
+          />
+        </Stack>
         <Box
           sx={{
-            width: 38,
-            height: 38,
-            borderRadius: '50%',
-            display: 'grid',
-            placeItems: 'center',
-            bgcolor: 'rgba(37, 99, 235, 0.08)',
-            color: 'primary.main',
-            fontWeight: 700,
-            fontSize: 13,
+            px: 1.25,
+            py: 1,
+            borderRadius: 2.5,
+            bgcolor: 'rgba(255,255,255,0.72)',
+            border: '1px solid rgba(148, 163, 184, 0.18)',
           }}
         >
-          {String(label).slice(0, 3)}
-        </Box>
-        <Box sx={{ flex: 1, minWidth: 0 }}>
+          <Typography variant="caption" sx={{ display: 'block', color: 'text.secondary', mb: 0.25 }}>
+            Hours
+          </Typography>
           <Typography variant="body2" sx={{ fontWeight: 700 }}>
-            {label}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {note}
+            {schedule}
           </Typography>
         </Box>
-        <Chip
-          label={schedule}
-          size="small"
-          sx={{
-            borderRadius: 2,
-            fontWeight: 600,
-            bgcolor: item.isClosed ? 'rgba(239, 68, 68, 0.1)' : 'rgba(15, 23, 42, 0.06)',
-            color: item.isClosed ? '#b91c1c' : 'text.primary',
-          }}
-        />
+        <Stack direction="row" spacing={1.25} sx={{ alignItems: 'center', minWidth: 0 }}>
+          <Box
+            sx={{
+              width: 8,
+              height: 8,
+              borderRadius: '50%',
+              bgcolor: item.isClosed ? '#ef4444' : '#22c55e',
+              flexShrink: 0,
+            }}
+          />
+          <Box sx={{ flex: 1, minWidth: 0 }}>
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              sx={{ display: 'block', lineHeight: 1.4, overflowWrap: 'anywhere' }}
+            >
+              {note}
+            </Typography>
+          </Box>
+        </Stack>
       </Stack>
     </Paper>
   );
@@ -345,6 +396,14 @@ export default function SummaryResourceView() {
         .map((item) => amenityLookup.get(item.amenityId))
         .filter(Boolean),
     [amenityLookup, resourceId, state.resourceAmenities],
+  );
+  const openWindowCount = React.useMemo(
+    () => filteredWindows.filter((item) => !item.isClosed).length,
+    [filteredWindows],
+  );
+  const closedWindowCount = React.useMemo(
+    () => filteredWindows.filter((item) => item.isClosed).length,
+    [filteredWindows],
   );
 
   return (
@@ -540,86 +599,9 @@ export default function SummaryResourceView() {
                   <Grid container spacing={2.5}>
                     <Grid size={{ xs: 12, md: 6 }}>
                       <SectionCard
-                        title="Maintenance & Cost"
-                        subtitle="Service history and lifecycle values"
-                        sx={{ height: '100%' }}
-                      >
-                        <Stack spacing={0.25}>
-                          <DetailRow
-                            label="Replacement Cost"
-                            value={formatMoney(resource.replacementCost)}
-                          />
-                          <DetailRow
-                            label="Purchase Date"
-                            value={formatDate(resource.purchaseDate)}
-                          />
-                          <DetailRow
-                            label="Last Serviced At"
-                            value={formatDate(resource.lastServicedAt)}
-                          />
-                          <DetailRow
-                            label="Next Service Due"
-                            value={formatDate(resource.nextServiceDue)}
-                          />
-                        </Stack>
-                      </SectionCard>
-                    </Grid>
-                    <Grid size={{ xs: 12, md: 6 }}>
-                      <SectionCard
-                        title="Accessibility"
-                        subtitle="Access notes and operational support details"
-                        sx={{ height: '100%' }}
-                      >
-                        <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                          Notes
-                        </Typography>
-                        <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap' }}>
-                          {resource.accessibilityNotes || 'No accessibility notes.'}
-                        </Typography>
-                      </SectionCard>
-                    </Grid>
-                  </Grid>
-
-                  <Grid container spacing={2.5}>
-                    <Grid size={{ xs: 12, md: 6 }}>
-                      <SectionCard
-                        title="Media & Audit"
-                        subtitle="Reference media and system timestamps"
-                        sx={{ height: '100%' }}
-                      >
-                        <Stack spacing={0.25}>
-                          <DetailRow
-                            label="Primary Image URL"
-                            value={
-                              primaryMedia?.url ? (
-                                <Link href={primaryMedia.url} target="_blank" rel="noreferrer">
-                                  Open media
-                                </Link>
-                              ) : (
-                                'Not set'
-                              )
-                            }
-                          />
-                          <DetailRow
-                            label="Created At"
-                            value={formatDateTime(resource.createdAt)}
-                          />
-                          <DetailRow
-                            label="Updated At"
-                            value={formatDateTime(resource.updatedAt)}
-                          />
-                          <DetailRow
-                            label="Tags"
-                            value={resource.tags?.length ? resource.tags.join(', ') : 'Read only'}
-                          />
-                        </Stack>
-                      </SectionCard>
-                    </Grid>
-                    <Grid size={{ xs: 12, md: 6 }}>
-                      <SectionCard
                         title="Maintenance Pulse"
                         subtitle="Latest service activity linked to this resource"
-                        sx={{ height: '100%' }}
+                        sx={{ minHeight: { xs: 'auto', lg: 220 }, height: '100%' }}
                       >
                         {filteredMaintenance.length ? (
                           <Stack spacing={1.5}>
@@ -665,6 +647,83 @@ export default function SummaryResourceView() {
                         ) : (
                           <EmptyState message="No maintenance logs are linked to this resource." />
                         )}
+                      </SectionCard>
+                    </Grid>
+                    <Grid size={{ xs: 12, md: 6 }}>
+                      <SectionCard
+                        title="Maintenance & Cost"
+                        subtitle="Service history and lifecycle values"
+                        sx={{ height: '100%' }}
+                      >
+                        <Stack spacing={0.25}>
+                          <DetailRow
+                            label="Replacement Cost"
+                            value={formatMoney(resource.replacementCost)}
+                          />
+                          <DetailRow
+                            label="Purchase Date"
+                            value={formatDate(resource.purchaseDate)}
+                          />
+                          <DetailRow
+                            label="Last Serviced At"
+                            value={formatDate(resource.lastServicedAt)}
+                          />
+                          <DetailRow
+                            label="Next Service Due"
+                            value={formatDate(resource.nextServiceDue)}
+                          />
+                        </Stack>
+                      </SectionCard>
+                    </Grid>
+                  </Grid>
+
+                  <Grid container spacing={2.5}>
+                    <Grid size={{ xs: 12, md: 6 }}>
+                      <SectionCard
+                        title="Media & Audit"
+                        subtitle="Reference media and system timestamps"
+                        sx={{ height: '100%' }}
+                      >
+                        <Stack spacing={0.25}>
+                          <DetailRow
+                            label="Primary Image URL"
+                            value={
+                              primaryMedia?.url ? (
+                                <Link href={primaryMedia.url} target="_blank" rel="noreferrer">
+                                  Open media
+                                </Link>
+                              ) : (
+                                'Not set'
+                              )
+                            }
+                          />
+                          <DetailRow
+                            label="Created At"
+                            value={formatDateTime(resource.createdAt)}
+                          />
+                          <DetailRow
+                            label="Updated At"
+                            value={formatDateTime(resource.updatedAt)}
+                          />
+                          <DetailRow
+                            label="Tags"
+                            value={resource.tags?.length ? resource.tags.join(', ') : 'Read only'}
+                          />
+                        </Stack>
+                      </SectionCard>
+                    </Grid>
+                    <Grid size={{ xs: 12, md: 6 }}>
+                      <SectionCard
+                        title="Accessibility"
+                        subtitle="Access notes and operational support details"
+                        sx={{ height: '100%' }}
+                      >
+                        <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                          Notes
+                        </Typography>
+                        <Typography variant="body1" sx={{ whiteSpace: 'pre-wrap' }}>
+                          {resource.accessibilityNotes || 'No accessibility notes.'}
+                        </Typography>
                       </SectionCard>
                     </Grid>
                   </Grid>
@@ -731,7 +790,7 @@ export default function SummaryResourceView() {
                       </Stack>
                       <Box
                         sx={{
-                          minHeight: 220,
+                          height: { xs: 560, sm: 680, lg: 547 },
                           borderRadius: 4,
                           border: '1px solid rgba(148, 163, 184, 0.18)',
                           bgcolor: 'rgba(148, 163, 184, 0.12)',
@@ -746,7 +805,7 @@ export default function SummaryResourceView() {
                             component="img"
                             src={primaryMedia.url}
                             alt={primaryMedia.caption || resource.name}
-                            sx={{ width: '100%', objectFit: 'cover' }}
+                            sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                           />
                         ) : (
                           <Stack
@@ -867,6 +926,7 @@ export default function SummaryResourceView() {
                   <SectionCard
                     title="Assigned Amenities"
                     subtitle="The resource experience at a glance"
+                    sx={{ minHeight: { xs: 'auto', lg: 220 } }}
                   >
                     {assignedAmenities.length ? (
                       <Stack direction="row" spacing={1} useFlexGap sx={{ flexWrap: 'wrap' }}>
@@ -884,29 +944,89 @@ export default function SummaryResourceView() {
                     )}
                   </SectionCard>
 
-                  <SectionCard
-                    title="Availability Snapshot"
-                    subtitle="Weekly rhythm and dated overrides for this resource"
-                  >
-                    {filteredWindows.length ? (
-                      <Stack spacing={1.2}>
-                        {filteredWindows.slice(0, 7).map((item) => (
-                          <AvailabilityRow
-                            key={
-                              item.id ??
-                              `${item.resourceId}-${item.dayOfWeek}-${item.specificDate}`
-                            }
-                            item={item}
-                          />
-                        ))}
-                      </Stack>
-                    ) : (
-                      <EmptyState message="No availability windows are configured yet." />
-                    )}
-                  </SectionCard>
                 </Stack>
               </Grid>
             </Grid>
+
+            <SectionCard
+              title="Availability Snapshot"
+              subtitle="Weekly rhythm and dated overrides for this resource"
+            >
+              {filteredWindows.length ? (
+                <Stack spacing={1.75}>
+                  <Box
+                    sx={{
+                      p: 1.75,
+                      borderRadius: 3,
+                      background:
+                        'linear-gradient(135deg, rgba(239,246,255,0.95) 0%, rgba(248,250,252,0.96) 100%)',
+                      border: '1px solid rgba(147, 197, 253, 0.25)',
+                    }}
+                  >
+                    <Stack
+                      direction={{ xs: 'column', sm: 'row' }}
+                      spacing={1.25}
+                      sx={{ justifyContent: 'space-between', alignItems: { sm: 'center' } }}
+                    >
+                      <Box>
+                        <Typography variant="body2" sx={{ fontWeight: 700 }}>
+                          {filteredWindows.length} configured window
+                          {filteredWindows.length === 1 ? '' : 's'}
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary">
+                          Showing the first {Math.min(filteredWindows.length, 6)} entries in this snapshot.
+                        </Typography>
+                      </Box>
+                      <Stack direction="row" spacing={1} useFlexGap sx={{ flexWrap: 'wrap' }}>
+                        <Chip
+                          label={`${openWindowCount} Open`}
+                          size="small"
+                          sx={{
+                            borderRadius: 999,
+                            bgcolor: 'rgba(34, 197, 94, 0.12)',
+                            color: '#15803d',
+                            fontWeight: 700,
+                          }}
+                        />
+                        <Chip
+                          label={`${closedWindowCount} Closed`}
+                          size="small"
+                          sx={{
+                            borderRadius: 999,
+                            bgcolor: 'rgba(239, 68, 68, 0.1)',
+                            color: '#b91c1c',
+                            fontWeight: 700,
+                          }}
+                        />
+                      </Stack>
+                    </Stack>
+                  </Box>
+                  <Box
+                    sx={{
+                      display: 'grid',
+                      gap: 1.25,
+                      gridTemplateColumns: {
+                        xs: '1fr',
+                        sm: 'repeat(2, minmax(0, 1fr))',
+                        md: 'repeat(3, minmax(0, 1fr))',
+                        lg: 'repeat(6, minmax(0, 1fr))',
+                      },
+                      alignItems: 'stretch',
+                    }}
+                  >
+                    {filteredWindows.slice(0, 6).map((item) => (
+                      <Box
+                        key={item.id ?? `${item.resourceId}-${item.dayOfWeek}-${item.specificDate}`}
+                      >
+                        <AvailabilityRow item={item} />
+                      </Box>
+                    ))}
+                  </Box>
+                </Stack>
+              ) : (
+                <EmptyState message="No availability windows are configured yet." />
+              )}
+            </SectionCard>
           </Stack>
         ) : null}
       </Box>

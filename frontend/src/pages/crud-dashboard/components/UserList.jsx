@@ -130,7 +130,11 @@ export default function UserList() {
         minWidth: 250,
         renderCell: ({ row }) => (
           <Stack direction="row" spacing={1.5} sx={{ alignItems: 'center', minWidth: 0 }}>
-            <Avatar src={row.profilePictureUrl ?? undefined} alt={getDisplayName(row)}>
+            <Avatar
+              src={row.profilePictureUrl ?? undefined}
+              alt={getDisplayName(row)}
+              imgProps={{ referrerPolicy: 'no-referrer' }}
+            >
               {getDisplayName(row).charAt(0).toUpperCase()}
             </Avatar>
             <Box sx={{ minWidth: 0 }}>

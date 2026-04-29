@@ -2,15 +2,19 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
 import Drawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Tooltip from '@mui/material/Tooltip';
+import Typography from '@mui/material/Typography';
 import Toolbar from '@mui/material/Toolbar';
 
-import PersonIcon from '@mui/icons-material/Person';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import DescriptionIcon from '@mui/icons-material/Description';
-import LayersIcon from '@mui/icons-material/Layers';
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import CategoryIcon from '@mui/icons-material/Category';
 import ChairAltIcon from '@mui/icons-material/ChairAlt';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
@@ -18,13 +22,12 @@ import BuildIcon from '@mui/icons-material/Build';
 import PermMediaIcon from '@mui/icons-material/PermMedia';
 import MeetingRoomIcon from '@mui/icons-material/MeetingRoom';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-import { matchPath, useLocation } from 'react-router-dom';
+import { matchPath, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../auth/AuthContext';
 import DashboardSidebarContext from '../context/DashboardSidebarContext';
 import { DRAWER_WIDTH, MINI_DRAWER_WIDTH } from '../constants';
 import DashboardSidebarPageItem from './DashboardSidebarPageItem';
 import DashboardSidebarHeaderItem from './DashboardSidebarHeaderItem';
-import DashboardSidebarDividerItem from './DashboardSidebarDividerItem';
 import {
   getDrawerSxTransitionMixin,
   getDrawerWidthTransitionMixin,
@@ -37,11 +40,13 @@ function DashboardSidebar({
   container,
 }) {
   const theme = useTheme();
-  const { isAdmin } = useAuth();
+  const navigate = useNavigate();
+  const { isAdmin, logout, user } = useAuth();
 
   const { pathname } = useLocation();
 
   const [expandedItemIds, setExpandedItemIds] = React.useState([]);
+  const [profileMenuAnchor, setProfileMenuAnchor] = React.useState(null);
 
   const isOverSmViewport = useMediaQuery(theme.breakpoints.up('sm'));
   const isOverMdViewport = useMediaQuery(theme.breakpoints.up('md'));
@@ -106,6 +111,41 @@ function DashboardSidebar({
   const hasDrawerTransitions =
     isOverSmViewport && (!disableCollapsibleSidebar || isOverMdViewport);
 
+  const userDisplayName = React.useMemo(() => {
+    if (!user) {
+      return 'Guest user';
+    }
+
+    return (
+      user.fullName ||
+      [user.firstName, user.lastName].filter(Boolean).join(' ') ||
+      user.email ||
+      'Campus user'
+    );
+  }, [user]);
+
+  const userRoleLabel = React.useMemo(() => {
+    if (!user?.role) {
+      return 'Signed in';
+    }
+
+    return String(user.role).replace(/_/g, ' ');
+  }, [user]);
+
+  const handleLogout = React.useCallback(async () => {
+    setProfileMenuAnchor(null);
+    await logout();
+    navigate('/signin');
+  }, [logout, navigate]);
+
+  const handleOpenProfileMenu = React.useCallback((event) => {
+    setProfileMenuAnchor(event.currentTarget);
+  }, []);
+
+  const handleCloseProfileMenu = React.useCallback(() => {
+    setProfileMenuAnchor(null);
+  }, []);
+
   const getDrawerContent = React.useCallback(
     (viewport) => (
       <React.Fragment>
@@ -131,43 +171,23 @@ function DashboardSidebar({
             dense
             sx={{
               padding: mini ? 0 : 0.5,
-              mb: 4,
               width: mini ? MINI_DRAWER_WIDTH : 'auto',
             }}
           >
             <DashboardSidebarHeaderItem>Main items</DashboardSidebarHeaderItem>
-            <DashboardSidebarPageItem
-              id="employees"
-              title="Employees"
-              icon={<PersonIcon />}
-              href="/dashboard/employees"
-              selected={
-                !!matchPath('/dashboard/employees/*', pathname) ||
-                pathname === '/dashboard'
-              }
-            />
-            {isAdmin ? (
-              <DashboardSidebarPageItem
-                id="users"
-                title="User Management"
-                icon={<AdminPanelSettingsIcon />}
-                href="/dashboard/users"
-                selected={!!matchPath('/dashboard/users/*', pathname)}
-              />
-            ) : null}
-            <DashboardSidebarPageItem
-              id="resource-types"
-              title="Resource Types"
-              icon={<CategoryIcon />}
-              href="/dashboard/resource-types"
-              selected={!!matchPath('/dashboard/resource-types/*', pathname)}
-            />
             <DashboardSidebarPageItem
               id="resources"
               title="Resources"
               icon={<MeetingRoomIcon />}
               href="/dashboard/resources"
               selected={!!matchPath('/dashboard/resources/*', pathname)}
+            />
+            <DashboardSidebarPageItem
+              id="resource-types"
+              title="Resource Types"
+              icon={<CategoryIcon />}
+              href="/dashboard/resource-types"
+              selected={!!matchPath('/dashboard/resource-types/*', pathname)}
             />
             <DashboardSidebarPageItem
               id="amenities"
@@ -177,18 +197,18 @@ function DashboardSidebar({
               selected={!!matchPath('/dashboard/amenities/*', pathname)}
             />
             <DashboardSidebarPageItem
-              id="resource-media"
-              title="Resource Media"
-              icon={<PermMediaIcon />}
-              href="/dashboard/resource-media"
-              selected={!!matchPath('/dashboard/resource-media/*', pathname)}
-            />
-            <DashboardSidebarPageItem
               id="availability-windows"
               title="Availability Windows"
               icon={<AccessTimeIcon />}
               href="/dashboard/availability-windows"
               selected={!!matchPath('/dashboard/availability-windows/*', pathname)}
+            />
+            <DashboardSidebarPageItem
+              id="resource-media"
+              title="Resource Media"
+              icon={<PermMediaIcon />}
+              href="/dashboard/resource-media"
+              selected={!!matchPath('/dashboard/resource-media/*', pathname)}
             />
             <DashboardSidebarPageItem
               id="maintenance-logs"
@@ -197,55 +217,140 @@ function DashboardSidebar({
               href="/dashboard/maintenance-logs"
               selected={!!matchPath('/dashboard/maintenance-logs/*', pathname)}
             />
-            <DashboardSidebarDividerItem />
-            <DashboardSidebarHeaderItem>Example items</DashboardSidebarHeaderItem>
-            <DashboardSidebarPageItem
-              id="reports"
-              title="Reports"
-              icon={<BarChartIcon />}
-              href="/dashboard/reports"
-              selected={!!matchPath('/dashboard/reports', pathname)}
-              defaultExpanded={!!matchPath('/dashboard/reports', pathname)}
-              expanded={expandedItemIds.includes('reports')}
-              nestedNavigation={
-                <List
-                  dense
+            {isAdmin ? (
+              <React.Fragment>
+                <DashboardSidebarHeaderItem>Admin only</DashboardSidebarHeaderItem>
+                <DashboardSidebarPageItem
+                  id="users"
+                  title="User Management"
+                  icon={<AdminPanelSettingsIcon />}
+                  href="/dashboard/users"
+                  selected={!!matchPath('/dashboard/users/*', pathname)}
+                />
+              </React.Fragment>
+            ) : null}
+          </List>
+          <Box
+            sx={{
+              px: mini ? 0.75 : 1.25,
+              pb: 1.25,
+              pt: 1,
+            }}
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: mini ? 0 : 1.25,
+                justifyContent: mini ? 'center' : 'flex-start',
+                px: mini ? 0.5 : 1,
+                py: 1,
+                border: '1px solid',
+                borderColor: 'divider',
+                borderRadius: 2.5,
+                backgroundColor: 'background.paper',
+                boxShadow: '0 8px 24px rgba(15, 23, 42, 0.06)',
+              }}
+            >
+              <Tooltip title="Profile options" placement={mini ? 'right' : 'top'}>
+                <IconButton
+                  onClick={handleOpenProfileMenu}
+                  aria-label="Open profile menu"
                   sx={{
-                    padding: 0,
-                    my: 1,
-                    pl: mini ? 0 : 1,
-                    minWidth: 240,
+                    p: 0,
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    borderRadius: '50%',
+                    flexShrink: 0,
                   }}
                 >
-                  <DashboardSidebarPageItem
-                    id="sales"
-                    title="Sales"
-                    icon={<DescriptionIcon />}
-                    href="/dashboard/reports/sales"
-                    selected={!!matchPath('/dashboard/reports/sales', pathname)}
+                  <Avatar
+                    src={user?.profilePictureUrl ?? undefined}
+                    alt={userDisplayName}
+                    imgProps={{ referrerPolicy: 'no-referrer' }}
+                    sx={{
+                      width: mini ? 36 : 42,
+                      height: mini ? 36 : 42,
+                      bgcolor: 'primary.main',
+                      flexShrink: 0,
+                    }}
+                  >
+                    {userDisplayName.charAt(0).toUpperCase()}
+                  </Avatar>
+                </IconButton>
+              </Tooltip>
+              <Menu
+                anchorEl={profileMenuAnchor}
+                open={Boolean(profileMenuAnchor)}
+                onClose={handleCloseProfileMenu}
+                anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                transformOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                sx={{
+                  '& .MuiPaper-root': {
+                    minWidth: 140,
+                  },
+                }}
+              >
+                <MenuItem onClick={handleLogout}>
+                  <LogoutRoundedIcon fontSize="small" sx={{ mr: 1 }} />
+                  Logout
+                </MenuItem>
+              </Menu>
+              {!mini ? (
+                <Box sx={{ minWidth: 0, flex: 1 }}>
+                  <Typography
+                    variant="subtitle2"
+                    sx={{
+                      fontWeight: 700,
+                      lineHeight: 1.2,
+                    }}
+                    noWrap
+                  >
+                    {userDisplayName}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{
+                      lineHeight: 1.25,
+                      mt: 0.25,
+                      fontSize: '0.8rem',
+                      whiteSpace: 'normal',
+                      overflowWrap: 'anywhere',
+                      wordBreak: 'break-word',
+                    }}
+                  >
+                    {user?.email ?? 'No email available'}
+                  </Typography>
+                  <Chip
+                    label={userRoleLabel}
+                    color="primary"
+                    size="small"
+                    variant="outlined"
+                    sx={{ mt: 1, textTransform: 'capitalize' }}
                   />
-                  <DashboardSidebarPageItem
-                    id="traffic"
-                    title="Traffic"
-                    icon={<DescriptionIcon />}
-                    href="/dashboard/reports/traffic"
-                    selected={!!matchPath('/dashboard/reports/traffic', pathname)}
-                  />
-                </List>
-              }
-            />
-            <DashboardSidebarPageItem
-              id="integrations"
-              title="Integrations"
-              icon={<LayersIcon />}
-              href="/dashboard/integrations"
-              selected={!!matchPath('/dashboard/integrations', pathname)}
-            />
-          </List>
+                </Box>
+              ) : null}
+            </Box>
+          </Box>
         </Box>
       </React.Fragment>
     ),
-    [mini, hasDrawerTransitions, isFullyExpanded, expandedItemIds, pathname],
+    [
+      mini,
+      hasDrawerTransitions,
+      isFullyExpanded,
+      expandedItemIds,
+      pathname,
+      isAdmin,
+      handleLogout,
+      handleCloseProfileMenu,
+      handleOpenProfileMenu,
+      user,
+      userDisplayName,
+      userRoleLabel,
+      profileMenuAnchor,
+    ],
   );
 
   const getDrawerSharedSx = React.useCallback(

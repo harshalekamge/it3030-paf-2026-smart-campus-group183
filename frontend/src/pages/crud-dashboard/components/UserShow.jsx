@@ -122,6 +122,7 @@ export default function UserShow() {
               <Avatar
                 src={user.profilePictureUrl ?? undefined}
                 alt={getDisplayName(user)}
+                imgProps={{ referrerPolicy: 'no-referrer' }}
                 sx={{ width: 72, height: 72 }}
               >
                 {getDisplayName(user).charAt(0).toUpperCase()}
