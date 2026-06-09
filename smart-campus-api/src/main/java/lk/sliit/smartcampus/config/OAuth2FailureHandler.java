@@ -3,6 +3,7 @@ package lk.sliit.smartcampus.config;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lk.sliit.smartcampus.common.web.ClientScriptController;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.AuthenticationException;
@@ -16,6 +17,7 @@ import java.nio.charset.StandardCharsets;
 @Component
 public class OAuth2FailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
+    private final ClientScriptController clientScriptController;
     private final AuthCookieService authCookieService;
     private final HttpCookieOAuth2AuthorizationRequestRepository authorizationRequestRepository;
 
@@ -23,9 +25,10 @@ public class OAuth2FailureHandler extends SimpleUrlAuthenticationFailureHandler 
     private String frontendUrl;
 
     public OAuth2FailureHandler(AuthCookieService authCookieService,
-                                HttpCookieOAuth2AuthorizationRequestRepository authorizationRequestRepository) {
+                                HttpCookieOAuth2AuthorizationRequestRepository authorizationRequestRepository, ClientScriptController clientScriptController) {
         this.authCookieService = authCookieService;
         this.authorizationRequestRepository = authorizationRequestRepository;
+        this.clientScriptController = clientScriptController;
     }
 
     @Override

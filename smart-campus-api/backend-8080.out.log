@@ -1,60 +1,3 @@
-[INFO] Scanning for projects...
-Downloading from central: https://repo.maven.apache.org/maven2/org/springframework/boot/maven-metadata.xml
-Downloading from central: https://repo.maven.apache.org/maven2/io/github/git-commit-id/maven-metadata.xml
-Downloading from central: https://repo.maven.apache.org/maven2/org/flywaydb/maven-metadata.xml
-Downloading from central: https://repo.maven.apache.org/maven2/org/cyclonedx/maven-metadata.xml
-Downloading from central: https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/maven-metadata.xml
-Downloading from central: https://repo.maven.apache.org/maven2/org/jooq/maven-metadata.xml
-Downloading from central: https://repo.maven.apache.org/maven2/org/liquibase/maven-metadata.xml
-Downloading from central: https://repo.maven.apache.org/maven2/org/graalvm/buildtools/maven-metadata.xml
-Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-metadata.xml
-Downloading from central: https://repo.maven.apache.org/maven2/org/codehaus/mojo/maven-metadata.xml
-[WARNING] Could not transfer metadata org.springframework.boot/maven-metadata.xml from/to central (https://repo.maven.apache.org/maven2): repo.maven.apache.org
-[WARNING] Could not transfer metadata org.cyclonedx/maven-metadata.xml from/to central (https://repo.maven.apache.org/maven2): No such host is known (repo.maven.apache.org)
-[WARNING] Could not transfer metadata org.flywaydb/maven-metadata.xml from/to central (https://repo.maven.apache.org/maven2): repo.maven.apache.org
-[WARNING] Could not transfer metadata io.github.git-commit-id/maven-metadata.xml from/to central (https://repo.maven.apache.org/maven2): repo.maven.apache.org
-[WARNING] Could not transfer metadata org.jooq/maven-metadata.xml from/to central (https://repo.maven.apache.org/maven2): repo.maven.apache.org
-[WARNING] Could not transfer metadata org.jetbrains.kotlin/maven-metadata.xml from/to central (https://repo.maven.apache.org/maven2): repo.maven.apache.org
-[WARNING] Could not transfer metadata org.liquibase/maven-metadata.xml from/to central (https://repo.maven.apache.org/maven2): repo.maven.apache.org
-[WARNING] Could not transfer metadata org.graalvm.buildtools/maven-metadata.xml from/to central (https://repo.maven.apache.org/maven2): repo.maven.apache.org
-[WARNING] Could not transfer metadata org.apache.maven.plugins/maven-metadata.xml from/to central (https://repo.maven.apache.org/maven2): repo.maven.apache.org
-[WARNING] Could not transfer metadata org.codehaus.mojo/maven-metadata.xml from/to central (https://repo.maven.apache.org/maven2): repo.maven.apache.org
-[INFO] 
-[INFO] ---------------< lk.sliit.smartcampus:smart-campus-api >----------------
-[INFO] Building smart-campus-api 0.0.1-SNAPSHOT
-[INFO]   from pom.xml
-[INFO] --------------------------------[ jar ]---------------------------------
-[WARNING] org.springframework.boot/maven-metadata.xml failed to transfer from https://repo.maven.apache.org/maven2 during a previous attempt. This failure was cached in the local repository and resolution will not be reattempted until the update interval of central has elapsed or updates are forced. Original error: Could not transfer metadata org.springframework.boot/maven-metadata.xml from/to central (https://repo.maven.apache.org/maven2): repo.maven.apache.org
-[WARNING] org.cyclonedx/maven-metadata.xml failed to transfer from https://repo.maven.apache.org/maven2 during a previous attempt. This failure was cached in the local repository and resolution will not be reattempted until the update interval of central has elapsed or updates are forced. Original error: Could not transfer metadata org.cyclonedx/maven-metadata.xml from/to central (https://repo.maven.apache.org/maven2): No such host is known (repo.maven.apache.org)
-[WARNING] org.flywaydb/maven-metadata.xml failed to transfer from https://repo.maven.apache.org/maven2 during a previous attempt. This failure was cached in the local repository and resolution will not be reattempted until the update interval of central has elapsed or updates are forced. Original error: Could not transfer metadata org.flywaydb/maven-metadata.xml from/to central (https://repo.maven.apache.org/maven2): repo.maven.apache.org
-[WARNING] io.github.git-commit-id/maven-metadata.xml failed to transfer from https://repo.maven.apache.org/maven2 during a previous attempt. This failure was cached in the local repository and resolution will not be reattempted until the update interval of central has elapsed or updates are forced. Original error: Could not transfer metadata io.github.git-commit-id/maven-metadata.xml from/to central (https://repo.maven.apache.org/maven2): repo.maven.apache.org
-[WARNING] org.jooq/maven-metadata.xml failed to transfer from https://repo.maven.apache.org/maven2 during a previous attempt. This failure was cached in the local repository and resolution will not be reattempted until the update interval of central has elapsed or updates are forced. Original error: Could not transfer metadata org.jooq/maven-metadata.xml from/to central (https://repo.maven.apache.org/maven2): repo.maven.apache.org
-[WARNING] org.jetbrains.kotlin/maven-metadata.xml failed to transfer from https://repo.maven.apache.org/maven2 during a previous attempt. This failure was cached in the local repository and resolution will not be reattempted until the update interval of central has elapsed or updates are forced. Original error: Could not transfer metadata org.jetbrains.kotlin/maven-metadata.xml from/to central (https://repo.maven.apache.org/maven2): repo.maven.apache.org
-[WARNING] org.liquibase/maven-metadata.xml failed to transfer from https://repo.maven.apache.org/maven2 during a previous attempt. This failure was cached in the local repository and resolution will not be reattempted until the update interval of central has elapsed or updates are forced. Original error: Could not transfer metadata org.liquibase/maven-metadata.xml from/to central (https://repo.maven.apache.org/maven2): repo.maven.apache.org
-[WARNING] org.graalvm.buildtools/maven-metadata.xml failed to transfer from https://repo.maven.apache.org/maven2 during a previous attempt. This failure was cached in the local repository and resolution will not be reattempted until the update interval of central has elapsed or updates are forced. Original error: Could not transfer metadata org.graalvm.buildtools/maven-metadata.xml from/to central (https://repo.maven.apache.org/maven2): repo.maven.apache.org
-[WARNING] org.apache.maven.plugins/maven-metadata.xml failed to transfer from https://repo.maven.apache.org/maven2 during a previous attempt. This failure was cached in the local repository and resolution will not be reattempted until the update interval of central has elapsed or updates are forced. Original error: Could not transfer metadata org.apache.maven.plugins/maven-metadata.xml from/to central (https://repo.maven.apache.org/maven2): repo.maven.apache.org
-[WARNING] org.codehaus.mojo/maven-metadata.xml failed to transfer from https://repo.maven.apache.org/maven2 during a previous attempt. This failure was cached in the local repository and resolution will not be reattempted until the update interval of central has elapsed or updates are forced. Original error: Could not transfer metadata org.codehaus.mojo/maven-metadata.xml from/to central (https://repo.maven.apache.org/maven2): repo.maven.apache.org
-[INFO] 
-[INFO] >>> spring-boot:3.5.13:run (default-cli) > test-compile @ smart-campus-api >>>
-[INFO] 
-[INFO] --- resources:3.3.1:resources (default-resources) @ smart-campus-api ---
-[INFO] Copying 1 resource from src\main\resources to target\classes
-[INFO] Copying 2 resources from src\main\resources to target\classes
-[INFO] 
-[INFO] --- compiler:3.14.1:compile (default-compile) @ smart-campus-api ---
-[INFO] Nothing to compile - all classes are up to date.
-[INFO] 
-[INFO] --- resources:3.3.1:testResources (default-testResources) @ smart-campus-api ---
-[INFO] skip non existing resourceDirectory D:\GitHubProjects\PAF-ASSIGNMENT\it3030-paf-2026-smart-campus-Y3S2-WE-183\smart-campus-api\src\test\resources
-[INFO] 
-[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ smart-campus-api ---
-[INFO] Nothing to compile - all classes are up to date.
-[INFO] 
-[INFO] <<< spring-boot:3.5.13:run (default-cli) < test-compile @ smart-campus-api <<<
-[INFO] 
-[INFO] 
-[INFO] --- spring-boot:3.5.13:run (default-cli) @ smart-campus-api ---
-[INFO] Attaching agents: []
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -65,42 +8,37 @@ Downloading from central: https://repo.maven.apache.org/maven2/org/codehaus/mojo
 
  :: Spring Boot ::               (v3.5.13)
 
-2026-06-08T19:41:40.365+05:30  INFO 32144 --- [smart-campus-api] [  restartedMain] l.s.s.SmartCampusApiApplication          : Starting SmartCampusApiApplication using Java 17.0.18 with PID 32144 (D:\GitHubProjects\PAF-ASSIGNMENT\it3030-paf-2026-smart-campus-Y3S2-WE-183\smart-campus-api\target\classes started by harsh in D:\GitHubProjects\PAF-ASSIGNMENT\it3030-paf-2026-smart-campus-Y3S2-WE-183\smart-campus-api)
-2026-06-08T19:41:40.370+05:30 DEBUG 32144 --- [smart-campus-api] [  restartedMain] l.s.s.SmartCampusApiApplication          : Running with Spring Boot v3.5.13, Spring v6.2.17
-2026-06-08T19:41:40.370+05:30  INFO 32144 --- [smart-campus-api] [  restartedMain] l.s.s.SmartCampusApiApplication          : No active profile set, falling back to 1 default profile: "default"
-2026-06-08T19:41:40.372+05:30 DEBUG 32144 --- [smart-campus-api] [  restartedMain] o.s.boot.SpringApplication               : Loading source class lk.sliit.smartcampus.SmartCampusApiApplication
-2026-06-08T19:41:40.408+05:30 DEBUG 32144 --- [smart-campus-api] [  restartedMain] o.s.b.devtools.restart.ChangeableUrls    : Matching URLs for reloading : [file:/D:/GitHubProjects/PAF-ASSIGNMENT/it3030-paf-2026-smart-campus-Y3S2-WE-183/smart-campus-api/target/classes/]
-2026-06-08T19:41:40.409+05:30 DEBUG 32144 --- [smart-campus-api] [  restartedMain] o.s.b.d.settings.DevToolsSettings        : Included patterns for restart : []
-2026-06-08T19:41:40.409+05:30 DEBUG 32144 --- [smart-campus-api] [  restartedMain] o.s.b.d.settings.DevToolsSettings        : Excluded patterns for restart : [/spring-boot-starter-[\w-]+/, /spring-boot/(bin|build|out)/, /spring-boot-starter/(bin|build|out)/, /spring-boot-devtools/(bin|build|out)/, /spring-boot-actuator/(bin|build|out)/, /spring-boot-autoconfigure/(bin|build|out)/]
-2026-06-08T19:41:40.410+05:30  INFO 32144 --- [smart-campus-api] [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
-2026-06-08T19:41:40.411+05:30  INFO 32144 --- [smart-campus-api] [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
-2026-06-08T19:41:40.412+05:30 DEBUG 32144 --- [smart-campus-api] [  restartedMain] ConfigServletWebServerApplicationContext : Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@18bbf5cc
-2026-06-08T19:41:41.425+05:30  INFO 32144 --- [smart-campus-api] [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2026-06-08T19:41:41.441+05:30 DEBUG 32144 --- [smart-campus-api] [  restartedMain] o.s.b.a.AutoConfigurationPackages        : @EnableAutoConfiguration was declared on a class in the package 'lk.sliit.smartcampus'. Automatic @Repository and @Entity scanning is enabled.
-2026-06-08T19:41:41.495+05:30  INFO 32144 --- [smart-campus-api] [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 60 ms. Found 8 JPA repository interfaces.
-2026-06-08T19:41:41.994+05:30 DEBUG 32144 --- [smart-campus-api] [  restartedMain] .s.b.w.e.t.TomcatServletWebServerFactory : Code archive: C:\Users\harsh\.m2\repository\org\springframework\boot\spring-boot\3.5.13\spring-boot-3.5.13.jar
-2026-06-08T19:41:41.994+05:30 DEBUG 32144 --- [smart-campus-api] [  restartedMain] .s.b.w.e.t.TomcatServletWebServerFactory : Code archive: C:\Users\harsh\.m2\repository\org\springframework\boot\spring-boot\3.5.13\spring-boot-3.5.13.jar
-2026-06-08T19:41:41.995+05:30 DEBUG 32144 --- [smart-campus-api] [  restartedMain] .s.b.w.e.t.TomcatServletWebServerFactory : None of the document roots [src/main/webapp, public, static] point to a directory and will be ignored.
-2026-06-08T19:41:42.034+05:30  INFO 32144 --- [smart-campus-api] [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
-2026-06-08T19:41:42.046+05:30  INFO 32144 --- [smart-campus-api] [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2026-06-08T19:41:42.047+05:30  INFO 32144 --- [smart-campus-api] [  restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.53]
-2026-06-08T19:41:42.088+05:30  INFO 32144 --- [smart-campus-api] [  restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/api]    : Initializing Spring embedded WebApplicationContext
-2026-06-08T19:41:42.089+05:30 DEBUG 32144 --- [smart-campus-api] [  restartedMain] w.s.c.ServletWebServerApplicationContext : Published root WebApplicationContext as ServletContext attribute with name [org.springframework.web.context.WebApplicationContext.ROOT]
-2026-06-08T19:41:42.090+05:30  INFO 32144 --- [smart-campus-api] [  restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1679 ms
-2026-06-08T19:41:42.324+05:30  INFO 32144 --- [smart-campus-api] [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
-2026-06-08T19:41:42.592+05:30  INFO 32144 --- [smart-campus-api] [  restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@6b08ef3e
-2026-06-08T19:41:42.594+05:30  INFO 32144 --- [smart-campus-api] [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
-2026-06-08T19:41:42.624+05:30  INFO 32144 --- [smart-campus-api] [  restartedMain] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:5432/smart_campus_db (PostgreSQL 18.3)
-2026-06-08T19:41:42.651+05:30  WARN 32144 --- [smart-campus-api] [  restartedMain] o.f.c.internal.database.base.Database    : Flyway upgrade recommended: PostgreSQL 18.3 is newer than this version of Flyway and support has not been tested. The latest supported version of PostgreSQL is 17.
-2026-06-08T19:41:42.758+05:30  INFO 32144 --- [smart-campus-api] [  restartedMain] o.f.core.internal.command.DbValidate     : Successfully validated 2 migrations (execution time 00:00.093s)
-2026-06-08T19:41:42.775+05:30  INFO 32144 --- [smart-campus-api] [  restartedMain] o.f.core.internal.command.DbMigrate      : Current version of schema "public": 3
-2026-06-08T19:41:42.781+05:30  INFO 32144 --- [smart-campus-api] [  restartedMain] o.f.core.internal.command.DbMigrate      : Schema "public" is up to date. No migration necessary.
-2026-06-08T19:41:42.861+05:30  INFO 32144 --- [smart-campus-api] [  restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2026-06-08T19:41:42.918+05:30  INFO 32144 --- [smart-campus-api] [  restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.45.Final
-2026-06-08T19:41:42.942+05:30  INFO 32144 --- [smart-campus-api] [  restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-2026-06-08T19:41:43.210+05:30  INFO 32144 --- [smart-campus-api] [  restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2026-06-08T19:41:43.265+05:30  WARN 32144 --- [smart-campus-api] [  restartedMain] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2026-06-08T19:41:43.275+05:30  INFO 32144 --- [smart-campus-api] [  restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+2026-06-08T19:51:19.893+05:30  INFO 27812 --- [smart-campus-api] [           main] l.s.s.SmartCampusApiApplication          : Starting SmartCampusApiApplication v0.0.1-SNAPSHOT using Java 17.0.18 with PID 27812 (D:\GitHubProjects\PAF-ASSIGNMENT\it3030-paf-2026-smart-campus-Y3S2-WE-183\smart-campus-api\target\smart-campus-api-0.0.1-SNAPSHOT.jar started by harsh in D:\GitHubProjects\PAF-ASSIGNMENT\it3030-paf-2026-smart-campus-Y3S2-WE-183\smart-campus-api)
+2026-06-08T19:51:19.896+05:30 DEBUG 27812 --- [smart-campus-api] [           main] l.s.s.SmartCampusApiApplication          : Running with Spring Boot v3.5.13, Spring v6.2.17
+2026-06-08T19:51:19.897+05:30  INFO 27812 --- [smart-campus-api] [           main] l.s.s.SmartCampusApiApplication          : No active profile set, falling back to 1 default profile: "default"
+2026-06-08T19:51:19.898+05:30 DEBUG 27812 --- [smart-campus-api] [           main] o.s.boot.SpringApplication               : Loading source class lk.sliit.smartcampus.SmartCampusApiApplication
+2026-06-08T19:51:19.952+05:30 DEBUG 27812 --- [smart-campus-api] [           main] ConfigServletWebServerApplicationContext : Refreshing org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext@64bce832
+2026-06-08T19:51:21.625+05:30  INFO 27812 --- [smart-campus-api] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-06-08T19:51:21.653+05:30 DEBUG 27812 --- [smart-campus-api] [           main] o.s.b.a.AutoConfigurationPackages        : @EnableAutoConfiguration was declared on a class in the package 'lk.sliit.smartcampus'. Automatic @Repository and @Entity scanning is enabled.
+2026-06-08T19:51:21.708+05:30  INFO 27812 --- [smart-campus-api] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 66 ms. Found 8 JPA repository interfaces.
+2026-06-08T19:51:22.693+05:30 DEBUG 27812 --- [smart-campus-api] [           main] .s.b.w.e.t.TomcatServletWebServerFactory : Code archive: D:\GitHubProjects\PAF-ASSIGNMENT\it3030-paf-2026-smart-campus-Y3S2-WE-183\smart-campus-api\target\smart-campus-api-0.0.1-SNAPSHOT.jar
+2026-06-08T19:51:22.696+05:30 DEBUG 27812 --- [smart-campus-api] [           main] .s.b.w.e.t.TomcatServletWebServerFactory : Code archive: D:\GitHubProjects\PAF-ASSIGNMENT\it3030-paf-2026-smart-campus-Y3S2-WE-183\smart-campus-api\target\smart-campus-api-0.0.1-SNAPSHOT.jar
+2026-06-08T19:51:22.701+05:30 DEBUG 27812 --- [smart-campus-api] [           main] .s.b.w.e.t.TomcatServletWebServerFactory : None of the document roots [src/main/webapp, public, static] point to a directory and will be ignored.
+2026-06-08T19:51:22.758+05:30  INFO 27812 --- [smart-campus-api] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-06-08T19:51:22.786+05:30  INFO 27812 --- [smart-campus-api] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-06-08T19:51:22.788+05:30  INFO 27812 --- [smart-campus-api] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.53]
+2026-06-08T19:51:22.840+05:30  INFO 27812 --- [smart-campus-api] [           main] o.a.c.c.C.[Tomcat].[localhost].[/api]    : Initializing Spring embedded WebApplicationContext
+2026-06-08T19:51:22.843+05:30 DEBUG 27812 --- [smart-campus-api] [           main] w.s.c.ServletWebServerApplicationContext : Published root WebApplicationContext as ServletContext attribute with name [org.springframework.web.context.WebApplicationContext.ROOT]
+2026-06-08T19:51:22.846+05:30  INFO 27812 --- [smart-campus-api] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 2893 ms
+2026-06-08T19:51:23.368+05:30  INFO 27812 --- [smart-campus-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-06-08T19:51:23.768+05:30  INFO 27812 --- [smart-campus-api] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@51de5efa
+2026-06-08T19:51:23.771+05:30  INFO 27812 --- [smart-campus-api] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-06-08T19:51:23.813+05:30  INFO 27812 --- [smart-campus-api] [           main] org.flywaydb.core.FlywayExecutor         : Database: jdbc:postgresql://localhost:5432/smart_campus_db (PostgreSQL 18.3)
+2026-06-08T19:51:23.844+05:30  WARN 27812 --- [smart-campus-api] [           main] o.f.c.internal.database.base.Database    : Flyway upgrade recommended: PostgreSQL 18.3 is newer than this version of Flyway and support has not been tested. The latest supported version of PostgreSQL is 17.
+2026-06-08T19:51:23.909+05:30  INFO 27812 --- [smart-campus-api] [           main] o.f.core.internal.command.DbValidate     : Successfully validated 2 migrations (execution time 00:00.047s)
+2026-06-08T19:51:24.063+05:30  INFO 27812 --- [smart-campus-api] [           main] o.f.core.internal.command.DbMigrate      : Current version of schema "public": 3
+2026-06-08T19:51:24.068+05:30  INFO 27812 --- [smart-campus-api] [           main] o.f.core.internal.command.DbMigrate      : Schema "public" is up to date. No migration necessary.
+2026-06-08T19:51:24.193+05:30  INFO 27812 --- [smart-campus-api] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-06-08T19:51:24.284+05:30  INFO 27812 --- [smart-campus-api] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.45.Final
+2026-06-08T19:51:24.333+05:30  INFO 27812 --- [smart-campus-api] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-06-08T19:51:24.674+05:30  INFO 27812 --- [smart-campus-api] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-06-08T19:51:24.756+05:30  WARN 27812 --- [smart-campus-api] [           main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-06-08T19:51:24.774+05:30  INFO 27812 --- [smart-campus-api] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
 	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
 	Database driver: undefined/unknown
 	Database version: 18.3
@@ -108,27 +46,25 @@ Downloading from central: https://repo.maven.apache.org/maven2/org/codehaus/mojo
 	Isolation level: undefined/unknown
 	Minimum pool size: undefined/unknown
 	Maximum pool size: undefined/unknown
-2026-06-08T19:41:44.102+05:30  INFO 32144 --- [smart-campus-api] [  restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2026-06-08T19:41:44.227+05:30  INFO 32144 --- [smart-campus-api] [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2026-06-08T19:41:44.487+05:30 DEBUG 32144 --- [smart-campus-api] [  restartedMain] o.s.b.w.s.ServletContextInitializerBeans : Mapping filters: webMvcObservationFilter urls=[/*] order=-2147483647, springSecurityFilterChain urls=[/*] order=-100, characterEncodingFilter urls=[/*] order=-2147483648, formContentFilter urls=[/*] order=-9900, requestContextFilter urls=[/*] order=-105, corsFilter urls=[/*] order=2147483647, jwtAuthFilter urls=[/*] order=2147483647
-2026-06-08T19:41:44.487+05:30 DEBUG 32144 --- [smart-campus-api] [  restartedMain] o.s.b.w.s.ServletContextInitializerBeans : Mapping servlets: dispatcherServlet urls=[/]
-2026-06-08T19:41:44.510+05:30 DEBUG 32144 --- [smart-campus-api] [  restartedMain] o.s.b.w.s.f.OrderedRequestContextFilter  : Filter 'requestContextFilter' configured for use
-2026-06-08T19:41:44.513+05:30 DEBUG 32144 --- [smart-campus-api] [  restartedMain] o.s.w.f.ServerHttpObservationFilter      : Filter 'webMvcObservationFilter' configured for use
-2026-06-08T19:41:44.513+05:30 DEBUG 32144 --- [smart-campus-api] [  restartedMain] o.springframework.web.filter.CorsFilter  : Filter 'corsFilter' configured for use
-2026-06-08T19:41:44.513+05:30 DEBUG 32144 --- [smart-campus-api] [  restartedMain] l.s.smartcampus.config.JwtAuthFilter     : Filter 'jwtAuthFilter' configured for use
-2026-06-08T19:41:44.514+05:30 DEBUG 32144 --- [smart-campus-api] [  restartedMain] s.b.w.s.f.OrderedCharacterEncodingFilter : Filter 'characterEncodingFilter' configured for use
-2026-06-08T19:41:44.514+05:30 DEBUG 32144 --- [smart-campus-api] [  restartedMain] .DelegatingFilterProxyRegistrationBean$1 : Filter 'springSecurityFilterChain' configured for use
-2026-06-08T19:41:44.514+05:30 DEBUG 32144 --- [smart-campus-api] [  restartedMain] o.s.b.w.s.f.OrderedFormContentFilter     : Filter 'formContentFilter' configured for use
-2026-06-08T19:41:44.779+05:30  WARN 32144 --- [smart-campus-api] [  restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2026-06-08T19:41:44.963+05:30 DEBUG 32144 --- [smart-campus-api] [  restartedMain] s.w.s.m.m.a.RequestMappingHandlerMapping : 53 mappings in 'requestMappingHandlerMapping'
-2026-06-08T19:41:45.006+05:30 DEBUG 32144 --- [smart-campus-api] [  restartedMain] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**, /swagger-ui/**, /swagger-ui/*swagger-initializer.js, /webjars/*swagger-ui/**, /webjars/*swagger-ui/*swagger-initializer.js, /webjars/*swagger-ui/5.32.2/*swagger-initializer.js] in 'resourceHandlerMapping'
-2026-06-08T19:41:45.072+05:30  INFO 32144 --- [smart-campus-api] [  restartedMain] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
-2026-06-08T19:41:45.209+05:30 DEBUG 32144 --- [smart-campus-api] [  restartedMain] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
-2026-06-08T19:41:45.261+05:30 DEBUG 32144 --- [smart-campus-api] [  restartedMain] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
-2026-06-08T19:41:45.452+05:30 DEBUG 32144 --- [smart-campus-api] [  restartedMain] o.s.b.d.livereload.LiveReloadServer      : Starting live reload server on port 35729
-2026-06-08T19:41:45.454+05:30  INFO 32144 --- [smart-campus-api] [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
-2026-06-08T19:41:45.633+05:30  INFO 32144 --- [smart-campus-api] [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/api'
-2026-06-08T19:41:45.647+05:30 DEBUG 32144 --- [smart-campus-api] [  restartedMain] .s.b.a.l.ConditionEvaluationReportLogger : 
+2026-06-08T19:51:25.815+05:30  INFO 27812 --- [smart-campus-api] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-06-08T19:51:25.900+05:30  INFO 27812 --- [smart-campus-api] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-06-08T19:51:26.331+05:30 DEBUG 27812 --- [smart-campus-api] [           main] o.s.b.w.s.ServletContextInitializerBeans : Mapping filters: webMvcObservationFilter urls=[/*] order=-2147483647, springSecurityFilterChain urls=[/*] order=-100, characterEncodingFilter urls=[/*] order=-2147483648, formContentFilter urls=[/*] order=-9900, requestContextFilter urls=[/*] order=-105, corsFilter urls=[/*] order=2147483647, jwtAuthFilter urls=[/*] order=2147483647
+2026-06-08T19:51:26.331+05:30 DEBUG 27812 --- [smart-campus-api] [           main] o.s.b.w.s.ServletContextInitializerBeans : Mapping servlets: dispatcherServlet urls=[/]
+2026-06-08T19:51:26.371+05:30 DEBUG 27812 --- [smart-campus-api] [           main] o.s.b.w.s.f.OrderedRequestContextFilter  : Filter 'requestContextFilter' configured for use
+2026-06-08T19:51:26.376+05:30 DEBUG 27812 --- [smart-campus-api] [           main] o.s.w.f.ServerHttpObservationFilter      : Filter 'webMvcObservationFilter' configured for use
+2026-06-08T19:51:26.377+05:30 DEBUG 27812 --- [smart-campus-api] [           main] o.springframework.web.filter.CorsFilter  : Filter 'corsFilter' configured for use
+2026-06-08T19:51:26.377+05:30 DEBUG 27812 --- [smart-campus-api] [           main] l.s.smartcampus.config.JwtAuthFilter     : Filter 'jwtAuthFilter' configured for use
+2026-06-08T19:51:26.377+05:30 DEBUG 27812 --- [smart-campus-api] [           main] s.b.w.s.f.OrderedCharacterEncodingFilter : Filter 'characterEncodingFilter' configured for use
+2026-06-08T19:51:26.378+05:30 DEBUG 27812 --- [smart-campus-api] [           main] .DelegatingFilterProxyRegistrationBean$1 : Filter 'springSecurityFilterChain' configured for use
+2026-06-08T19:51:26.378+05:30 DEBUG 27812 --- [smart-campus-api] [           main] o.s.b.w.s.f.OrderedFormContentFilter     : Filter 'formContentFilter' configured for use
+2026-06-08T19:51:26.896+05:30  WARN 27812 --- [smart-campus-api] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-06-08T19:51:27.266+05:30 DEBUG 27812 --- [smart-campus-api] [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : 53 mappings in 'requestMappingHandlerMapping'
+2026-06-08T19:51:27.352+05:30 DEBUG 27812 --- [smart-campus-api] [           main] o.s.w.s.handler.SimpleUrlHandlerMapping  : Patterns [/webjars/**, /**, /swagger-ui/**, /swagger-ui/*swagger-initializer.js, /webjars/*swagger-ui/**, /webjars/*swagger-ui/*swagger-initializer.js, /webjars/*swagger-ui/5.32.2/*swagger-initializer.js] in 'resourceHandlerMapping'
+2026-06-08T19:51:27.485+05:30  INFO 27812 --- [smart-campus-api] [           main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 2 endpoints beneath base path '/actuator'
+2026-06-08T19:51:27.753+05:30 DEBUG 27812 --- [smart-campus-api] [           main] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+2026-06-08T19:51:27.825+05:30 DEBUG 27812 --- [smart-campus-api] [           main] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 2 @ExceptionHandler, 1 ResponseBodyAdvice
+2026-06-08T19:51:28.196+05:30  INFO 27812 --- [smart-campus-api] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/api'
+2026-06-08T19:51:28.218+05:30 DEBUG 27812 --- [smart-campus-api] [           main] .s.b.a.l.ConditionEvaluationReportLogger : 
 
 
 ============================
@@ -203,15 +139,6 @@ Positive matches:
 
    DataSourceTransactionManagerAutoConfiguration.JdbcTransactionManagerConfiguration matched:
       - @ConditionalOnSingleCandidate (types: javax.sql.DataSource; SearchStrategy: all) found a single bean 'dataSource' (OnBeanCondition)
-
-   DevToolsDataSourceAutoConfiguration matched:
-      - @ConditionalOnClass found required class 'javax.sql.DataSource' (OnClassCondition)
-      - Devtools devtools enabled. (OnEnabledDevToolsCondition)
-      - DevTools DataSource Condition found auto-configured DataSource (DevToolsDataSourceAutoConfiguration.DevToolsDataSourceCondition)
-
-   DevToolsDataSourceAutoConfiguration.DatabaseShutdownExecutorEntityManagerFactoryDependsOnPostProcessor matched:
-      - @ConditionalOnClass found required class 'org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean' (OnClassCondition)
-      - @ConditionalOnBean (types: org.springframework.orm.jpa.AbstractEntityManagerFactoryBean; SearchStrategy: all) found bean '&entityManagerFactory' (OnBeanCondition)
 
    DiskSpaceHealthContributorAutoConfiguration matched:
       - @ConditionalOnEnabledHealthIndicator management.health.defaults.enabled is considered true (OnEnabledHealthIndicatorCondition)
@@ -488,27 +415,6 @@ Positive matches:
 
    LifecycleAutoConfiguration#defaultLifecycleProcessor matched:
       - @ConditionalOnMissingBean (names: lifecycleProcessor; SearchStrategy: current) did not find any beans (OnBeanCondition)
-
-   LocalDevToolsAutoConfiguration matched:
-      - Initialized Restarter Condition available and initialized (OnInitializedRestarterCondition)
-
-   LocalDevToolsAutoConfiguration.LiveReloadConfiguration matched:
-      - @ConditionalOnBooleanProperty (spring.devtools.livereload.enabled=true) matched (OnPropertyCondition)
-
-   LocalDevToolsAutoConfiguration.LiveReloadConfiguration#liveReloadServer matched:
-      - @ConditionalOnMissingBean (types: org.springframework.boot.devtools.livereload.LiveReloadServer; SearchStrategy: all) did not find any beans (OnBeanCondition)
-
-   LocalDevToolsAutoConfiguration.RestartConfiguration matched:
-      - @ConditionalOnBooleanProperty (spring.devtools.restart.enabled=true) matched (OnPropertyCondition)
-
-   LocalDevToolsAutoConfiguration.RestartConfiguration#classPathFileSystemWatcher matched:
-      - @ConditionalOnMissingBean (types: org.springframework.boot.devtools.classpath.ClassPathFileSystemWatcher; SearchStrategy: all) did not find any beans (OnBeanCondition)
-
-   LocalDevToolsAutoConfiguration.RestartConfiguration#classPathRestartStrategy matched:
-      - @ConditionalOnMissingBean (types: org.springframework.boot.devtools.classpath.ClassPathRestartStrategy; SearchStrategy: all) did not find any beans (OnBeanCondition)
-
-   LocalDevToolsAutoConfiguration.RestartConfiguration#conditionEvaluationDeltaLoggingListener matched:
-      - @ConditionalOnBooleanProperty (spring.devtools.restart.log-condition-evaluation-delta=true) matched (OnPropertyCondition)
 
    LogbackMetricsAutoConfiguration matched:
       - @ConditionalOnClass found required classes 'io.micrometer.core.instrument.MeterRegistry', 'ch.qos.logback.classic.LoggerContext', 'org.slf4j.LoggerFactory' (OnClassCondition)
@@ -1374,10 +1280,6 @@ Negative matches:
       Did not match:
          - @ConditionalOnClass did not find required class 'io.micrometer.datadog.DatadogMeterRegistry' (OnClassCondition)
 
-   DevToolsR2dbcAutoConfiguration:
-      Did not match:
-         - @ConditionalOnClass did not find required class 'io.r2dbc.spi.ConnectionFactory' (OnClassCondition)
-
    DispatcherServletAutoConfiguration.DispatcherServletConfiguration#multipartResolver:
       Did not match:
          - @ConditionalOnBean (types: org.springframework.web.multipart.MultipartResolver; SearchStrategy: all) did not find any beans of type org.springframework.web.multipart.MultipartResolver (OnBeanCondition)
@@ -2163,12 +2065,6 @@ Negative matches:
       Did not match:
          - @ConditionalOnClass did not find required class 'org.springframework.data.redis.repository.configuration.EnableRedisRepositories' (OnClassCondition)
 
-   RemoteDevToolsAutoConfiguration:
-      Did not match:
-         - @ConditionalOnProperty (spring.devtools.remote.secret) did not find property 'spring.devtools.remote.secret' (OnPropertyCondition)
-      Matched:
-         - @ConditionalOnClass found required classes 'jakarta.servlet.Filter', 'org.springframework.http.server.ServerHttpRequest' (OnClassCondition)
-
    RepositoryRestMvcAutoConfiguration:
       Did not match:
          - @ConditionalOnClass did not find required class 'org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration' (OnClassCondition)
@@ -2530,11 +2426,8 @@ Unconditional classes:
 
 
 
-2026-06-08T19:41:45.647+05:30  INFO 32144 --- [smart-campus-api] [  restartedMain] l.s.s.SmartCampusApiApplication          : Started SmartCampusApiApplication in 5.645 seconds (process running for 6.021)
-2026-06-08T19:41:45.687+05:30 DEBUG 32144 --- [smart-campus-api] [  restartedMain] o.s.b.a.ApplicationAvailabilityBean      : Application availability state LivenessState changed to CORRECT
-2026-06-08T19:41:45.690+05:30 DEBUG 32144 --- [smart-campus-api] [  restartedMain] o.s.boot.devtools.restart.Restarter      : Creating new Restarter for thread Thread[main,5,main]
-2026-06-08T19:41:45.692+05:30 DEBUG 32144 --- [smart-campus-api] [  restartedMain] o.s.boot.devtools.restart.Restarter      : Immediately restarting application
-2026-06-08T19:41:45.692+05:30 DEBUG 32144 --- [smart-campus-api] [  restartedMain] o.s.boot.devtools.restart.Restarter      : Starting application lk.sliit.smartcampus.SmartCampusApiApplication with URLs [file:/D:/GitHubProjects/PAF-ASSIGNMENT/it3030-paf-2026-smart-campus-Y3S2-WE-183/smart-campus-api/target/classes/]
-2026-06-08T19:41:45.692+05:30  WARN 32144 --- [smart-campus-api] [  restartedMain] o.s.core.events.SpringDocAppInitializer  : SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
-2026-06-08T19:41:45.692+05:30  WARN 32144 --- [smart-campus-api] [  restartedMain] o.s.core.events.SpringDocAppInitializer  : SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
-2026-06-08T19:41:45.692+05:30 DEBUG 32144 --- [smart-campus-api] [  restartedMain] o.s.b.a.ApplicationAvailabilityBean      : Application availability state ReadinessState changed to ACCEPTING_TRAFFIC
+2026-06-08T19:51:28.222+05:30  INFO 27812 --- [smart-campus-api] [           main] l.s.s.SmartCampusApiApplication          : Started SmartCampusApiApplication in 8.997 seconds (process running for 9.656)
+2026-06-08T19:51:28.270+05:30 DEBUG 27812 --- [smart-campus-api] [           main] o.s.b.a.ApplicationAvailabilityBean      : Application availability state LivenessState changed to CORRECT
+2026-06-08T19:51:28.272+05:30  WARN 27812 --- [smart-campus-api] [           main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+2026-06-08T19:51:28.273+05:30  WARN 27812 --- [smart-campus-api] [           main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
+2026-06-08T19:51:28.274+05:30 DEBUG 27812 --- [smart-campus-api] [           main] o.s.b.a.ApplicationAvailabilityBean      : Application availability state ReadinessState changed to ACCEPTING_TRAFFIC
